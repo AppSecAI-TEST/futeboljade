@@ -2,6 +2,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,9 +18,11 @@ public class Estadio extends JFrame {
 	private Campo campo;
 	
 	public Estadio() {
-		setSize(800,450);
+		Dimension tamanho = new Dimension(800,450);
+		setSize(tamanho);
 		setLocationRelativeTo(null);
 		campo = new Campo();
+		campo.setSize(tamanho);
 		add(campo);
 		add(barraTestes(), BorderLayout.SOUTH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -33,7 +36,7 @@ public class Estadio extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				campo.gameLoop();
+				campo.start();
 				campo.moverBola();
 			}
 		});
