@@ -1,14 +1,20 @@
 package agent;
 
+import java.awt.Point;
+
 import agent.behaviour.JogarBehaviour;
 import jade.core.Agent;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
+@AllArgsConstructor
 public class Jogador extends Agent {
 	@Getter
 	@Setter
-	private int x, y;
+	private Point posicao;
+	@Getter
 	private String nome;
 	@Getter
 	@Setter
@@ -19,12 +25,11 @@ public class Jogador extends Agent {
 
 	@Override
 	protected void setup() {
-		Object[] arguments = getArguments();
+		Object[] arguments = getArguments();	
 		this.nome = (String) arguments[0];
 		this.time = new Time((String) arguments[1]);
-		this.x = (int) arguments[2];
-		this.y = (int) arguments[3];
-		System.out.println(this.nome);
+		this.posicao = (Point) arguments[2];
+		
 		addBehaviour(new JogarBehaviour());
 	}
 

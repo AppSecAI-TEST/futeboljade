@@ -22,21 +22,21 @@ public class Jogo {
 		jade.setCloseVM(true);
 		Profile profile = new ProfileImpl("127.0.0.1", 1999, "linux");
 		mainContainer = jade.createMainContainer(profile);
+		jogadores = new ArrayList<>();
 	}
 
 	public void inicia() {
-		jogadores = new ArrayList<>();
 		bola = new Point(10, 10);
-		adicionaJogador("Julio Batista", "Brasil", 10, 10);
-		adicionaJogador("Roberto Carlos", "Brasil", 100, 100);
+		adicionaJogador("Julio Batista", "Brasil", new Point(10, 10));
+		adicionaJogador("Roberto Carlos", "Brasil", new Point(100, 100));
 	}
 	
 	public void adicionaJogador(String nome) {
-		adicionaJogador(nome, "Sem Time", 0, 0);
+		adicionaJogador(nome, "Sem Time", new Point());
 	}
 
-	public void adicionaJogador(String nome, String time, int x, int y) {
-		Object[] args = new Object[] { nome, time , x, y };
+	public void adicionaJogador(String nome, String time, Point posicao) {
+		Object[] args = new Object[] { nome, time , posicao };
 		jogadores.add(nome);
 		try {
 			AgentController controller = mainContainer.createNewAgent(nome, "agent.Jogador", args);
