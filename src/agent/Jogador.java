@@ -10,7 +10,10 @@ public class Jogador extends Agent {
 	@Setter
 	private int x, y;
 	private String nome;
-
+	@Getter
+	@Setter
+	private Time time;
+	
 	public Jogador() {
 	}
 
@@ -18,6 +21,9 @@ public class Jogador extends Agent {
 	protected void setup() {
 		Object[] arguments = getArguments();
 		this.nome = (String) arguments[0];
+		this.time = new Time((String) arguments[1]);
+		this.x = (int) arguments[2];
+		this.y = (int) arguments[3];
 		System.out.println(this.nome);
 		addBehaviour(new JogarBehaviour());
 	}
