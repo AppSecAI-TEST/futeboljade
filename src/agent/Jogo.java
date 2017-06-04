@@ -1,5 +1,6 @@
 package agent;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,26 +15,28 @@ public class Jogo {
 
 	private final AgentContainer mainContainer;
 	private List<String> jogadores;
-
+	private Point bola;
+	
 	public Jogo() {
 		Runtime jade = Runtime.instance();
 		jade.setCloseVM(true);
 		Profile profile = new ProfileImpl("127.0.0.1", 1999, "linux");
 		mainContainer = jade.createMainContainer(profile);
+		jogadores = new ArrayList<>();
 	}
 
 	public void inicia() {
-		jogadores = new ArrayList<>();
-		adicionaJogador("Julio Batista");
-		adicionaJogador("Roberto Carlos");
+		bola = new Point(10, 10);
+		adicionaJogador("Julio Batista", "Brasil", new Point(10, 10));
+		adicionaJogador("Roberto Carlos", "Brasil", new Point(100, 100));
 	}
 	
 	public void adicionaJogador(String nome) {
-		adicionaJogador(nome, 0, 0);
+		adicionaJogador(nome, "Sem Time", new Point());
 	}
 
-	public void adicionaJogador(String nome, int x, int y) {
-		Object[] args = new Object[] { nome, x, y };
+	public void adicionaJogador(String nome, String time, Point posicao) {
+		Object[] args = new Object[] { nome, time , posicao };
 		jogadores.add(nome);
 		try {
 			AgentController controller = mainContainer.createNewAgent(nome, "agent.Jogador", args);
