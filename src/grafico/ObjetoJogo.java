@@ -28,6 +28,7 @@ public abstract class ObjetoJogo {
 				getY() + Math.sin(Math.toRadians(getDirecao())) * getVelocidade() * getAceleracao());
 		setX(x.floatValue());
 		setY(y.floatValue());
+		diminuiAceleracao();
 	}
 
 	public abstract void diminuiAceleracao();;

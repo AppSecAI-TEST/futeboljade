@@ -3,6 +3,7 @@ package grafico;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Ellipse2D.Double;
 import java.awt.geom.Rectangle2D;
@@ -27,30 +28,21 @@ public class Bola extends ObjetoJogo {
 	}
 
 	private void detectaColisao() {
-		Rectangle2D ateOndeABolaPodeIr = 
-		new Rectangle2D.Double(
-				getCampo().getLimites().getX()+getW(),
-				getCampo().getLimites().getY()+getH(), 
-				getCampo().getLimites().getWidth()-2*getW(),
-				getCampo().getLimites().getHeight()-2*getH());
-		
-		Rectangle golEsquerda = getCampo().getGolEsquerda().getLimites();
-		Rectangle golDireita = getCampo().getGolDireita().getLimites();
-		
-		if(golDireita.contains(bolaGrafica.getBounds())){
+						
+		InfoAreasCampo areas = getCampo().getInfoAreasCampo();
+		if(areas.getGolDireita().contains(bolaGrafica.getBounds())){
 			getCampo().gooolTimeEsquerda();
 			return;
 		}
 		
-		if(golEsquerda.contains(bolaGrafica.getBounds())){
+		if(areas.getGolEsquerda().contains(bolaGrafica.getBounds())){
 			getCampo().gooolTimeDireita();
 			return;
 		}
 		
-		boolean batendoNaLinha = !ateOndeABolaPodeIr.intersects(bolaGrafica.getBounds2D());
-		boolean gol = getCampo().getStatus() == StatusJogo.GOOOL;
-		if(batendoNaLinha && !gol && folgaTesteColisao == 0){
-			boolean colisaoLinhaFundo = getX() <= ateOndeABolaPodeIr.getX() || getX() >= (ateOndeABolaPodeIr.getX()+ateOndeABolaPodeIr.getWidth());
+		boolean batendoNaLinha = areas.getCampoNaoJogavel().intersects(bolaGrafica.getBounds2D());
+		if(batendoNaLinha && folgaTesteColisao == 0){
+			boolean colisaoLinhaFundo = areas.getLinhaDeFundo().intersects(bolaGrafica.getBounds2D());
 			setDirecao((getDirecao()+(colisaoLinhaFundo?180:0))*-1);
 			setAceleracao(getAceleracao() / 2);
 			folgaTesteColisao = 3;
@@ -65,7 +57,7 @@ public class Bola extends ObjetoJogo {
 		Ellipse2D.Double bola = new Ellipse2D.Double(getX(), getY(), getW(), getH());
 		this.bolaGrafica = bola;
 		g2.setColor(COR_BOLA);
-		g2.fill(bola);		
+		g2.fill(bola);	
 	}
 	
 	@Override

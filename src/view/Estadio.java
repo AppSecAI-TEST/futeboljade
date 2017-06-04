@@ -18,8 +18,9 @@ public class Estadio extends JFrame {
 	private Campo campo;
 	
 	public Estadio() {
-		Dimension tamanho = new Dimension(800,450);
+		Dimension tamanho = new Dimension(800,480);
 		setSize(tamanho);
+		setResizable(false);
 		setLocationRelativeTo(null);
 		campo = new Campo();
 		campo.setSize(tamanho);
