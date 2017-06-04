@@ -30,13 +30,21 @@ public class Estadio extends JFrame {
 	
 	private Component barraTestes() {
 		JPanel barraTestes = new JPanel();
+		JButton btnStart = new JButton("START");
+		barraTestes.add(btnStart);
+		btnStart.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				campo.start();
+			}
+		});
 		JButton btnMoverBola = new JButton("MOVER BOLA");
 		barraTestes.add(btnMoverBola);
 		btnMoverBola.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				campo.start();
 				campo.moverBola();
 			}
 		});

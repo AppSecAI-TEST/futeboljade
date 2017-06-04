@@ -1,5 +1,7 @@
 package grafico;
 
+import java.math.BigDecimal;
+
 import lombok.Getter;
 import lombok.Setter;
 import view.Campo;
@@ -10,11 +12,23 @@ public abstract class ObjetoJogo {
 
 	private float x, y, w, h, direcao;
 	private float aceleracao, velocidade;
-	public void atualiza(Campo campo){
-		reposiciona(campo);
-		desenha(campo);
+	private Campo campo;
+
+	public void atualiza() {
+		reposiciona();
+		desenha();
 	}
-	
-	public abstract void desenha(Campo campo);
-	public abstract void reposiciona(Campo campo);;
+
+	public abstract void desenha();
+
+	public void reposiciona() {
+		BigDecimal x = new BigDecimal(
+				getX() + Math.cos(Math.toRadians(getDirecao())) * getVelocidade() * getAceleracao());
+		BigDecimal y = new BigDecimal(
+				getY() + Math.sin(Math.toRadians(getDirecao())) * getVelocidade() * getAceleracao());
+		setX(x.floatValue());
+		setY(y.floatValue());
+	}
+
+	public abstract void diminuiAceleracao();;
 }
