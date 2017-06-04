@@ -10,8 +10,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import grafico.Jogador;
 
 public class Estadio extends JFrame {
 	
@@ -47,6 +50,18 @@ public class Estadio extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				campo.moverBola();
+			}
+		});
+		JButton btnAddJogador = new JButton("ADD JOGADOR");
+		barraTestes.add(btnAddJogador);
+		btnAddJogador.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				grafico.Jogador jogador = new grafico.Jogador(System.currentTimeMillis()+"", Jogador.COR_VISITANTE);
+				jogador.setX((float) (Math.random()*campo.getWidth())-campo.getWidth()/2);
+				jogador.setY((float) (Math.random()*campo.getHeight())-campo.getHeight()/2);
+				campo.addJogador(jogador);
 			}
 		});
 		

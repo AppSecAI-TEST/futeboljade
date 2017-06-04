@@ -2,14 +2,10 @@ package view;
 
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.Rectangle2D.Double;
 import java.awt.image.BufferStrategy;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +13,7 @@ import java.util.Map;
 import grafico.Bola;
 import grafico.Gol;
 import grafico.InfoAreasCampo;
+import grafico.Jogador;
 import grafico.ObjetoJogo;
 import grafico.StatusJogo;
 import lombok.Getter;
@@ -38,13 +35,12 @@ public class Campo extends Canvas {
 	private InfoAreasCampo infoAreasCampo;
 	
 	public Campo() {
+		infoAreasCampo = new InfoAreasCampo();
 		setBackground(COR_CAMPO);
 		objetosJogo = new HashMap<>();
 		Bola bola = new Bola();
-		bola.setCampo(this);
 		golEsquerda = new Gol();
 		golDireita = new Gol();
-		infoAreasCampo = new InfoAreasCampo();
 		objetosJogo.put("BOLA", bola);
 	}
 	
@@ -82,7 +78,10 @@ public class Campo extends Canvas {
 		
 		desenhaCampo(g2);
 		
-		objetosJogo.values().forEach(o->o.atualiza());
+		objetosJogo.values().forEach(o->{
+			o.setCampo(this);
+			o.atualiza();
+		});
 		
 		g.dispose();
 		
@@ -101,7 +100,7 @@ public class Campo extends Canvas {
 		g2.setColor(Color.WHITE);
 		g2.drawLine(0, infoAreasCampo.getYBordaBaixo(), 0, infoAreasCampo.getYBordaCima());
 		g2.fillOval(infoAreasCampo.getXMeio()-5, infoAreasCampo.getYMeio()-5, 10, 10);
-		g2.drawOval(infoAreasCampo.getXMeio()-30, infoAreasCampo.getYMeio()-30, 60, 60);
+//		g2.drawOval(infoAreasCampo.getXMeio()-30, infoAreasCampo.getYMeio()-30, 60, 60);
 				
 		g2.draw(infoAreasCampo.getLimitesGolEsquerda());		
 		g2.draw(infoAreasCampo.getLimitesGolDireita());		
@@ -125,5 +124,10 @@ public class Campo extends Canvas {
 	public void gooolTimeDireita() {
 		System.out.println("Goool direita");
 		status = StatusJogo.GOOOL;
+	}
+
+	public void addJogador(Jogador jogador) {
+		objetosJogo.put(jogador.getNome(), jogador);
+		System.out.println(objetosJogo.values().size());
 	}	
 }

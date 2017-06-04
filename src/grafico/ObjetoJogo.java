@@ -31,5 +31,5 @@ public abstract class ObjetoJogo {
 		diminuiAceleracao();
 	}
 
-	public abstract void diminuiAceleracao();;
+	public void diminuiAceleracao(){}
 }
