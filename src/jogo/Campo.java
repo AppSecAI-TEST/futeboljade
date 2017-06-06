@@ -11,14 +11,16 @@ import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 import lombok.Getter;
+import lombok.Setter;
 
 public class Campo {
 
 	private final AgentContainer mainContainer;
 	private List<Jogador> jogadores;
-	@Getter
-	private Point bola;
 	private List<JogoListener> listeners;
+	@Setter
+	@Getter
+	private boolean bolaEmJogo;
 
 	public Campo() {
 		Runtime jade = Runtime.instance();
@@ -27,14 +29,6 @@ public class Campo {
 		mainContainer = jade.createMainContainer(profile);
 		jogadores = new ArrayList<>();
 		listeners = new ArrayList<>();
-	}
-
-	public void bolaEmJogo() {
-		bola = new Point(10, 10);
-	}
-	
-	public boolean bolaEstaEmJogo(){
-		return bola != null;
 	}
 
 	public void adicionaJogador(String nome) {
@@ -56,9 +50,9 @@ public class Campo {
 		this.listeners.add(jogoListener);
 	}
 
-	public void mostraJogadorCorrendoAtrasDaBolaIgualUmTanso(Jogador jogador, Point bola) {
+	public void mostraJogadorCorrendoAtrasDaBolaIgualUmTanso(Jogador jogador) {
 		this.listeners.forEach(listener->{
-			listener.jogadorIndoNaDirecaoDaBolaBemLoko(jogador, bola);
+			listener.jogadorIndoNaDirecaoDaBolaBemLoko(jogador);
 		});
 	}
 

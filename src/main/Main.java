@@ -12,6 +12,6 @@ public class Main {
 
 		campo.addListener(new TesteListener()); // TODO apagar
 
-		campo.bolaEmJogo();
+		campo.setBolaEmJogo(true);
 	}
 }

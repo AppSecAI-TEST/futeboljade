@@ -16,7 +16,7 @@ public class EsperandoState extends JogoTickerBehavior {
 		}
 
 		private boolean bolaEmJogo() {
-			return getJogador().getCampo().bolaEstaEmJogo();
+			return getJogador().getCampo().isBolaEmJogo();
 		}
 
 	}

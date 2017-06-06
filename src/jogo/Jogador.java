@@ -35,8 +35,7 @@ public class Jogador {
 	}
 
 	public void correAtrasDaBola() {
-		Point bola = getCampo().getBola();
-		getCampo().mostraJogadorCorrendoAtrasDaBolaIgualUmTanso(this, bola);
+		getCampo().mostraJogadorCorrendoAtrasDaBolaIgualUmTanso(this);
 	}
 
 }

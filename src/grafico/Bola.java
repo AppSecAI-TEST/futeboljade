@@ -2,11 +2,8 @@ package grafico;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Ellipse2D.Double;
-import java.awt.geom.Rectangle2D;
 
 public class Bola extends ObjetoJogo {
 

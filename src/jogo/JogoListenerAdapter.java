@@ -1,7 +1,5 @@
 package jogo;
 
-import java.awt.Point;
-
 public class JogoListenerAdapter implements JogoListener {
 
 	@Override
@@ -9,7 +7,7 @@ public class JogoListenerAdapter implements JogoListener {
 	}
 
 	@Override
-	public void jogadorIndoNaDirecaoDaBolaBemLoko(Jogador jogador, Point bola) {
+	public void jogadorIndoNaDirecaoDaBolaBemLoko(Jogador jogador) {
 	}
 
 }
