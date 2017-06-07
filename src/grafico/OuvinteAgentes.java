@@ -19,8 +19,8 @@ public class OuvinteAgentes implements CampoAgentesListener {
 	public void jogadorAdicionado(jogo.Jogador jogador) {
 		System.out.println("Adicionado");
 		grafico.Jogador jogadorGrafico = new grafico.Jogador(jogador.getNome(), Color.RED);
-		jogadorGrafico.setX((float) (Math.random()*campo.getWidth())-campo.getWidth()/2);
-		jogadorGrafico.setY((float) (Math.random()*campo.getHeight())-campo.getHeight()/2);
+		jogadorGrafico.setX(0);
+		jogadorGrafico.setY(0);
 		campo.addJogador(jogadorGrafico);
 	}
 
