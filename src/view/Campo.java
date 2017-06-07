@@ -11,11 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import grafico.Bola;
+import grafico.GeometriaUtil;
 import grafico.Gol;
 import grafico.InfoAreasCampo;
 import grafico.Jogador;
 import grafico.ObjetoJogo;
 import grafico.StatusJogo;
+import jogo.JogoListenerAdapter;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -57,7 +59,7 @@ public class Campo extends Canvas {
 				while(true){
 					gameLoop();
 					try {
-						Thread.sleep(30);
+						Thread.sleep(100);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -100,7 +102,7 @@ public class Campo extends Canvas {
 		g2.setColor(Color.WHITE);
 		g2.drawLine(0, infoAreasCampo.getYBordaBaixo(), 0, infoAreasCampo.getYBordaCima());
 		g2.fillOval(infoAreasCampo.getXMeio()-5, infoAreasCampo.getYMeio()-5, 10, 10);
-//		g2.drawOval(infoAreasCampo.getXMeio()-30, infoAreasCampo.getYMeio()-30, 60, 60);
+		g2.drawOval(infoAreasCampo.getXMeio()-30, infoAreasCampo.getYMeio()-30, 60, 60);
 				
 		g2.draw(infoAreasCampo.getLimitesGolEsquerda());		
 		g2.draw(infoAreasCampo.getLimitesGolDireita());		
@@ -108,7 +110,7 @@ public class Campo extends Canvas {
 	}
 
 	public void moverBola() {
-		ObjetoJogo bola = objetosJogo.get("BOLA");
+		ObjetoJogo bola = getBola();
 		bola.setX(0);
 		bola.setY(0);
 		bola.setVelocidade(1);
@@ -129,5 +131,22 @@ public class Campo extends Canvas {
 	public void addJogador(Jogador jogador) {
 		objetosJogo.put(jogador.getNome(), jogador);
 		System.out.println(objetosJogo.values().size());
-	}	
+	}
+
+	public void jogadorSeguirBola(String nome) {
+		ObjetoJogo jogador = objetosJogo.get(nome);
+		ObjetoJogo bola = getBola();
+		jogador.setVelocidade(3);
+		jogador.setAceleracao(1);
+		jogador.setDirecao(GeometriaUtil
+				.getDirecaoPara(jogador.getX(), jogador.getY(), bola.getX(), bola.getY()));
+	}
+
+	public ObjetoJogo getBola() {
+		return objetosJogo.get("BOLA");
+	}
+
+	public void jogadorColidiuComBola(Jogador jogador) {
+		//listener.colidiu
+	}
 }

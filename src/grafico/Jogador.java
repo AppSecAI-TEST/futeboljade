@@ -2,7 +2,7 @@ package grafico;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.Ellipse2D;
+import java.awt.Shape;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -33,7 +33,30 @@ public class Jogador extends ObjetoJogo {
 	public void desenha() {
 		Graphics2D g2 = getCampo().g;
 		g2.setColor(getColor());
-		g2.fill(new Ellipse2D.Double(getX(), getY(), getW(), getH()));
+		g2.fill(getBolaGrafica());
+	}
+	
+	@Override
+	protected void detectaColisao() {
+		super.detectaColisao();
+		if(colidiuComBola()){
+			aoColidirComBola();
+		}
+	}
+		
+	private void aoColidirComBola() {
+		setColor(Color.RED);
+		getCampo().jogadorColidiuComBola(this);
+	}
+
+	private boolean colidiuComBola() {
+		Shape bola = getCampo().getBola().getBolaGrafica();
+		return getBolaGrafica().intersects(bola.getBounds());
+	}
+
+	@Override
+	protected void aoColidirComLaterais() {
+		inverterTragetoria();
 	}
 
 }

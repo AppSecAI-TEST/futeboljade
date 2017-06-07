@@ -48,7 +48,7 @@ public class Campo {
 		listeners.forEach(listener -> listener.jogadorAdicionado(jogador));
 	}
 
-	public void addListener(CampoListenerAdapter jogoListener) {
+	public void addListener(CampoListener jogoListener) {
 		this.listeners.add(jogoListener);
 	}
 
