@@ -1,15 +1,14 @@
 package jogo;
 
-import java.awt.Point;
+public class TesteListener extends CampoListenerAdapter {
 
-public class TesteListener extends JogoListenerAdapter {
 	@Override
-	public void jogadorMoveu(jogo.Jogador jogador) {
-		System.out.printf("Jogador %s moveu ", jogador.getNome());
+	public void jogadorIndoNaDirecaoDaBolaBemLoko(Jogador jogador) {
+		System.out.printf("Jogador indo %s na diração da bola\n", jogador.getNome());
 	}
 
 	@Override
-	public void jogadorIndoNaDirecaoDaBolaBemLoko(Jogador jogador, Point bola) {
-		System.out.printf("Jogador indo %s na diração da bola", jogador.getNome());
+	public void jogadorAdicionado(Jogador jogador) {
+		System.out.printf("Jogador %s adicionado\n");
 	}
 }
