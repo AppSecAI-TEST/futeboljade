@@ -4,15 +4,15 @@ import java.awt.Color;
 
 import jogo.CampoAgentesListener;
 import lombok.AllArgsConstructor;
-import view.Campo;
 
 @AllArgsConstructor
 public class OuvinteAgentes implements CampoAgentesListener {
 
-	private Campo campo;
+	private view.Campo campo;
 
 	@Override
 	public void jogadorIndoNaDirecaoDaBolaBemLoko(jogo.Jogador jogador) {
+		campo.jogadorSeguirBola(jogador.getNome());
 	}
 
 	@Override

@@ -19,6 +19,8 @@ public class Jogador extends Agent {
 	private Campo campo;
 
 	private Set<JogadorListener> listeners;
+	
+	private byte colisoesAtePegarBola = 10;
 
 	@Override
 	protected void setup() {
@@ -48,7 +50,9 @@ public class Jogador extends Agent {
 	}
 
 	public void setColidiuComBola() {
-		listeners.forEach(listener -> listener.colidiuComBola());
+		colisoesAtePegarBola--;
+		if(colisoesAtePegarBola==0)
+			listeners.forEach(listener -> listener.pegouBola());
 	}
 
 	public void addListener(JogadorListener jogadorListener) {

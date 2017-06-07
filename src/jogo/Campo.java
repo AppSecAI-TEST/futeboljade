@@ -10,9 +10,8 @@ import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 import lombok.Getter;
-import view.CampoGraficoListener;
 
-public class Campo implements CampoGraficoListener {
+public class Campo {
 
 	private final AgentContainer mainContainer;
 	@Getter
@@ -70,7 +69,6 @@ public class Campo implements CampoGraficoListener {
 	}
 
 	
-	@Override
 	public void jogadorColidiuComBola(String nome) {
 		getJogador(nome).setColidiuComBola();
 	}

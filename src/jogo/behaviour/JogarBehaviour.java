@@ -44,7 +44,7 @@ public class JogarBehaviour extends FSMBehaviour {
 
 		private final class FinalizadorAoPegarBola extends JogadorListenerAdapter {
 			@Override
-			public void colidiuComBola() {
+			public void pegouBola() {
 				getJogador().send(mensagemPegueiBolaGalera());
 				finalizaCom(PEGOU_BOLA_DO_ADVERSARIO);
 			}
