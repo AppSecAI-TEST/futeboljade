@@ -42,15 +42,7 @@ public class Estadio extends JFrame {
 	
 	private Component barraTestes() {
 		JPanel barraTestes = new JPanel();
-		JButton btnStart = new JButton("START");
-		barraTestes.add(btnStart);
-		btnStart.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				campo.start();
-			}
-		});
+		
 		JButton btnMoverBola = new JButton("MOVER BOLA");
 		barraTestes.add(btnMoverBola);
 		btnMoverBola.addActionListener(new ActionListener() {
@@ -93,8 +85,7 @@ public class Estadio extends JFrame {
 	public void iniciar(){
 		SwingUtilities.invokeLater(new Runnable() {
 	         public void run() {
-	        	Estadio estadio = new Estadio();
-				estadio.setVisible(true);
+				setVisible(true);
 	         }}
 		);
 	}
