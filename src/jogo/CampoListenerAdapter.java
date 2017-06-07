@@ -9,5 +9,8 @@ public class CampoListenerAdapter implements CampoListener {
 	@Override
 	public void jogadorAdicionado(jogo.Jogador jogador) {
 	}
+	
+	@Override
+	public void bolaEmJogo() {}
 
 }

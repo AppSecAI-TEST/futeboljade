@@ -6,4 +6,6 @@ public interface CampoListener {
 
 	void jogadorAdicionado(jogo.Jogador jogador);
 
+	void bolaEmJogo();
+
 }

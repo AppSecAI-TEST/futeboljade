@@ -10,7 +10,6 @@ import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 import lombok.Getter;
-import lombok.Setter;
 
 public class Campo {
 
@@ -18,7 +17,6 @@ public class Campo {
 	@Getter
 	private Set<Jogador> jogadores;
 	private Set<CampoListener> listeners;
-	@Setter
 	@Getter
 	private boolean bolaEmJogo;
 
@@ -31,6 +29,11 @@ public class Campo {
 		listeners = new HashSet<>();
 	}
 
+	public void setBolaEmJogo(boolean bolaEmJogo) {
+		this.bolaEmJogo = bolaEmJogo;
+		listeners.forEach(CampoListener::bolaEmJogo);
+	}
+	
 	public void adicionaJogador(String nome) {
 		adicionaJogador(nome, "Sem Time");
 	}
