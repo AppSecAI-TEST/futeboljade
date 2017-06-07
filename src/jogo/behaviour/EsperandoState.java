@@ -1,4 +1,4 @@
-package jogo.agent.behaviour;
+package jogo.behaviour;
 
 import jade.core.Agent;
 
