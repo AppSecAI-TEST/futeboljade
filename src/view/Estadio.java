@@ -5,6 +5,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,6 +32,13 @@ public class Estadio extends JFrame {
 		add(campo);
 		add(barraTestes(), BorderLayout.SOUTH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+				super.windowOpened(e);
+				campo.start();
+			}
+		});
 	}
 	
 	private Component barraTestes() {
@@ -84,7 +94,8 @@ public class Estadio extends JFrame {
 	public void iniciar(){
 		SwingUtilities.invokeLater(new Runnable() {
 	         public void run() {
-	        	 new Estadio().setVisible(true);
+	        	Estadio estadio = new Estadio();
+				estadio.setVisible(true);
 	         }}
 		);
 	}
