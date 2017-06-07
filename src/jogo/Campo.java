@@ -46,7 +46,7 @@ public class Campo {
 		}
 	}
 
-	public void addListener(JogoListenerAdapter jogoListener) {
+	public void addListener(JogoListener jogoListener) {
 		this.listeners.add(jogoListener);
 	}
 
