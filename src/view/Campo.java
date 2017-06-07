@@ -62,7 +62,7 @@ public class Campo extends Canvas {
 				while(true){
 					gameLoop();
 					try {
-						Thread.sleep(100);
+						Thread.sleep(30);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
