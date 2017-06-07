@@ -20,7 +20,6 @@ import lombok.Getter;
 public class Estadio extends JFrame {
 	
 	private Campo campo;
-	private JogoListener jogoListener;
 	
 	public Estadio() {
 		Dimension tamanho = new Dimension(800,480);
@@ -32,7 +31,6 @@ public class Estadio extends JFrame {
 		add(campo);
 		add(barraTestes(), BorderLayout.SOUTH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		jogoListener = new OuvinteAgentes(campo);
 	}
 	
 	private Component barraTestes() {

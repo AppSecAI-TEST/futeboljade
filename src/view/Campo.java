@@ -16,7 +16,9 @@ import grafico.Gol;
 import grafico.InfoAreasCampo;
 import grafico.Jogador;
 import grafico.ObjetoJogo;
+import grafico.OuvinteAgentes;
 import grafico.StatusJogo;
+import jogo.JogoListener;
 import jogo.JogoListenerAdapter;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,6 +37,7 @@ public class Campo extends Canvas {
 	private Gol golDireita;
 	private StatusJogo status;
 	private InfoAreasCampo infoAreasCampo;
+	private JogoListener jogoListener;
 	
 	public Campo() {
 		infoAreasCampo = new InfoAreasCampo();
@@ -44,6 +47,7 @@ public class Campo extends Canvas {
 		golEsquerda = new Gol();
 		golDireita = new Gol();
 		objetosJogo.put("BOLA", bola);
+		jogoListener = new OuvinteAgentes(this);
 	}
 	
 	public void start(){
