@@ -8,7 +8,9 @@ import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import grafico.Bola;
 import grafico.GeometriaUtil;
@@ -18,7 +20,7 @@ import grafico.Jogador;
 import grafico.ObjetoJogo;
 import grafico.OuvinteAgentes;
 import grafico.StatusJogo;
-import jogo.CampoListener;
+import jogo.CampoAgentesListener;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,7 +38,8 @@ public class Campo extends Canvas {
 	private Gol golDireita;
 	private StatusJogo status;
 	private InfoAreasCampo infoAreasCampo;
-	private CampoListener ouvinteAgentes;
+	private CampoAgentesListener ouvinteAgentes;
+	private Set<CampoGraficoListener> listeners;
 	
 	public Campo() {
 		infoAreasCampo = new InfoAreasCampo();
@@ -47,6 +50,7 @@ public class Campo extends Canvas {
 		golDireita = new Gol();
 		objetosJogo.put("BOLA", bola);
 		ouvinteAgentes = new OuvinteAgentes(this);
+		listeners = new HashSet<>();
 	}
 	
 	public void start(){
@@ -149,7 +153,11 @@ public class Campo extends Canvas {
 		return objetosJogo.get("BOLA");
 	}
 
+	public void addListener(CampoGraficoListener listener){
+		this.listeners.add(listener);
+	}
+	
 	public void jogadorColidiuComBola(Jogador jogador) {
-		//listener.colidiu
+		listeners.forEach(listener->listener.jogadorColidiuComBola(jogador.getNome()));
 	}
 }

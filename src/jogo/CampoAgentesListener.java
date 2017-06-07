@@ -1,6 +1,6 @@
 package jogo;
 
-public interface CampoListener {
+public interface CampoAgentesListener {
 
 	void jogadorIndoNaDirecaoDaBolaBemLoko(jogo.Jogador jogador);
 

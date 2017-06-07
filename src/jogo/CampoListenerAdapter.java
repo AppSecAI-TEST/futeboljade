@@ -1,6 +1,6 @@
 package jogo;
 
-public class CampoListenerAdapter implements CampoListener {
+public class CampoListenerAdapter implements CampoAgentesListener {
 
 	@Override
 	public void jogadorIndoNaDirecaoDaBolaBemLoko(Jogador jogador) {

@@ -2,12 +2,12 @@ package grafico;
 
 import java.awt.Color;
 
-import jogo.CampoListener;
+import jogo.CampoAgentesListener;
 import lombok.AllArgsConstructor;
 import view.Campo;
 
 @AllArgsConstructor
-public class OuvinteAgentes implements CampoListener {
+public class OuvinteAgentes implements CampoAgentesListener {
 
 	private Campo campo;
 

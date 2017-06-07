@@ -11,5 +11,6 @@ public class Main {
 		campo.addListener(estadio.getCampo().getOuvinteAgentes());
 		estadio.iniciar();
 		campo.setBolaEmJogo(true);
+		estadio.getCampo().addListener(campo);
 	}
 }

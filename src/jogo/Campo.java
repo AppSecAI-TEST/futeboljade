@@ -10,13 +10,14 @@ import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 import lombok.Getter;
+import view.CampoGraficoListener;
 
-public class Campo {
+public class Campo implements CampoGraficoListener {
 
 	private final AgentContainer mainContainer;
 	@Getter
 	private Set<Jogador> jogadores;
-	private Set<CampoListener> listeners;
+	private Set<CampoAgentesListener> listeners;
 	@Getter
 	private boolean bolaEmJogo;
 
@@ -31,7 +32,7 @@ public class Campo {
 
 	public void setBolaEmJogo(boolean bolaEmJogo) {
 		this.bolaEmJogo = bolaEmJogo;
-		listeners.forEach(CampoListener::bolaEmJogo);
+		listeners.forEach(CampoAgentesListener::bolaEmJogo);
 	}
 	
 	public void adicionaJogador(String nome) {
@@ -51,7 +52,7 @@ public class Campo {
 		listeners.forEach(listener -> listener.jogadorAdicionado(jogador));
 	}
 
-	public void addListener(CampoListener jogoListener) {
+	public void addListener(CampoAgentesListener jogoListener) {
 		this.listeners.add(jogoListener);
 	}
 
@@ -68,4 +69,10 @@ public class Campo {
 		}).findFirst().orElse(new Jogador("Não encontrado"));
 	}
 
+	
+	@Override
+	public void jogadorColidiuComBola(String nome) {
+		getJogador(nome).setColidiuComBola();
+	}
+	
 }
