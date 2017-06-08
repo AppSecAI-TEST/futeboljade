@@ -17,11 +17,10 @@ public class OuvinteAgentes implements CampoAgentesListener {
 
 	@Override
 	public void jogadorAdicionado(String nomeJogador) {
-		System.out.println("Adicionado");
 		grafico.Jogador jogadorGrafico = new grafico.Jogador(nomeJogador, Color.RED);
 		jogadorGrafico.setX(0);
 		jogadorGrafico.setY(0);
-		campo.addJogador(jogadorGrafico);
+		campo.addJogadorCasa(new Jogador());
 	}
 
 	@Override

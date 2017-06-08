@@ -1,19 +1,22 @@
 package grafico;
 
+import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.math.BigDecimal;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import view.Campo;
 
 @Getter
 @Setter
+@Accessors(chain=true)
 public abstract class ObjetoJogo {
 
-	private float x, y, w, h, direcao;
-	private float aceleracao, velocidade;
+	private double x, y, w, h, direcao;
+	private double aceleracao, velocidade;
 	private Campo campo;
 	private Shape bolaGrafica;
 	private int folgaTesteColisao = 0;
@@ -35,12 +38,19 @@ public abstract class ObjetoJogo {
 	}
 
 	public void desenha() {
+		Graphics2D g2 = getCampo().g;
+		desenha(g2);
+	}
+
+	protected void desenha(Graphics2D g2) {
+		
 	}
 
 	protected void detectaColisao() {
 		if (colidiuComLaterais() && getFolgaTesteColisao() == 0) {
 			aoColidirComLaterais();
-			setFolgaTesteColisao(3);
+			int tamanhoObjeto = (int) getW();
+			setFolgaTesteColisao(tamanhoObjeto);
 		}
 		if (getFolgaTesteColisao() > 0)
 			setFolgaTesteColisao(getFolgaTesteColisao() - 1);
@@ -72,5 +82,9 @@ public abstract class ObjetoJogo {
 	public Shape getBolaGrafica() {
 		bolaGrafica = new Ellipse2D.Double(getX(), getY(), getW(), getH());
 		return this.bolaGrafica;
+	}
+	
+	public void apontarPara(double xdest, double ydest){
+		setDirecao(GeometriaUtil.getDirecaoPara(getX(), getY(), xdest, ydest));
 	}
 }
