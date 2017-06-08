@@ -133,7 +133,6 @@ public class Campo extends Canvas {
 
 	public void addJogador(Jogador jogador) {
 		objetosJogo.put(jogador.getNome(), jogador);
-		System.out.println(objetosJogo.values().size());
 	}
 
 	public void jogadorSeguirBola(String nome) {

@@ -16,6 +16,6 @@ public class Main {
 		campo.setBolaEmJogo(true);
 		
 		campo.adicionaJogador("1", "A");
-		campo.adicionaJogador("2", "A");
+		//campo.adicionaJogador("2", "A");
 	}
 }

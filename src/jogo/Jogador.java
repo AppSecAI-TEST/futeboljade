@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class Jogador extends Agent {
+	private static final short COLISOES_ATE_PEGAR_BOLA = 3;
 	@Getter
 	@Setter
 	private String nome;
@@ -20,7 +21,7 @@ public class Jogador extends Agent {
 
 	private Set<JogadorListener> listeners;
 	
-	private byte colisoesAtePegarBola = 10;
+	private short colisoesAtePegarBola = COLISOES_ATE_PEGAR_BOLA;
 
 	@Override
 	protected void setup() {
@@ -51,8 +52,10 @@ public class Jogador extends Agent {
 
 	public void setColidiuComBola() {
 		colisoesAtePegarBola--;
-		if(colisoesAtePegarBola==0)
+		if(colisoesAtePegarBola==0){
+			colisoesAtePegarBola = COLISOES_ATE_PEGAR_BOLA;
 			listeners.forEach(listener -> listener.pegouBola());
+		}
 	}
 
 	public void addListener(JogadorListener jogadorListener) {

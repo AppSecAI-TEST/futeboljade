@@ -33,10 +33,6 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 		return ((Jogador) getAgent());
 	}
 
-	public Jogador getJogador(String localName) {
-		return getJogador().getCampo().getJogador(localName);
-	}
-
 	protected boolean jogadorPegouBola() {
 		if (message != null) {
 			return message.getContent().equals("peguei_bola");
@@ -44,12 +40,30 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 		return false;
 	}
 
+	protected boolean colidiuComBola() {
+		if (message != null) {
+			// o comunicador me diz que colidi
+			return message.getContent().equals("voce_colidiu_com_a_bola");
+		}
+		return false;
+	}
+
 	protected boolean mesmoTime() {
 		if (message != null) {
-			Jogador jogadorMensagem = getJogador(message.getSender().getLocalName());
-			boolean naoEhOMesmo = !getJogador().equals(jogadorMensagem);
-			boolean estaNoMesmoTime = getJogador().getTime().equals(jogadorMensagem.getTime());
-			return naoEhOMesmo && estaNoMesmoTime;
+			String parametroTime = message.getUserDefinedParameter("time");
+			if (parametroTime != null) {
+				String timeJogador = getJogador().getTime().getNome();
+				boolean estaNoMesmoTime = parametroTime.equals(timeJogador);
+				// não é o próprio jogador e está no mesmo time
+				return !mensagemDesteJogador() && estaNoMesmoTime;
+			}
+		}
+		return false;
+	}
+
+	protected boolean mensagemDesteJogador() {
+		if (message != null) {
+			return getJogador().getLocalName().equals(message.getSender().getLocalName());
 		}
 		return false;
 	}

@@ -19,6 +19,8 @@ public class Campo {
 	private Set<CampoAgentesListener> listeners;
 	@Getter
 	private boolean bolaEmJogo;
+	
+	private AgenteComunicador agenteComunicador;
 
 	public Campo() {
 		Runtime jade = Runtime.instance();
@@ -27,6 +29,7 @@ public class Campo {
 		mainContainer = jade.createMainContainer(profile);
 		jogadores = new HashSet<>();
 		listeners = new HashSet<>();
+		agenteComunicador = new AgenteComunicador();
 	}
 
 	public void setBolaEmJogo(boolean bolaEmJogo) {
@@ -40,15 +43,13 @@ public class Campo {
 
 	public void adicionaJogador(String nome, String time) {
 		Object[] args = new Object[] { nome, time, this };
-		Jogador jogador = new Jogador(nome);
-		jogadores.add(jogador);
 		try {
 			AgentController controller = mainContainer.createNewAgent(nome, Jogador.class.getName(), args);
 			controller.start();
 		} catch (StaleProxyException e) {
 			throw new RuntimeException(e);
 		}
-		listeners.forEach(listener -> listener.jogadorAdicionado(jogador));
+		listeners.forEach(listener -> listener.jogadorAdicionado(nome));
 	}
 
 	public void addListener(CampoAgentesListener jogoListener) {
@@ -61,16 +62,8 @@ public class Campo {
 		});
 	}
 
-	public Jogador getJogador(String localName) {
-		return jogadores.stream().filter(jogador -> {
-			System.out.println(localName + " " + jogador.getNome());
-			return jogador.getNome().equals(localName);
-		}).findFirst().orElse(new Jogador("Não encontrado"));
-	}
-
-	
 	public void jogadorColidiuComBola(String nome) {
-		getJogador(nome).setColidiuComBola();
+		agenteComunicador.jogadorColidiuComBola(nome);
 	}
 	
 }

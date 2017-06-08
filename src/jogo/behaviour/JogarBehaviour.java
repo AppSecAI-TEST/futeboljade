@@ -21,9 +21,9 @@ public class JogarBehaviour extends FSMBehaviour {
 
 	public JogarBehaviour(Agent agent) {
 		super(agent);
-		registerFirstState(new EsperandoState(myAgent, TEMPO_ACAO), ESPERANDO);
-		registerLastState(new SemBolaState(myAgent, TEMPO_ACAO), SEM_BOLA);
-		registerState(new TimeComBolaState(myAgent, TEMPO_ACAO), TIME_COM_BOLA);
+		registerFirstState(new EsperandoState(agent, TEMPO_ACAO), ESPERANDO);
+		registerLastState(new SemBolaState(agent, TEMPO_ACAO), SEM_BOLA);
+		registerState(new TimeComBolaState(agent, TEMPO_ACAO), TIME_COM_BOLA);
 		registerState(new ComBolaState(), COM_BOLA);
 
 		registerTransition(ESPERANDO, SEM_BOLA, BOLA_EM_JOGO);
@@ -58,10 +58,26 @@ public class JogarBehaviour extends FSMBehaviour {
 		@Override
 		protected void onTick() {
 			super.onTick();
-			System.out.println("Sem bola state");
 			correAtrasDaBola();
-			if (jogadorPegouBola() && mesmoTime())
+			if (jogadorPegouBola() && mesmoTime()) {
+				System.out.println("Colega pegou bola!!");
+				System.out.println("Vamos para o ataque!!");
 				finalizaCom(COLEGA_PEGOU_BOLA);
+			}
+			if(colidiuComBola()){
+				getJogador().setColidiuComBola();
+			}
+		}
+
+		private ACLMessage mensagemPegueiBolaGalera() {
+			System.out.println("Pequei bola galera!!");
+			ACLMessage message = new ACLMessage(ACLMessage.PROPAGATE);
+			getJogador().getCampo().getJogadores().forEach(jogador -> {
+				message.addReceiver(new AID(jogador.getNome(), AID.ISLOCALNAME));
+			});
+			message.addUserDefinedParameter("time", getJogador().getTime().getNome());
+			message.setContent("peguei_bola");
+			return message;
 		}
 
 		private void correAtrasDaBola() {
@@ -78,15 +94,6 @@ public class JogarBehaviour extends FSMBehaviour {
 			return message;
 		}
 
-		private ACLMessage mensagemPegueiBolaGalera() {
-			ACLMessage message = new ACLMessage(ACLMessage.PROPAGATE);
-			getJogador().getCampo().getJogadores().forEach(jogador -> {
-				message.addReceiver(new AID(jogador.getNome(), AID.ISLOCALNAME));
-			});
-			message.addUserDefinedParameter("time", getJogador().getTime().getNome());
-			message.setContent("peguei_bola");
-			return message;
-		}
 	}
 
 	class TimeComBolaState extends JogoTickerBehavior {
