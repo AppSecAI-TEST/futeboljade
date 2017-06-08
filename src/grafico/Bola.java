@@ -15,8 +15,7 @@ public class Bola extends ObjetoJogo {
 	}
 
 	@Override
-	public void desenha() {
-		Graphics2D g2 = getCampo().g;
+	public void desenha(Graphics2D g2) {
 		g2.setColor(COR_BOLA);
 		g2.fill(getBolaGrafica());
 	}
@@ -31,10 +30,10 @@ public class Bola extends ObjetoJogo {
 	protected void detectaColisao() {
 		super.detectaColisao();
 		InfoAreasCampo areas = getCampo().getInfoAreasCampo();
-		if (areas.getGolDireita().contains(getBolaGrafica().getBounds())) {
+		if (areas.getLimitesGolDireita().contains(getBolaGrafica().getBounds())) {
 			getCampo().gooolTimeEsquerda();
 		}
-		if (areas.getGolEsquerda().contains(getBolaGrafica().getBounds())) {
+		if (areas.getLimitesGolEsquerda().contains(getBolaGrafica().getBounds())) {
 			getCampo().gooolTimeDireita();
 		}
 	}

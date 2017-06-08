@@ -3,7 +3,6 @@ package grafico;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Rectangle2D.Double;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,68 +12,92 @@ import view.Campo;
 @Setter
 public class InfoAreasCampo {
 
-	private Area golEsquerda;
-	private Area golDireita;
 	private Area campoNaoJogavel;
 	private Area linhaDeFundo;
 	private Rectangle limitesGolEsquerda;
 	private Rectangle limitesGolDireita;
 	private Campo campo;
+	private Area campoJogavel;
 
 	public void inicializa(Campo campo){
 		this.campo = campo;
-		
-		this.limitesGolEsquerda = campo.getGolEsquerda().getLimites();
-		limitesGolEsquerda.setLocation(
-				getXBordaEsquerda(),
-				(int) (getYMeio() - limitesGolEsquerda.getHeight()/2));
-		
-		this.limitesGolDireita = campo.getGolDireita().getLimites();
-		limitesGolDireita.setLocation(
-				(int) (getXBordaDireita()-limitesGolDireita.getWidth()),
-				(int) (getYMeio() - limitesGolEsquerda.getHeight()/2));
-		
-		Area campoJogavel = new Area(getLimitesDentroQuatroLinhas());
-		Area campoTotal = new Area(getLimites());
-		this.golEsquerda = new Area(campo.getGolEsquerda().getLimites());
-		this.golDireita = new Area(campo.getGolDireita().getLimites());
-		
-		campoJogavel.add(golEsquerda);
-		campoJogavel.add(golDireita);
-		campoTotal.subtract(campoJogavel);
-		this.campoNaoJogavel = campoTotal;
-		
+		iniciaLimitesGols();
+		iniciaCamposJogaveisOuNao();
+		iniciaLinhaDeFundo();
+	}
+
+	private void iniciaLinhaDeFundo() {
 		this.linhaDeFundo = new Area();
 		linhaDeFundo.add(new Area(
-				new Rectangle2D.Double(golEsquerda.getBounds2D().getX(), getYBordaCima(),
-				golEsquerda.getBounds2D().getWidth(), campoTotal.getBounds2D().getHeight())));
+				new Rectangle2D.Double(
+						getLimitesGolEsquerda().getX(),
+						getYBordaCima(),
+						getLimitesGolEsquerda().getWidth(),
+						getLimitesTotais().getHeight())));
+		
 		linhaDeFundo.add(new Area(
-				new Rectangle2D.Double(golDireita.getBounds2D().getX(), getYBordaCima(),
-				golDireita.getBounds2D().getWidth(), campoTotal.getBounds2D().getHeight())));
+				new Rectangle2D.Double(
+						getLimitesGolDireita().getX(),
+						getYBordaCima(),
+						getLimitesGolDireita().getWidth(),
+						getLimitesTotais().getBounds().getHeight())));
+	}
+
+	private void iniciaCamposJogaveisOuNao() {
+		Area campoJogavel = new Area(getLimitesDentroQuatroLinhas());
+		Area campoTotal = new Area(getLimitesTotais());
+		
+		campoJogavel.add(new Area(getLimitesGolDireita()));
+		campoJogavel.add(new Area(getLimitesGolEsquerda()));
+		
+		this.campoJogavel = campoJogavel;
+		campoTotal.subtract(campoJogavel);
+		this.campoNaoJogavel = campoTotal;
+	}
+
+	private void iniciaLimitesGols() {
+		setLimitesGolEsquerda(getCampo().getGolEsquerda().getLimites());
+		getLimitesGolEsquerda().setLocation(
+				getXBordaEsquerda()+1,
+				(int) (getYMeio() - getLimitesGolEsquerda().getHeight()/2));
+		
+		setLimitesGolDireita(getCampo().getGolDireita().getLimites());
+		getLimitesGolDireita().setLocation(
+				(int) (getLimitesDentroQuatroLinhas().getMaxX()),
+				(int) (getYMeio() - getLimitesGolEsquerda().getHeight()/2));
 	}
 	
-	public Double getLimitesDentroQuatroLinhas() {
-		return new Rectangle2D.Double(
-				getCampo().getGolEsquerda().getLimites().getMaxX(),
-				getYBordaCima()+5, 
-				(getCampo().getWidth()-(getCampo().getGolDireita().getLimites().getWidth()*2)),
-				getCampo().getHeight()-10);
+	public Rectangle getLimitesDentroQuatroLinhas() {
+		return new Rectangle(
+				(int)getCampo().getGolEsquerda().getLimites().getMaxX(),
+				(int)getYBordaCima()+10, 
+				(int)(getCampo().getWidth() - ((getLimitesGolDireita().getWidth()*2)))-2,
+				(int)getCampo().getHeight()-20);
 	}
 	
-	public Rectangle2D getLimites() {
-		return new Rectangle2D.Double(
+	public Rectangle getLimitesTotais() {
+		return new Rectangle(
 				getXBordaEsquerda(),
 				getYBordaCima(),
 				getCampo().getWidth(),
 				getCampo().getHeight());
 	}
 	
-	public int getYBordaBaixo() { return getCampo().getHeight()/2; }
+	public Rectangle getLimitesCampoEsquerda(){
+		return GeometriaUtil.getSubArea(getLimitesDentroQuatroLinhas(), 2, 1, 0, 0);	
+	}
+	
+	public Rectangle getLimitesCampoDireita(){
+		return GeometriaUtil.getSubArea(getLimitesDentroQuatroLinhas(), 2, 1, 1, 0);
+	}
+	
+	public int getYBordaBaixo() { return getCampo().getHeight(); }
 	public int getYBordaCima() { return -getCampo().getHeight()/2; }
 	public int getXBordaEsquerda() { return -getCampo().getWidth()/2; }
-	public int getXBordaDireita() {	return getCampo().getWidth()/2; }
+	public int getXBordaDireita() {	return getCampo().getWidth(); }
 
 	public int getXMeio() {	return 0; }
 	public int getYMeio() {	return 0; }
+
 	
 }

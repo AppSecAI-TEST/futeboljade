@@ -3,12 +3,15 @@ package grafico;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
+@Accessors(chain=true)
 public class Jogador extends ObjetoJogo {
 	
 	public static final Color COR_CASA = new Color(255, 51, 51);
@@ -16,6 +19,7 @@ public class Jogador extends ObjetoJogo {
 	public static final int TAMANHO_JOGADOR = 30;
 	
 	private Color color;
+	private Time time;
 	private String nome;
 	
 	public Jogador() {
@@ -30,8 +34,7 @@ public class Jogador extends ObjetoJogo {
 	}
 	
 	@Override
-	public void desenha() {
-		Graphics2D g2 = getCampo().g;
+	protected void desenha(Graphics2D g2) {
 		g2.setColor(getColor());
 		g2.fill(getBolaGrafica());
 	}

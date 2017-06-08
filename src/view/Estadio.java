@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowStateListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -37,6 +36,7 @@ public class Estadio extends JFrame {
 			public void windowOpened(WindowEvent e) {
 				super.windowOpened(e);
 				campo.start();
+				campo.addBola();
 			}
 		});
 	}
@@ -53,16 +53,26 @@ public class Estadio extends JFrame {
 				campo.moverBola();
 			}
 		});
-		JButton btnAddJogador = new JButton("ADD JOGADOR");
+		JButton btnAddJogador = new JButton("ADD JOGADOR CASA");
 		barraTestes.add(btnAddJogador);
 		btnAddJogador.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				grafico.Jogador jogador = new grafico.Jogador(System.currentTimeMillis()+"", Jogador.COR_VISITANTE);
-				jogador.setX((float) (Math.random()*campo.getWidth())-campo.getWidth()/2);
-				jogador.setY((float) (Math.random()*campo.getHeight())-campo.getHeight()/2);
-				campo.addJogador(jogador);
+				Jogador jogador = new Jogador();
+				jogador.setNome(System.currentTimeMillis()+"");
+				campo.addJogadorCasa(jogador);
+			}
+		});
+		JButton btnAddJogadorVisitante = new JButton("ADD JOGADOR VISITANTE");
+		barraTestes.add(btnAddJogadorVisitante);
+		btnAddJogadorVisitante.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Jogador jogador = new Jogador();
+				jogador.setNome(System.currentTimeMillis()+"");
+				campo.addJogadorVisitante(jogador);
 			}
 		});
 		
@@ -75,7 +85,7 @@ public class Estadio extends JFrame {
 				grafico.Jogador jogador = new grafico.Jogador("jogador", Jogador.COR_VISITANTE);
 				jogador.setX((float) (Math.random()*campo.getWidth())-campo.getWidth()/2);
 				jogador.setY((float) (Math.random()*campo.getHeight())-campo.getHeight()/2);
-				campo.addJogador(jogador);
+				campo.addJogadorCasa(jogador);
 				campo.jogadorSeguirBola("jogador");
 			}
 		});
@@ -89,6 +99,10 @@ public class Estadio extends JFrame {
 				setVisible(true);
 	         }}
 		);
+	}
+	
+	public static void main(String[] args) {
+		new Estadio().iniciar();
 	}
 
 }
