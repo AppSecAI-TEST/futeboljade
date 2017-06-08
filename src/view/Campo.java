@@ -149,9 +149,24 @@ public class Campo extends Canvas {
 		status = StatusJogo.GOOOL;
 	}
 
+	public void addJogador(String nome, String nomeTime) {
+		criaTimesSeNaoExistirem(nomeTime);
+		
+		Jogador jogador = new Jogador().setNome(nome);
+		if(nomeTime.equals(casa.getNome())){
+			addJogadorCasa(jogador);
+		}
+		if(nomeTime.equals(visitante.getNome())){
+			addJogadorVisitante(jogador);
+		}
+	}
+
+	private void criaTimesSeNaoExistirem(String nomeTime) {
+		if(casa == null) casa = new Time(nomeTime).setCor(COR_CASA); else 
+		if(visitante == null) visitante = new Time(nomeTime).setCor(COR_VISITANTE);
+	}
+
 	public void addJogadorCasa(Jogador jogador) {
-		if(casa == null)
-			casa = new Time(COR_CASA);
 		posicionador.posicionaJogadorCasa(jogador);
 		objetosJogo.put(jogador.getNome(), jogador);
 		jogador.setColor(casa.getCor());
@@ -160,9 +175,6 @@ public class Campo extends Canvas {
 	}
 	
 	public void addJogadorVisitante(Jogador jogador) {
-		if(visitante == null) {
-			visitante = new Time(COR_VISITANTE);
-		}
 		posicionador.posicionaJogadorVisitante(jogador);
 		objetosJogo.put(jogador.getNome(), jogador);
 		jogador.setColor(visitante.getCor());
@@ -187,15 +199,15 @@ public class Campo extends Canvas {
 				.getDirecaoPara(jogador.getX(), jogador.getY(), bola.getX(), bola.getY()));
 	}
 
+	public void jogadorColidiuComBola(Jogador jogador) {
+		listeners.forEach(listener->listener.jogadorColidiuComBola(jogador.getNome()));
+	}
+
 	public ObjetoJogo getBola() {
 		return objetosJogo.get("BOLA");
 	}
 
 	public void addListener(CampoGraficoListener listener){
 		this.listeners.add(listener);
-	}
-	
-	public void jogadorColidiuComBola(Jogador jogador) {
-		listeners.forEach(listener->listener.jogadorColidiuComBola(jogador.getNome()));
 	}
 }

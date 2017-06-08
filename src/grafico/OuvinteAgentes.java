@@ -18,7 +18,7 @@ public class OuvinteAgentes implements CampoAgentesListener {
 	@Override
 	public void jogadorAdicionado(jogo.Jogador jogador) {
 		jogador.getTime().getNome();
-		campo.addJogadorCasa(new Jogador());
+		campo.addJogador(jogador.getNome(), jogador.getTime().getNome());
 	}
 
 	@Override
