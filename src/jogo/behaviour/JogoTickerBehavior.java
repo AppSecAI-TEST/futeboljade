@@ -35,7 +35,7 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 
 	protected boolean jogadorPegouBola() {
 		if (message != null) {
-			return message.getContent().equals("peguei_bola");
+			System.out.println(getJogador().getO2AObject());
 		}
 		return false;
 	}
@@ -55,13 +55,13 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 				String timeJogador = getJogador().getTime().getNome();
 				boolean estaNoMesmoTime = parametroTime.equals(timeJogador);
 				// não é o próprio jogador e está no mesmo time
-				return !mensagemDesteJogador() && estaNoMesmoTime;
+				return !mensagemMesmoJogador() && estaNoMesmoTime;
 			}
 		}
 		return false;
 	}
 
-	protected boolean mensagemDesteJogador() {
+	protected boolean mensagemMesmoJogador() {
 		if (message != null) {
 			return getJogador().getLocalName().equals(message.getSender().getLocalName());
 		}

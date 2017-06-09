@@ -20,7 +20,7 @@ public class OuvinteAgentes implements CampoAgentesListener {
 		grafico.Jogador jogadorGrafico = new grafico.Jogador(nomeJogador, Color.RED);
 		jogadorGrafico.setX(0);
 		jogadorGrafico.setY(0);
-		campo.addJogadorCasa(new Jogador());
+		campo.addJogadorCasa(jogadorGrafico);
 	}
 
 	@Override

@@ -72,8 +72,8 @@ public class JogarBehaviour extends FSMBehaviour {
 		private ACLMessage mensagemPegueiBolaGalera() {
 			System.out.println("Pequei bola galera!!");
 			ACLMessage message = new ACLMessage(ACLMessage.PROPAGATE);
-			getJogador().getCampo().getJogadores().forEach(jogador -> {
-				message.addReceiver(new AID(jogador.getNome(), AID.ISLOCALNAME));
+			getJogador().getCampo().getJogadores().forEach(nomeJogador -> {
+				message.addReceiver(new AID(nomeJogador, AID.ISLOCALNAME));
 			});
 			message.addUserDefinedParameter("time", getJogador().getTime().getNome());
 			message.setContent("peguei_bola");

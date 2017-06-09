@@ -11,8 +11,11 @@ import lombok.SneakyThrows;
 
 public class AgenteComunicador extends Agent {
 
+	private static final int QUANTIDADE_MENSAGENS_FILA = 10;
+	
 	@Override
 	protected void setup() {
+		setEnabledO2ACommunication(true, QUANTIDADE_MENSAGENS_FILA);
 		addBehaviour(new TickerBehaviour(this, 100) {
 			@Override
 			protected void onTick() {
