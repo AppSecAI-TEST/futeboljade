@@ -64,9 +64,7 @@ public class Estadio extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Jogador jogador = new Jogador();
-				jogador.setNome(System.currentTimeMillis()+"");
-				campo.addJogadorCasa(jogador);
+				campo.addJogador(System.currentTimeMillis()+"", "CASA");
 			}
 		});
 		JButton btnAddJogadorVisitante = new JButton("ADD JOGADOR VISITANTE");
@@ -75,9 +73,7 @@ public class Estadio extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Jogador jogador = new Jogador();
-				jogador.setNome(System.currentTimeMillis()+"");
-				campo.addJogadorVisitante(jogador);
+				campo.addJogador(System.currentTimeMillis()+"", "VISITANTE");
 			}
 		});
 		
@@ -90,8 +86,8 @@ public class Estadio extends JFrame {
 				grafico.Jogador jogador = new grafico.Jogador("jogador", Jogador.COR_VISITANTE);
 				jogador.setX((float) (Math.random()*campo.getWidth())-campo.getWidth()/2);
 				jogador.setY((float) (Math.random()*campo.getHeight())-campo.getHeight()/2);
-				campo.addJogadorCasa(jogador);
-				campo.jogadorSeguirBola("jogador");
+				campo.addJogador("JOGADOR", "CASA");
+				campo.jogadorSeguirBola("JOGADOR");
 			}
 		});
 		

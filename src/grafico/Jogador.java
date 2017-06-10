@@ -47,7 +47,6 @@ public class Jogador extends ObjetoJogo {
 	}
 		
 	private void aoColidirComBola() {
-		setColor(Color.RED);
 		getCampo().jogadorColidiuComBola(this);
 	}
 

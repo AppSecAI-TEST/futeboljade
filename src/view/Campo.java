@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import grafico.Bola;
 import grafico.GeometriaUtil;
@@ -38,7 +39,7 @@ public class Campo extends Canvas {
 	private Map<String, ObjetoJogo> objetosJogo;
 	private Time casa, visitante;
 	
-	public static Graphics2D g;
+	public Graphics2D g;
 
 	private Gol golEsquerda;
 	private Gol golDireita;
@@ -51,7 +52,7 @@ public class Campo extends Canvas {
 	public Campo() {
 		infoAreasCampo = new InfoAreasCampo();
 		setBackground(COR_CAMPO);
-		objetosJogo = new HashMap<>();
+		objetosJogo = new ConcurrentHashMap<>();
 		
 		golEsquerda = new Gol();
 		golDireita = new Gol();
@@ -61,7 +62,6 @@ public class Campo extends Canvas {
 	}
 	
 	public void start(){		
-		System.out.println("start");
 		this.setIgnoreRepaint(true);
 		this.createBufferStrategy(2);
 		status = StatusJogo.JOGANDO;
@@ -95,11 +95,12 @@ public class Campo extends Canvas {
 		desenhaCampo(g2);
 		
 		Iterator<ObjetoJogo> objetos = objetosJogo.values().iterator();
-		while(objetos.hasNext()){
-			ObjetoJogo objeto = objetos.next();
-			objeto.atualiza();
+		synchronized (objetos) {
+			while(objetos.hasNext()){
+				ObjetoJogo objeto = objetos.next();
+				objeto.atualiza();
+			}
 		}
-		
 		g.dispose();
 		
 		BufferStrategy strategy = bufferStrategy;
@@ -147,39 +148,26 @@ public class Campo extends Canvas {
 		status = StatusJogo.GOOOL;
 	}
 
-	public synchronized void addJogador(String nome, String nomeTime) {
-		criaTimesSeNaoExistirem(nomeTime);
+	public void addJogador(String nome, String nomeTime) {
+		if(casa == null) 
+			casa = new Time(nomeTime).setCor(COR_CASA); 
+		else 
+		if(visitante == null) 
+			visitante = new Time(nomeTime).setCor(COR_VISITANTE);
 		
+		Time time = null;
 		Jogador jogador = new Jogador().setNome(nome);
+		jogador.setCampo(this);
+		objetosJogo.put(jogador.getNome(), jogador);
 		if(nomeTime.equals(casa.getNome())){
-			addJogadorCasa(jogador);
-		}else
-		if(nomeTime.equals(visitante.getNome())){
-			addJogadorVisitante(jogador);
+			posicionador.posicionaJogadorCasa(jogador);
+			time = casa;
+		}else{
+			posicionador.posicionaJogadorVisitante(jogador);
+			time = visitante;
 		}
-	}
-
-	private void criaTimesSeNaoExistirem(String nomeTime) {
-		if(casa == null) casa = new Time(nomeTime).setCor(COR_CASA); else 
-		if(visitante == null) visitante = new Time(nomeTime).setCor(COR_VISITANTE);
-	}
-
-	public void addJogadorCasa(Jogador jogador) {
-		posicionador.posicionaJogadorCasa(jogador);
-		objetosJogo.put(jogador.getNome(), jogador);
-		posicionador.posicionaJogadorCasa(jogador);
-		jogador.setColor(casa.getCor());
-		casa.addJogador(jogador);
-		jogador.setCampo(this);
-	}
-	
-	public void addJogadorVisitante(Jogador jogador) {
-		posicionador.posicionaJogadorVisitante(jogador);
-		objetosJogo.put(jogador.getNome(), jogador);
-		posicionador.posicionaJogadorVisitante(jogador);
-		jogador.setColor(visitante.getCor());
-		visitante.addJogador(jogador);
-		jogador.setCampo(this);
+		jogador.setColor(time.getCor());
+		time.addJogador(jogador);
 	}
 	
 	public void addBola() {

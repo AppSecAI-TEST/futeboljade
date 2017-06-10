@@ -18,7 +18,7 @@ import lombok.SneakyThrows;
 public class Campo {
 
 	private final AgentContainer mainContainer;
-	private Map<String,AgentController> jogadores;
+	private Map<String, AgentController> jogadores;
 	private Set<CampoAgentesListener> listeners;
 	@Getter
 	private boolean bolaEmJogo;
@@ -69,9 +69,10 @@ public class Campo {
 	@SneakyThrows
 	public void jogadorColidiuComBola(String nome) {
 		try{
-			jogadores.get(nome).putO2AObject("colidiu_com_bola", false);
+			AgentController agentController = jogadores.get(nome);
+			agentController.putO2AObject("colidiu_com_bola", false);
 		}catch (Exception e) {
-			System.out.println("cala a boca");
+			System.out.println("cala a boca: " + e.getMessage());
 		}
 	}
 
