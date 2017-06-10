@@ -38,7 +38,7 @@ public class Campo extends Canvas {
 	private Map<String, ObjetoJogo> objetosJogo;
 	private Time casa, visitante;
 	
-	public Graphics2D g;
+	public static Graphics2D g;
 
 	private Gol golEsquerda;
 	private Gol golDireita;
@@ -147,13 +147,13 @@ public class Campo extends Canvas {
 		status = StatusJogo.GOOOL;
 	}
 
-	public void addJogador(String nome, String nomeTime) {
+	public synchronized void addJogador(String nome, String nomeTime) {
 		criaTimesSeNaoExistirem(nomeTime);
 		
 		Jogador jogador = new Jogador().setNome(nome);
 		if(nomeTime.equals(casa.getNome())){
 			addJogadorCasa(jogador);
-		}
+		}else
 		if(nomeTime.equals(visitante.getNome())){
 			addJogadorVisitante(jogador);
 		}
@@ -193,10 +193,12 @@ public class Campo extends Canvas {
 	public void jogadorSeguirBola(String nome) {
 		ObjetoJogo jogador = objetosJogo.get(nome);
 		ObjetoJogo bola = getBola();
-		jogador.setVelocidade(3);
-		jogador.setAceleracao(1);
-		jogador.setDirecao(GeometriaUtil
-				.getDirecaoPara(jogador.getX(), jogador.getY(), bola.getX(), bola.getY()));
+		if(jogador != null){
+			jogador.setVelocidade(3);
+			jogador.setAceleracao(1);
+			jogador.setDirecao(GeometriaUtil
+					.getDirecaoPara(jogador.getX(), jogador.getY(), bola.getX(), bola.getY()));
+		}
 	}
 
 	public void jogadorColidiuComBola(Jogador jogador) {

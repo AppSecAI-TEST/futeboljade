@@ -7,7 +7,7 @@ public class CampoListenerAdapter implements CampoAgentesListener {
 	}
 
 	@Override
-	public void jogadorAdicionado(String nomeJogador) {
+	public void jogadorAdicionado(String nomeJogador, String time) {
 	}
 	
 	@Override

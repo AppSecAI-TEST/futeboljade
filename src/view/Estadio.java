@@ -15,11 +15,15 @@ import javax.swing.SwingUtilities;
 
 import grafico.Jogador;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class Estadio extends JFrame {
 	
 	private Campo campo;
+	
+	private Listener listener;
 	
 	public Estadio() {
 		Dimension tamanho = new Dimension(800,480);
@@ -37,6 +41,7 @@ public class Estadio extends JFrame {
 				super.windowOpened(e);
 				campo.start();
 				campo.addBola();
+				if(listener != null) listener.iniciou();
 			}
 		});
 	}
@@ -103,6 +108,10 @@ public class Estadio extends JFrame {
 	
 	public static void main(String[] args) {
 		new Estadio().iniciar();
+	}
+	
+	public interface Listener {
+		void iniciou();
 	}
 
 }
