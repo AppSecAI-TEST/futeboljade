@@ -11,24 +11,24 @@ public class JogarBehaviour extends FSMBehaviour {
 	private static final String COM_BOLA = "comBola";
 	private static final String TIME_COM_BOLA = "timeComBola";
 	private static final String SEM_BOLA = "semBola";
-	private static final int COLEGA_PEGOU_BOLA = 0;
-	private static final int PEGOU_BOLA_DO_ADVERSARIO = 1;
-	private static final int RECEBEU_PASSE = 2;
-	private static final int PASSOU_BOLA = 3;
-	private static final int PERDEU_BOLA = 4;
-	public static final int BOLA_EM_JOGO = 5;
+	private static final int COLEGA_PEGOU_BOLA = 1;
+	private static final int PEGOU_BOLA = 2;
+	private static final int RECEBEU_PASSE = 3;
+	private static final int PASSOU_BOLA = 4;
+	private static final int PERDEU_BOLA = 5;
+	public static final int BOLA_EM_JOGO = 6;
 	private static final int TEMPO_ACAO = 1000;
 
 	public JogarBehaviour(Agent agent) {
 		super(agent);
 		registerFirstState(new EsperandoState(agent, TEMPO_ACAO), ESPERANDO);
-		registerLastState(new SemBolaState(agent, TEMPO_ACAO), SEM_BOLA);
+		registerState(new SemBolaState(agent, TEMPO_ACAO), SEM_BOLA);
 		registerState(new TimeComBolaState(agent, TEMPO_ACAO), TIME_COM_BOLA);
 		registerState(new ComBolaState(), COM_BOLA);
 
 		registerTransition(ESPERANDO, SEM_BOLA, BOLA_EM_JOGO);
 		registerTransition(SEM_BOLA, TIME_COM_BOLA, COLEGA_PEGOU_BOLA);
-		registerTransition(SEM_BOLA, COM_BOLA, PEGOU_BOLA_DO_ADVERSARIO);
+		registerTransition(SEM_BOLA, COM_BOLA, PEGOU_BOLA);
 		registerTransition(COM_BOLA, SEM_BOLA, PERDEU_BOLA);
 		registerTransition(COM_BOLA, TIME_COM_BOLA, PASSOU_BOLA);
 		registerTransition(TIME_COM_BOLA, COM_BOLA, RECEBEU_PASSE);
@@ -46,7 +46,7 @@ public class JogarBehaviour extends FSMBehaviour {
 			@Override
 			public void pegouBola() {
 				getJogador().send(mensagemPegueiBolaGalera());
-				finalizaCom(PEGOU_BOLA_DO_ADVERSARIO);
+				finalizaCom(PEGOU_BOLA);
 			}
 		}
 

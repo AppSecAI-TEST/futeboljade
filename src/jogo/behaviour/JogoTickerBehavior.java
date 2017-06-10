@@ -7,6 +7,7 @@ import jogo.Jogador;
 
 abstract class JogoTickerBehavior extends TickerBehaviour {
 	protected ACLMessage message;
+	protected String mensagemVindaDaInterface = "";
 
 	public JogoTickerBehavior(Agent a, long period) {
 		super(a, period);
@@ -22,6 +23,8 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 	@Override
 	protected void onTick() {
 		message = myAgent.receive();
+		mensagemVindaDaInterface = (String) myAgent.getO2AObject();
+		System.out.println(mensagemVindaDaInterface);
 	}
 
 	@Override
@@ -35,15 +38,16 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 
 	protected boolean jogadorPegouBola() {
 		if (message != null) {
-			System.out.println(getJogador().getO2AObject());
+			"peguei_bola".equals(message);
 		}
 		return false;
 	}
 
 	protected boolean colidiuComBola() {
-		if (message != null) {
-			// o comunicador me diz que colidi
-			return message.getContent().equals("voce_colidiu_com_a_bola");
+		if (mensagemVindaDaInterface != null) {
+			boolean colidiu = "colidiu_com_bola".equals(mensagemVindaDaInterface);
+			mensagemVindaDaInterface = null;
+			return colidiu;
 		}
 		return false;
 	}

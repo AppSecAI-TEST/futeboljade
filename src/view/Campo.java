@@ -60,14 +60,13 @@ public class Campo extends Canvas {
 		listeners = new HashSet<>();
 	}
 	
-	public void start(){
-		
+	public void start(){		
+		System.out.println("start");
 		this.setIgnoreRepaint(true);
 		this.createBufferStrategy(2);
 		status = StatusJogo.JOGANDO;
 		infoAreasCampo.inicializa(this);
 		posicionador = new PosicionadorJogador(this);
-		
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -151,8 +150,8 @@ public class Campo extends Canvas {
 	public void addJogadorCasa(Jogador jogador) {
 		if(casa == null)
 			casa = new Time(COR_CASA);
-		posicionador.posicionaJogadorCasa(jogador);
 		objetosJogo.put(jogador.getNome(), jogador);
+		posicionador.posicionaJogadorCasa(jogador);
 		jogador.setColor(casa.getCor());
 		casa.addJogador(jogador);
 		jogador.setCampo(this);
@@ -162,8 +161,8 @@ public class Campo extends Canvas {
 		if(visitante == null) {
 			visitante = new Time(COR_VISITANTE);
 		}
-		posicionador.posicionaJogadorVisitante(jogador);
 		objetosJogo.put(jogador.getNome(), jogador);
+		posicionador.posicionaJogadorVisitante(jogador);
 		jogador.setColor(visitante.getCor());
 		visitante.addJogador(jogador);
 		jogador.setCampo(this);
