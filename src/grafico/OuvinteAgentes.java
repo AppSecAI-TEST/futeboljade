@@ -1,24 +1,21 @@
 package grafico;
 
-import java.awt.Color;
-
 import jogo.CampoAgentesListener;
 import lombok.AllArgsConstructor;
-import view.Campo;
 
 @AllArgsConstructor
 public class OuvinteAgentes implements CampoAgentesListener {
 
-	private Campo campo;
+	private view.Campo campo;
 
 	@Override
 	public void jogadorIndoNaDirecaoDaBolaBemLoko(jogo.Jogador jogador) {
+		campo.jogadorSeguirBola(jogador.getNome());
 	}
 
 	@Override
-	public void jogadorAdicionado(jogo.Jogador jogador) {
-		jogador.getTime().getNome();
-		campo.addJogador(jogador.getNome(), jogador.getTime().getNome());
+	public void jogadorAdicionado(String nomeJogador) {
+		campo.addJogador(nomeJogador, "a");
 	}
 
 	@Override

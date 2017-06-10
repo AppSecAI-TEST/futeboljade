@@ -7,6 +7,7 @@ import jogo.Jogador;
 
 abstract class JogoTickerBehavior extends TickerBehaviour {
 	protected ACLMessage message;
+	protected String mensagemVindaDaInterface = "";
 
 	public JogoTickerBehavior(Agent a, long period) {
 		super(a, period);
@@ -22,6 +23,8 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 	@Override
 	protected void onTick() {
 		message = myAgent.receive();
+		mensagemVindaDaInterface = (String) myAgent.getO2AObject();
+		System.out.println(mensagemVindaDaInterface);
 	}
 
 	@Override
@@ -33,23 +36,38 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 		return ((Jogador) getAgent());
 	}
 
-	public Jogador getJogador(String localName) {
-		return getJogador().getCampo().getJogador(localName);
-	}
-
 	protected boolean jogadorPegouBola() {
 		if (message != null) {
-			return message.getContent().equals("peguei_bola");
+			"peguei_bola".equals(message);
+		}
+		return false;
+	}
+
+	protected boolean colidiuComBola() {
+		if (mensagemVindaDaInterface != null) {
+			boolean colidiu = "colidiu_com_bola".equals(mensagemVindaDaInterface);
+			mensagemVindaDaInterface = null;
+			return colidiu;
 		}
 		return false;
 	}
 
 	protected boolean mesmoTime() {
 		if (message != null) {
-			Jogador jogadorMensagem = getJogador(message.getSender().getLocalName());
-			boolean naoEhOMesmo = !getJogador().equals(jogadorMensagem);
-			boolean estaNoMesmoTime = getJogador().getTime().equals(jogadorMensagem.getTime());
-			return naoEhOMesmo && estaNoMesmoTime;
+			String parametroTime = message.getUserDefinedParameter("time");
+			if (parametroTime != null) {
+				String timeJogador = getJogador().getTime().getNome();
+				boolean estaNoMesmoTime = parametroTime.equals(timeJogador);
+				// não é o próprio jogador e está no mesmo time
+				return !mensagemMesmoJogador() && estaNoMesmoTime;
+			}
+		}
+		return false;
+	}
+
+	protected boolean mensagemMesmoJogador() {
+		if (message != null) {
+			return getJogador().getLocalName().equals(message.getSender().getLocalName());
 		}
 		return false;
 	}

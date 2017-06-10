@@ -2,12 +2,15 @@ package jogo;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import jade.core.Agent;
 import jogo.behaviour.JogarBehaviour;
 import lombok.Getter;
 import lombok.Setter;
 
 public class Jogador extends Agent {
+	private static final short COLISOES_ATE_PEGAR_BOLA = 3;
+	private static final int QUANTIDADE_MENSAGENS_FILA = 10;
 	@Getter
 	@Setter
 	private String nome;
@@ -19,6 +22,7 @@ public class Jogador extends Agent {
 	private Campo campo;
 
 	private Set<JogadorListener> listeners;
+	private int colisoesAtePegarBola = COLISOES_ATE_PEGAR_BOLA;
 
 	@Override
 	protected void setup() {
@@ -27,6 +31,7 @@ public class Jogador extends Agent {
 		setTime(new Time((String) arguments[1]));
 		setCampo((Campo) arguments[2]);
 		addBehaviour(new JogarBehaviour(this));
+		setEnabledO2ACommunication(true, QUANTIDADE_MENSAGENS_FILA);
 	}
 
 	public Jogador() {
@@ -48,7 +53,11 @@ public class Jogador extends Agent {
 	}
 
 	public void setColidiuComBola() {
-		listeners.forEach(listener -> listener.colidiuComBola());
+		colisoesAtePegarBola--;
+		if (colisoesAtePegarBola == 0) {
+			colisoesAtePegarBola = COLISOES_ATE_PEGAR_BOLA;
+			listeners.forEach(listener -> listener.pegouBola());
+		}
 	}
 
 	public void addListener(JogadorListener jogadorListener) {

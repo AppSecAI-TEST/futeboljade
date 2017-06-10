@@ -3,7 +3,6 @@ package view;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
@@ -11,7 +10,6 @@ import java.awt.image.BufferStrategy;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -57,18 +55,18 @@ public class Campo extends Canvas {
 		
 		golEsquerda = new Gol();
 		golDireita = new Gol();
+		objetosJogo.put("BOLA", new Bola());
 		ouvinteAgentes = new OuvinteAgentes(this);
 		listeners = new HashSet<>();
 	}
 	
-	public void start(){
-		
+	public void start(){		
+		System.out.println("start");
 		this.setIgnoreRepaint(true);
 		this.createBufferStrategy(2);
 		status = StatusJogo.JOGANDO;
 		infoAreasCampo.inicializa(this);
 		posicionador = new PosicionadorJogador(this);
-		
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -169,6 +167,7 @@ public class Campo extends Canvas {
 	public void addJogadorCasa(Jogador jogador) {
 		posicionador.posicionaJogadorCasa(jogador);
 		objetosJogo.put(jogador.getNome(), jogador);
+		posicionador.posicionaJogadorCasa(jogador);
 		jogador.setColor(casa.getCor());
 		casa.addJogador(jogador);
 		jogador.setCampo(this);
@@ -177,6 +176,7 @@ public class Campo extends Canvas {
 	public void addJogadorVisitante(Jogador jogador) {
 		posicionador.posicionaJogadorVisitante(jogador);
 		objetosJogo.put(jogador.getNome(), jogador);
+		posicionador.posicionaJogadorVisitante(jogador);
 		jogador.setColor(visitante.getCor());
 		visitante.addJogador(jogador);
 		jogador.setCampo(this);

@@ -11,24 +11,24 @@ public class JogarBehaviour extends FSMBehaviour {
 	private static final String COM_BOLA = "comBola";
 	private static final String TIME_COM_BOLA = "timeComBola";
 	private static final String SEM_BOLA = "semBola";
-	private static final int COLEGA_PEGOU_BOLA = 0;
-	private static final int PEGOU_BOLA_DO_ADVERSARIO = 1;
-	private static final int RECEBEU_PASSE = 2;
-	private static final int PASSOU_BOLA = 3;
-	private static final int PERDEU_BOLA = 4;
-	public static final int BOLA_EM_JOGO = 5;
+	private static final int COLEGA_PEGOU_BOLA = 1;
+	private static final int PEGOU_BOLA = 2;
+	private static final int RECEBEU_PASSE = 3;
+	private static final int PASSOU_BOLA = 4;
+	private static final int PERDEU_BOLA = 5;
+	public static final int BOLA_EM_JOGO = 6;
 	private static final int TEMPO_ACAO = 1000;
 
 	public JogarBehaviour(Agent agent) {
 		super(agent);
-		registerFirstState(new EsperandoState(myAgent, TEMPO_ACAO), ESPERANDO);
-		registerLastState(new SemBolaState(myAgent, TEMPO_ACAO), SEM_BOLA);
-		registerState(new TimeComBolaState(myAgent, TEMPO_ACAO), TIME_COM_BOLA);
+		registerFirstState(new EsperandoState(agent, TEMPO_ACAO), ESPERANDO);
+		registerState(new SemBolaState(agent, TEMPO_ACAO), SEM_BOLA);
+		registerState(new TimeComBolaState(agent, TEMPO_ACAO), TIME_COM_BOLA);
 		registerState(new ComBolaState(), COM_BOLA);
 
 		registerTransition(ESPERANDO, SEM_BOLA, BOLA_EM_JOGO);
 		registerTransition(SEM_BOLA, TIME_COM_BOLA, COLEGA_PEGOU_BOLA);
-		registerTransition(SEM_BOLA, COM_BOLA, PEGOU_BOLA_DO_ADVERSARIO);
+		registerTransition(SEM_BOLA, COM_BOLA, PEGOU_BOLA);
 		registerTransition(COM_BOLA, SEM_BOLA, PERDEU_BOLA);
 		registerTransition(COM_BOLA, TIME_COM_BOLA, PASSOU_BOLA);
 		registerTransition(TIME_COM_BOLA, COM_BOLA, RECEBEU_PASSE);
@@ -44,9 +44,9 @@ public class JogarBehaviour extends FSMBehaviour {
 
 		private final class FinalizadorAoPegarBola extends JogadorListenerAdapter {
 			@Override
-			public void colidiuComBola() {
+			public void pegouBola() {
 				getJogador().send(mensagemPegueiBolaGalera());
-				finalizaCom(PEGOU_BOLA_DO_ADVERSARIO);
+				finalizaCom(PEGOU_BOLA);
 			}
 		}
 
@@ -58,10 +58,26 @@ public class JogarBehaviour extends FSMBehaviour {
 		@Override
 		protected void onTick() {
 			super.onTick();
-			System.out.println("Sem bola state");
 			correAtrasDaBola();
-			if (jogadorPegouBola() && mesmoTime())
+			if (jogadorPegouBola() && mesmoTime()) {
+				System.out.println("Colega pegou bola!!");
+				System.out.println("Vamos para o ataque!!");
 				finalizaCom(COLEGA_PEGOU_BOLA);
+			}
+			if(colidiuComBola()){
+				getJogador().setColidiuComBola();
+			}
+		}
+
+		private ACLMessage mensagemPegueiBolaGalera() {
+			System.out.println("Pequei bola galera!!");
+			ACLMessage message = new ACLMessage(ACLMessage.PROPAGATE);
+			getJogador().getCampo().getJogadores().forEach(nomeJogador -> {
+				message.addReceiver(new AID(nomeJogador, AID.ISLOCALNAME));
+			});
+			message.addUserDefinedParameter("time", getJogador().getTime().getNome());
+			message.setContent("peguei_bola");
+			return message;
 		}
 
 		private void correAtrasDaBola() {
@@ -78,15 +94,6 @@ public class JogarBehaviour extends FSMBehaviour {
 			return message;
 		}
 
-		private ACLMessage mensagemPegueiBolaGalera() {
-			ACLMessage message = new ACLMessage(ACLMessage.PROPAGATE);
-			getJogador().getCampo().getJogadores().forEach(jogador -> {
-				message.addReceiver(new AID(jogador.getNome(), AID.ISLOCALNAME));
-			});
-			message.addUserDefinedParameter("time", getJogador().getTime().getNome());
-			message.setContent("peguei_bola");
-			return message;
-		}
 	}
 
 	class TimeComBolaState extends JogoTickerBehavior {
