@@ -49,7 +49,7 @@ public abstract class ObjetoJogo {
 	protected void detectaColisao() {
 		if (colidiuComLaterais() && getFolgaTesteColisao() == 0) {
 			aoColidirComLaterais();
-			int tamanhoObjeto = (int) getW();
+			int tamanhoObjeto = (int) 3;
 			setFolgaTesteColisao(tamanhoObjeto);
 		}
 		if (getFolgaTesteColisao() > 0)

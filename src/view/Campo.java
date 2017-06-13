@@ -128,7 +128,10 @@ public class Campo extends Canvas {
 				
 		g2.draw(infoAreasCampo.getLimitesGolEsquerda());		
 		g2.draw(infoAreasCampo.getLimitesGolDireita());		
-		g2.draw(infoAreasCampo.getLimitesDentroQuatroLinhas());		
+		g2.draw(infoAreasCampo.getLimitesDentroQuatroLinhas());
+		
+		g2.setColor(Color.GREEN);
+		g2.draw(infoAreasCampo.getCampoNaoJogavel());
 	}
 
 	public void moverBola() {
