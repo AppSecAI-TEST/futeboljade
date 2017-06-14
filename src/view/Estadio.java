@@ -26,7 +26,7 @@ public class Estadio extends JFrame {
 	private Listener listener;
 	
 	public Estadio() {
-		Dimension tamanho = new Dimension(800,480);
+		Dimension tamanho = new Dimension(1000,600);
 		setSize(tamanho);
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -77,6 +77,21 @@ public class Estadio extends JFrame {
 			}
 		});
 		
+		JButton btnAddJogadorComBola = new JButton("ADD JOGADOR COM BOLA");
+		barraTestes.add(btnAddJogadorComBola);
+		btnAddJogadorComBola.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				campo.addJogador("jogadorComBola", "VISITANTE");
+				Jogador jogador = campo.getJogador("jogadorComBola");
+				campo.setJogadorComBola(jogador);
+				jogador.setVelocidade(3);
+				jogador.setAceleracao(1);
+				jogador.setDirecao(45);
+			}
+		});
+		
 		JButton btnSeguirBola = new JButton("SEGUIR BOLA");
 		barraTestes.add(btnSeguirBola);
 		btnSeguirBola.addActionListener(new ActionListener() {
@@ -88,6 +103,16 @@ public class Estadio extends JFrame {
 				jogador.setY((float) (Math.random()*campo.getHeight())-campo.getHeight()/2);
 				campo.addJogador("JOGADOR", "CASA");
 				campo.jogadorSeguirBola("JOGADOR");
+			}
+		});
+		
+		JButton btnChutar = new JButton("CHUTAR");
+		barraTestes.add(btnChutar);
+		btnChutar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				campo.jogadorComBolaChutarGol();
 			}
 		});
 		

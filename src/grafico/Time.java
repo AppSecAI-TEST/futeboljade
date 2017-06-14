@@ -16,6 +16,7 @@ public class Time {
 	private String nome;
 	private Set<Jogador> jogadores = new HashSet<>();
 	private Color cor;
+	private Gol golAlvo;
 	public Time(Color cor) {
 		this.cor = cor;
 	}

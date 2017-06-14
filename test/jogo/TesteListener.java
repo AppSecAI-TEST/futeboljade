@@ -7,4 +7,8 @@ public class TesteListener extends CampoListenerAdapter {
 		System.out.printf("Jogador indo %s na diração da bola\n", jogador.getNome());
 	}
 
+	@Override
+	public void jogadorAdicionado(String nomeJogador, String time) {
+		System.out.printf("Jogador %s adicionado\n");
+	}
 }

@@ -1,6 +1,7 @@
 package grafico;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.math.BigDecimal;
@@ -29,12 +30,14 @@ public abstract class ObjetoJogo {
 	}
 
 	public void reposiciona() {
-		BigDecimal x = new BigDecimal(
-				getX() + Math.cos(Math.toRadians(getDirecao())) * getVelocidade() * getAceleracao());
-		BigDecimal y = new BigDecimal(
-				getY() + Math.sin(Math.toRadians(getDirecao())) * getVelocidade() * getAceleracao());
-		setX(x.floatValue());
-		setY(y.floatValue());
+		setX(getX() + Math.cos(Math.toRadians(getDirecao())) * getVelocidade() * getAceleracao());
+		setY(getY() + Math.sin(Math.toRadians(getDirecao())) * getVelocidade() * getAceleracao());
+	}
+	
+	public Point getProximaPosicao(int distancia) {
+		int x = (int) (getX() + Math.cos(Math.toRadians(getDirecao())) * distancia);
+		int y = (int) (getY() + Math.sin(Math.toRadians(getDirecao())) * distancia);
+		return new Point(x, y);
 	}
 
 	public void desenha() {
@@ -49,7 +52,7 @@ public abstract class ObjetoJogo {
 	protected void detectaColisao() {
 		if (colidiuComLaterais() && getFolgaTesteColisao() == 0) {
 			aoColidirComLaterais();
-			int tamanhoObjeto = (int) getW();
+			int tamanhoObjeto = (int) 3;
 			setFolgaTesteColisao(tamanhoObjeto);
 		}
 		if (getFolgaTesteColisao() > 0)
