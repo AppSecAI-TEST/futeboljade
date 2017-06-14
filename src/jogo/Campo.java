@@ -2,7 +2,6 @@ package jogo;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -50,10 +49,7 @@ public class Campo {
 		} catch (StaleProxyException e) {
 			throw new RuntimeException(e);
 		}
-		Iterator<CampoAgentesListener> listenersIterator = listeners.iterator();
-		while(listenersIterator.hasNext()){
-			listenersIterator.next().jogadorAdicionado(nome, time);
-		}
+		listeners.forEach(listener->listener.jogadorAdicionado(nome, time));
 	}
 
 	public void addListener(CampoAgentesListener jogoListener) {

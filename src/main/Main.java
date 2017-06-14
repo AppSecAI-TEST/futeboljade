@@ -19,7 +19,7 @@ public class Main {
 				campo.setBolaEmJogo(true);
 				
 				campo.adicionaJogador("1", "CASA");
-				campo.adicionaJogador("2", "VISITANTE");
+				campo.adicionaJogador("2", "CASA");
 			}
 		});
 		

@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class Jogador extends Agent {
-	private static final short COLISOES_ATE_PEGAR_BOLA = 3;
+	private static final short COLISOES_ATE_PEGAR_BOLA = 1;
 	private static final int QUANTIDADE_MENSAGENS_FILA = 10;
 	@Getter
 	@Setter
@@ -62,6 +62,14 @@ public class Jogador extends Agent {
 
 	public void addListener(JogadorListener jogadorListener) {
 		this.listeners.add(jogadorListener);
+	}
+
+	public void reiniciaContagemColisoesAtePegarBola() {
+		colisoesAtePegarBola = COLISOES_ATE_PEGAR_BOLA;
+	}
+
+	public void fala(String mensagem) {
+		System.out.println(getNome() + ": " + mensagem);
 	}
 
 }

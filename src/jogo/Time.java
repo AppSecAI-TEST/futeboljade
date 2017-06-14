@@ -11,7 +11,6 @@ public class Time {
 	@Getter
 	private final String nome;
 
-	@Getter
 	private final Collection<jogo.Jogador> jogadores = new HashSet<>();
 
 	public void addJogador(jogo.Jogador jogador) {

@@ -1,5 +1,6 @@
 package jogo.behaviour;
 
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -23,9 +24,13 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 	@Override
 	protected void onTick() {
 		message = myAgent.receive();
+		if (message != null)
+			getJogador().fala("eu ouvi " + message.getContent() + " vinda de " + message.getSender().getLocalName());
 		mensagemVindaDaInterface = (String) myAgent.getO2AObject();
-		System.out.println(mensagemVindaDaInterface);
+		executaPassoJogo();
 	}
+	
+	abstract void executaPassoJogo();
 
 	@Override
 	public int onEnd() {
@@ -38,7 +43,7 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 
 	protected boolean jogadorPegouBola() {
 		if (message != null) {
-			"peguei_bola".equals(message);
+			return Mensagens.PEGUEI_BOLA.equals(message.getContent());
 		}
 		return false;
 	}
@@ -70,5 +75,17 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 			return getJogador().getLocalName().equals(message.getSender().getLocalName());
 		}
 		return false;
+	}
+	
+	protected ACLMessage mensagemPropagacao(String conteudo) {
+		ACLMessage message = new ACLMessage(ACLMessage.PROPAGATE);
+		getJogador().getCampo().getJogadores().forEach(nomeJogador -> {
+			if(!nomeJogador.equals(getJogador().getNome())){					
+				getJogador().fala("Vou dizer para " + nomeJogador + " que " + conteudo);
+				message.addReceiver(new AID(nomeJogador, AID.ISLOCALNAME));
+			}
+		});
+		message.setContent(conteudo);
+		return message;
 	}
 }

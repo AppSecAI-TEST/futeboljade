@@ -1,9 +1,7 @@
 package jogo.behaviour;
 
-import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.FSMBehaviour;
-import jade.lang.acl.ACLMessage;
 import jogo.JogadorListenerAdapter;;
 
 public class JogarBehaviour extends FSMBehaviour {
@@ -17,14 +15,14 @@ public class JogarBehaviour extends FSMBehaviour {
 	private static final int PASSOU_BOLA = 4;
 	private static final int PERDEU_BOLA = 5;
 	public static final int BOLA_EM_JOGO = 6;
-	private static final int TEMPO_ACAO = 1000;
+	private static final int TEMPO_ACAO = 5000;
 
 	public JogarBehaviour(Agent agent) {
 		super(agent);
 		registerFirstState(new EsperandoState(agent, TEMPO_ACAO), ESPERANDO);
 		registerState(new SemBolaState(agent, TEMPO_ACAO), SEM_BOLA);
 		registerState(new TimeComBolaState(agent, TEMPO_ACAO), TIME_COM_BOLA);
-		registerState(new ComBolaState(), COM_BOLA);
+		registerState(new ComBolaState(agent, TEMPO_ACAO), COM_BOLA);
 
 		registerTransition(ESPERANDO, SEM_BOLA, BOLA_EM_JOGO);
 		registerTransition(SEM_BOLA, TIME_COM_BOLA, COLEGA_PEGOU_BOLA);
@@ -45,7 +43,7 @@ public class JogarBehaviour extends FSMBehaviour {
 		private final class FinalizadorAoPegarBola extends JogadorListenerAdapter {
 			@Override
 			public void pegouBola() {
-				getJogador().send(mensagemPegueiBolaGalera());
+				getJogador().send(mensagemPropagacao(Mensagens.PEGUEI_BOLA));
 				finalizaCom(PEGOU_BOLA);
 			}
 		}
@@ -56,42 +54,26 @@ public class JogarBehaviour extends FSMBehaviour {
 		}
 
 		@Override
-		protected void onTick() {
-			super.onTick();
+		protected void executaPassoJogo() {
 			correAtrasDaBola();
+			if (jogadorPegouBola()) {
+				getJogador().fala("Alguém pegou a bola");
+			}
+			if (jogadorPegouBola() && !mensagemMesmoJogador()) {
+				getJogador().reiniciaContagemColisoesAtePegarBola();
+			}
 			if (jogadorPegouBola() && mesmoTime()) {
-				System.out.println("Colega pegou bola!!");
-				System.out.println("Vamos para o ataque!!");
+				getJogador().fala("Meu colega pegou a bola");
 				finalizaCom(COLEGA_PEGOU_BOLA);
 			}
-			if(colidiuComBola()){
+			if (colidiuComBola()) {
 				getJogador().setColidiuComBola();
 			}
 		}
 
-		private ACLMessage mensagemPegueiBolaGalera() {
-			System.out.println("Pequei bola galera!!");
-			ACLMessage message = new ACLMessage(ACLMessage.PROPAGATE);
-			getJogador().getCampo().getJogadores().forEach(nomeJogador -> {
-				message.addReceiver(new AID(nomeJogador, AID.ISLOCALNAME));
-			});
-			message.addUserDefinedParameter("time", getJogador().getTime().getNome());
-			message.setContent("peguei_bola");
-			return message;
-		}
-
 		private void correAtrasDaBola() {
-			getAgent().send(mensagemVouCorrerAtrasDaBolaIgualUmRetardado());
+			getAgent().send(mensagemPropagacao(Mensagens.CORRENDO_ATRAS_DA_BOLA));
 			getJogador().correAtrasDaBola();
-		}
-
-		private ACLMessage mensagemVouCorrerAtrasDaBolaIgualUmRetardado() {
-			ACLMessage message = new ACLMessage(ACLMessage.PROPAGATE);
-			getJogador().getTime().getJogadores().forEach(jogadorColega -> {
-				message.addReceiver(new AID(jogadorColega.getNome(), AID.ISLOCALNAME));
-			});
-			message.setContent("correndo_atras_da_bola");
-			return message;
 		}
 
 	}
@@ -103,11 +85,19 @@ public class JogarBehaviour extends FSMBehaviour {
 		}
 
 		@Override
-		protected void onTick() {
-			System.out.println("Time com bola galera!");
+		protected void executaPassoJogo() {
+			getJogador().fala("Time com bola galera!");
 		}
 	}
 
-	class ComBolaState extends FSMBehaviour {
+	class ComBolaState extends JogoTickerBehavior {
+		public ComBolaState(Agent a, long period) {
+			super(a, period);
+		}
+
+		@Override
+		protected void executaPassoJogo() {
+			getJogador().fala("Tenho a bola");
+		}
 	}
 }
