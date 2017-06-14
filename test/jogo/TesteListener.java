@@ -8,7 +8,7 @@ public class TesteListener extends CampoListenerAdapter {
 	}
 
 	@Override
-	public void jogadorAdicionado(String nomeJogador) {
+	public void jogadorAdicionado(String nomeJogador, String time) {
 		System.out.printf("Jogador %s adicionado\n");
 	}
 }
