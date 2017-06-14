@@ -33,6 +33,7 @@ import lombok.Setter;
 public class Campo extends Canvas {
 	
 	private static final Color COR_CAMPO = new Color(86, 188, 96);
+	private static final Color COR_LATERAIS = new Color(56, 158, 66);
 	private static final Color COR_CASA = new Color(255, 69, 28);
 	private static final Color COR_VISITANTE = new Color(28, 205, 255);
 	
@@ -48,6 +49,7 @@ public class Campo extends Canvas {
 	private PosicionadorJogador posicionador;
 	private CampoAgentesListener ouvinteAgentes;
 	private Set<CampoGraficoListener> listeners;
+	private Jogador jogadorComBola;
 	
 	public Campo() {
 		infoAreasCampo = new InfoAreasCampo();
@@ -61,9 +63,9 @@ public class Campo extends Canvas {
 		listeners = new HashSet<>();
 	}
 	
-	public void start(){		
-		this.setIgnoreRepaint(true);
-		this.createBufferStrategy(2);
+	public void start(){
+		setIgnoreRepaint(true);
+		createBufferStrategy(2);
 		status = StatusJogo.JOGANDO;
 		infoAreasCampo.inicializa(this);
 		posicionador = new PosicionadorJogador(this);
@@ -73,7 +75,7 @@ public class Campo extends Canvas {
 				while(true){
 					gameLoop();
 					try {
-						Thread.sleep(30);
+						Thread.sleep(10);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -86,11 +88,6 @@ public class Campo extends Canvas {
 		BufferStrategy bufferStrategy = this.getBufferStrategy();
 		Graphics2D g2 = (Graphics2D) bufferStrategy.getDrawGraphics();
 		this.g = g2;
-				
-		AffineTransform yFlip = AffineTransform.getScaleInstance(1, -1);
-		AffineTransform move = AffineTransform.getTranslateInstance(getWidth()/2, -getHeight()/2);
-		g.transform(yFlip);
-		g.transform(move);
 		
 		desenhaCampo(g2);
 		
@@ -130,7 +127,9 @@ public class Campo extends Canvas {
 		g2.draw(infoAreasCampo.getLimitesGolDireita());		
 		g2.draw(infoAreasCampo.getLimitesDentroQuatroLinhas());
 		
-		g2.setColor(Color.GREEN);
+		g2.setColor(COR_LATERAIS);
+		g2.fill(infoAreasCampo.getCampoNaoJogavel());
+		g2.setColor(Color.white);
 		g2.draw(infoAreasCampo.getCampoNaoJogavel());
 	}
 
@@ -153,10 +152,10 @@ public class Campo extends Canvas {
 
 	public void addJogador(String nome, String nomeTime) {
 		if(casa == null) 
-			casa = new Time(nomeTime).setCor(COR_CASA); 
+			casa = new Time(nomeTime).setCor(COR_CASA).setGolAlvo(golDireita); 
 		else 
 		if(visitante == null) 
-			visitante = new Time(nomeTime).setCor(COR_VISITANTE);
+			visitante = new Time(nomeTime).setCor(COR_VISITANTE).setGolAlvo(golEsquerda);
 		
 		Time time = null;
 		Jogador jogador = new Jogador().setNome(nome);
@@ -202,5 +201,25 @@ public class Campo extends Canvas {
 
 	public void addListener(CampoGraficoListener listener){
 		this.listeners.add(listener);
+	}
+
+	public Jogador getJogadorComBola() {
+		return jogadorComBola;
+	}
+
+	public Jogador getJogador(String nomeJogador) {
+		return (Jogador) objetosJogo.get(nomeJogador);
+	}
+
+	public void jogadorComBolaChutarGol() {
+		if(jogadorComBola != null){
+			Gol golAlvo = jogadorComBola.getTime().getGolAlvo();
+			ObjetoJogo bola = getBola();
+			bola.apontarPara(golAlvo.getLimites().getX(), golAlvo.getLimites().getY()+golAlvo.getLimites().getHeight()/2);
+			bola.setDirecao(bola.getDirecao() + Math.random() * 20 - 10);
+			bola.setAceleracao(4);
+			bola.setVelocidade(5);
+		}
+		jogadorComBola = null;
 	}
 }

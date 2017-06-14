@@ -1,6 +1,7 @@
 package grafico;
 
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 
@@ -92,12 +93,18 @@ public class InfoAreasCampo {
 	}
 	
 	public int getYBordaBaixo() { return getCampo().getHeight(); }
-	public int getYBordaCima() { return -getCampo().getHeight()/2; }
-	public int getXBordaEsquerda() { return -getCampo().getWidth()/2; }
+	public int getYBordaCima() { return 0; }
+	public int getXBordaEsquerda() { return 0; }
 	public int getXBordaDireita() {	return getCampo().getWidth(); }
 
-	public int getXMeio() {	return 0; }
-	public int getYMeio() {	return 0; }
+	public int getXMeio() {	return getCampo().getWidth()/2; }
+	public int getYMeio() {	return getCampo().getHeight()/2; }
+
+	public Shape getLaterais() {
+		Area laterais = new Area(getLimitesTotais());
+		laterais.subtract(new Area(getLimitesDentroQuatroLinhas()));
+		return laterais;
+	}
 
 	
 }

@@ -1,6 +1,7 @@
 package grafico;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.math.BigDecimal;
@@ -35,6 +36,12 @@ public abstract class ObjetoJogo {
 				getY() + Math.sin(Math.toRadians(getDirecao())) * getVelocidade() * getAceleracao());
 		setX(x.floatValue());
 		setY(y.floatValue());
+	}
+	
+	public Point getProximaPosicao(int gap) {
+		int x = (int) (getX() + Math.cos(Math.toRadians(getDirecao())) * gap);
+		int y = (int) (getY() + Math.sin(Math.toRadians(getDirecao())) * gap);
+		return new Point(x, y);
 	}
 
 	public void desenha() {

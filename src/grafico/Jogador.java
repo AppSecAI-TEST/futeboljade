@@ -54,6 +54,13 @@ public class Jogador extends ObjetoJogo {
 		Shape bola = getCampo().getBola().getBolaGrafica();
 		return getBolaGrafica().intersects(bola.getBounds());
 	}
+	
+	protected boolean colidiuComLaterais() {
+		return getCampo()
+				.getInfoAreasCampo()
+				.getLaterais()
+				.intersects(getBolaGrafica().getBounds2D());
+	}
 
 	@Override
 	protected void aoColidirComLaterais() {
