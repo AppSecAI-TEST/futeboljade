@@ -66,5 +66,27 @@ public class Jogador extends ObjetoJogo {
 	protected void aoColidirComLaterais() {
 		inverterTragetoria();
 	}
+	
+	public void passarPara(String jogador){
+		ObjetoJogo parceiro = getCampo().getObjetosJogo().get(jogador);
+		ObjetoJogo bola = getCampo().getBola();
+		if(parceiro != null){
+			apontarPara(parceiro.getX(), parceiro.getY());
+			bola.apontarPara(parceiro.getX(), parceiro.getY());
+		}
+		bola.setAceleracao(4);
+		bola.setVelocidade(5);
+		getCampo().setJogadorComBola(null);
+	}
+
+	public void chutarGol() {
+		Gol golAlvo = getTime().getGolAlvo();
+		ObjetoJogo bola = getCampo().getBola();
+		bola.apontarPara(golAlvo.getLimites().getX(), golAlvo.getLimites().getY()+golAlvo.getLimites().getHeight()/2);
+		bola.setDirecao(bola.getDirecao() + Math.random() * 20 - 10);
+		bola.setAceleracao(4);
+		bola.setVelocidade(5);
+		getCampo().setJogadorComBola(null);
+	}
 
 }

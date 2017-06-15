@@ -5,9 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -213,13 +211,13 @@ public class Campo extends Canvas {
 
 	public void jogadorComBolaChutarGol() {
 		if(jogadorComBola != null){
-			Gol golAlvo = jogadorComBola.getTime().getGolAlvo();
-			ObjetoJogo bola = getBola();
-			bola.apontarPara(golAlvo.getLimites().getX(), golAlvo.getLimites().getY()+golAlvo.getLimites().getHeight()/2);
-			bola.setDirecao(bola.getDirecao() + Math.random() * 20 - 10);
-			bola.setAceleracao(4);
-			bola.setVelocidade(5);
+			jogadorComBola.chutarGol();
 		}
-		jogadorComBola = null;
+	}
+
+	public void jogadorComBolaPassarPara(String parceiro) {
+		if(jogadorComBola != null){
+			jogadorComBola.passarPara(parceiro);
+		}
 	}
 }
