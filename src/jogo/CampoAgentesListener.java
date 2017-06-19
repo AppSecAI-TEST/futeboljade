@@ -8,4 +8,10 @@ public interface CampoAgentesListener {
 
 	void bolaEmJogo();
 
+	void jogadorPegouBola(String nome);
+
+	void jogadorDeveParar(String nome);
+
+	void jogadorDeveChutar(String nome, int erro, int aceleracao, int velocidade);
+
 }

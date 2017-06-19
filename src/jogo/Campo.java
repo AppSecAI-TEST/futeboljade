@@ -49,7 +49,7 @@ public class Campo {
 		} catch (StaleProxyException e) {
 			throw new RuntimeException(e);
 		}
-		listeners.forEach(listener->listener.jogadorAdicionado(nome, time));
+		notificaJogadorAdicionado(nome, time);
 	}
 
 	public void addListener(CampoAgentesListener jogoListener) {
@@ -74,6 +74,22 @@ public class Campo {
 
 	public Set<String> getJogadores() {
 		return jogadores.keySet();
+	}
+
+	private void notificaJogadorAdicionado(String nome, String time) {
+		listeners.forEach(listener->listener.jogadorAdicionado(nome, time));
+	}
+
+	public void notificaJogadorPegouBola(String nome){
+		listeners.forEach(listener->listener.jogadorPegouBola(nome));
+	}
+
+	public void notificaQueJogadorDeveParar(String nome) {
+		listeners.forEach(listener->listener.jogadorDeveParar(nome));
+	}
+
+	public void notificaJogadorDeveChutar(String nome, int erro, int aceleracao, int velocidade) {
+		listeners.forEach(listener->listener.jogadorDeveChutar(nome, erro, aceleracao, velocidade));
 	}
 
 }

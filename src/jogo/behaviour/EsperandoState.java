@@ -10,7 +10,6 @@ public class EsperandoState extends JogoTickerBehavior {
 
 		@Override
 		protected void executaPassoJogo() {
-			getJogador().fala("Estou esperando");
 			if (bolaEmJogo())
 				finalizaCom(JogarBehaviour.BOLA_EM_JOGO);
 		}

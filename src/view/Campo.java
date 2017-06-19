@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -30,15 +29,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Campo extends Canvas {
-	
+
+	public static final byte GAME_LOOP_SLEEP = 30;
 	private static final Color COR_CAMPO = new Color(86, 188, 96);
 	private static final Color COR_LATERAIS = new Color(56, 158, 66);
 	private static final Color COR_CASA = new Color(255, 69, 28);
 	private static final Color COR_VISITANTE = new Color(28, 205, 255);
-	
+
 	private Map<String, ObjetoJogo> objetosJogo;
 	private Time casa, visitante;
-	
+
 	public Graphics2D g;
 
 	private Gol golEsquerda;
@@ -49,20 +49,20 @@ public class Campo extends Canvas {
 	private CampoAgentesListener ouvinteAgentes;
 	private Set<CampoGraficoListener> listeners;
 	private Jogador jogadorComBola;
-	
+
 	public Campo() {
 		infoAreasCampo = new InfoAreasCampo();
 		setBackground(COR_CAMPO);
 		objetosJogo = new ConcurrentHashMap<>();
-		
+
 		golEsquerda = new Gol();
 		golDireita = new Gol();
 		objetosJogo.put("BOLA", new Bola());
 		ouvinteAgentes = new OuvinteAgentes(this);
 		listeners = new HashSet<>();
 	}
-	
-	public void start(){
+
+	public void start() {
 		setIgnoreRepaint(true);
 		createBufferStrategy(2);
 		status = StatusJogo.JOGANDO;
@@ -71,10 +71,10 @@ public class Campo extends Canvas {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while(true){
+				while (true) {
 					gameLoop();
 					try {
-						Thread.sleep(10);
+						Thread.sleep(GAME_LOOP_SLEEP);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -82,23 +82,23 @@ public class Campo extends Canvas {
 			}
 		}).start();
 	}
-	
+
 	private void gameLoop() {
 		BufferStrategy bufferStrategy = this.getBufferStrategy();
 		Graphics2D g2 = (Graphics2D) bufferStrategy.getDrawGraphics();
 		this.g = g2;
-		
+
 		desenhaCampo(g2);
-		
+
 		Iterator<ObjetoJogo> objetos = objetosJogo.values().iterator();
 		synchronized (objetos) {
-			while(objetos.hasNext()){
+			while (objetos.hasNext()) {
 				ObjetoJogo objeto = objetos.next();
 				objeto.atualiza();
 			}
 		}
 		g.dispose();
-		
+
 		BufferStrategy strategy = bufferStrategy;
 		if (!strategy.contentsLost()) {
 			strategy.show();
@@ -109,23 +109,19 @@ public class Campo extends Canvas {
 	private void desenhaCampo(Graphics2D g2) {
 		g2.setColor(COR_CAMPO);
 		g.fill(infoAreasCampo.getLimitesTotais());
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-		        RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(Color.WHITE);
-		
-		g2.drawLine(
-				infoAreasCampo.getXMeio(),
-				(int)infoAreasCampo.getLimitesDentroQuatroLinhas().getMinY(),
-				infoAreasCampo.getXMeio(),
-				(int)infoAreasCampo.getLimitesDentroQuatroLinhas().getMaxY());
-		
-		g2.fillOval(infoAreasCampo.getXMeio()-5, infoAreasCampo.getYMeio()-5, 10, 10);
-		g2.drawOval(infoAreasCampo.getXMeio()-30, infoAreasCampo.getYMeio()-30, 60, 60);
-				
-		g2.draw(infoAreasCampo.getLimitesGolEsquerda());		
-		g2.draw(infoAreasCampo.getLimitesGolDireita());		
+
+		g2.drawLine(infoAreasCampo.getXMeio(), (int) infoAreasCampo.getLimitesDentroQuatroLinhas().getMinY(),
+				infoAreasCampo.getXMeio(), (int) infoAreasCampo.getLimitesDentroQuatroLinhas().getMaxY());
+
+		g2.fillOval(infoAreasCampo.getXMeio() - 5, infoAreasCampo.getYMeio() - 5, 10, 10);
+		g2.drawOval(infoAreasCampo.getXMeio() - 30, infoAreasCampo.getYMeio() - 30, 60, 60);
+
+		g2.draw(infoAreasCampo.getLimitesGolEsquerda());
+		g2.draw(infoAreasCampo.getLimitesGolDireita());
 		g2.draw(infoAreasCampo.getLimitesDentroQuatroLinhas());
-		
+
 		g2.setColor(COR_LATERAIS);
 		g2.fill(infoAreasCampo.getCampoNaoJogavel());
 		g2.setColor(Color.white);
@@ -150,27 +146,26 @@ public class Campo extends Canvas {
 	}
 
 	public void addJogador(String nome, String nomeTime) {
-		if(casa == null) 
-			casa = new Time(nomeTime).setCor(COR_CASA).setGolAlvo(golDireita); 
-		else 
-		if(visitante == null) 
+		if (casa == null)
+			casa = new Time(nomeTime).setCor(COR_CASA).setGolAlvo(golDireita);
+		else if (visitante == null)
 			visitante = new Time(nomeTime).setCor(COR_VISITANTE).setGolAlvo(golEsquerda);
-		
+
 		Time time = null;
 		Jogador jogador = new Jogador().setNome(nome);
 		jogador.setCampo(this);
 		objetosJogo.put(jogador.getNome(), jogador);
-		if(nomeTime.equals(casa.getNome())){
+		if (nomeTime.equals(casa.getNome())) {
 			posicionador.posicionaJogadorCasa(jogador);
 			time = casa;
-		}else{
+		} else {
 			posicionador.posicionaJogadorVisitante(jogador);
 			time = visitante;
 		}
 		jogador.setColor(time.getCor());
 		time.addJogador(jogador);
 	}
-	
+
 	public void addBola() {
 		Bola bola = new Bola();
 		bola.setX(infoAreasCampo.getXMeio());
@@ -182,23 +177,22 @@ public class Campo extends Canvas {
 	public void jogadorSeguirBola(String nome) {
 		ObjetoJogo jogador = objetosJogo.get(nome);
 		ObjetoJogo bola = getBola();
-		if(jogador != null){
+		if (jogador != null) {
 			jogador.setVelocidade(3);
 			jogador.setAceleracao(1);
-			jogador.setDirecao(GeometriaUtil
-					.getDirecaoPara(jogador.getX(), jogador.getY(), bola.getX(), bola.getY()));
+			jogador.setDirecao(GeometriaUtil.getDirecaoPara(jogador.getX(), jogador.getY(), bola.getX(), bola.getY()));
 		}
 	}
 
 	public void jogadorColidiuComBola(Jogador jogador) {
-		listeners.forEach(listener->listener.jogadorColidiuComBola(jogador.getNome()));
+		listeners.forEach(listener -> listener.jogadorColidiuComBola(jogador.getNome()));
 	}
 
 	public ObjetoJogo getBola() {
 		return objetosJogo.get("BOLA");
 	}
 
-	public void addListener(CampoGraficoListener listener){
+	public void addListener(CampoGraficoListener listener) {
 		this.listeners.add(listener);
 	}
 
@@ -210,15 +204,20 @@ public class Campo extends Canvas {
 		return (Jogador) objetosJogo.get(nomeJogador);
 	}
 
-	public void jogadorComBolaChutarGol() {
-		if(jogadorComBola != null){
+	public void jogadorComBolaChutarGol(int erro, int aceleracao, int velocidade) {
+		if (jogadorComBola != null) {
 			Gol golAlvo = jogadorComBola.getTime().getGolAlvo();
 			ObjetoJogo bola = getBola();
-			bola.apontarPara(golAlvo.getLimites().getX(), golAlvo.getLimites().getY()+golAlvo.getLimites().getHeight()/2);
-			bola.setDirecao(bola.getDirecao() + Math.random() * 20 - 10);
-			bola.setAceleracao(4);
-			bola.setVelocidade(5);
+			bola.apontarPara(golAlvo.getLimites().getX(),
+					golAlvo.getLimites().getY() + golAlvo.getLimites().getHeight() / 2);
+			bola.setDirecao(bola.getDirecao() + erro);
+			bola.setAceleracao(aceleracao);
+			bola.setVelocidade(velocidade);
 		}
 		jogadorComBola = null;
+	}
+
+	public void jogadorComBolaChutarGol() {
+		jogadorComBolaChutarGol((int) (Math.random() * 20 + 10), 4, 5);
 	}
 }

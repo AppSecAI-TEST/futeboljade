@@ -9,12 +9,11 @@ import jogo.Jogador;
 abstract class JogoTickerBehavior extends TickerBehaviour {
 	protected ACLMessage message;
 	protected String mensagemVindaDaInterface = "";
+	private int transicao;
 
 	public JogoTickerBehavior(Agent a, long period) {
 		super(a, period);
 	}
-
-	private int transicao;
 
 	protected void finalizaCom(int transicao) {
 		this.transicao = transicao;
@@ -23,27 +22,38 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 
 	@Override
 	protected void onTick() {
+		//getJogador().fala(getBehaviourName());
 		message = myAgent.receive();
-		if (message != null)
-			getJogador().fala("eu ouvi " + message.getContent() + " vinda de " + message.getSender().getLocalName());
+//		if (message != null)
+//			getJogador().fala("eu ouvi " + message.getContent() + " vinda de " + message.getSender().getLocalName());
 		mensagemVindaDaInterface = (String) myAgent.getO2AObject();
 		executaPassoJogo();
 	}
-	
+
 	abstract void executaPassoJogo();
 
 	@Override
 	public int onEnd() {
+		//getJogador().fala("Finaliza com " + transicao);
+		reset(JogarBehaviour.TEMPO_ACAO);
 		return transicao;
 	}
 
-	public Jogador getJogador() {
+	protected Jogador getJogador() {
 		return ((Jogador) getAgent());
 	}
 
-	protected boolean jogadorPegouBola() {
+	protected boolean pegouBola() {
 		if (message != null) {
-			return Mensagens.PEGUEI_BOLA.equals(message.getContent());
+			return Mensagens.PEGUEI_BOLA.equals(message.getContent())
+					|| Mensagens.TENHO_A_BOLA.equals(message.getContent());
+		}
+		return false;
+	}
+
+	protected boolean chutouBola() {
+		if (message != null) {
+			return Mensagens.CHUTEI.equals(message.getContent());
 		}
 		return false;
 	}
@@ -57,7 +67,7 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 		return false;
 	}
 
-	protected boolean mesmoTime() {
+	protected boolean mensagemMesmoTime() {
 		if (message != null) {
 			String parametroTime = message.getUserDefinedParameter("time");
 			if (parametroTime != null) {
@@ -76,15 +86,20 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 		}
 		return false;
 	}
-	
-	protected ACLMessage mensagemPropagacao(String conteudo) {
+
+	protected void propaga(String conteudo) {
+		getAgent().send(mensagemPropagacao(conteudo));
+	}
+
+	private ACLMessage mensagemPropagacao(String conteudo) {
 		ACLMessage message = new ACLMessage(ACLMessage.PROPAGATE);
 		getJogador().getCampo().getJogadores().forEach(nomeJogador -> {
-			if(!nomeJogador.equals(getJogador().getNome())){					
-				getJogador().fala("Vou dizer para " + nomeJogador + " que " + conteudo);
+			if (!nomeJogador.equals(getJogador().getNome())) {
+				//getJogador().fala("Vou dizer para " + nomeJogador + " que " + conteudo);
 				message.addReceiver(new AID(nomeJogador, AID.ISLOCALNAME));
 			}
 		});
+		message.addUserDefinedParameter("time", getJogador().getTime().getNome());
 		message.setContent(conteudo);
 		return message;
 	}

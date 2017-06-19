@@ -4,8 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
-import java.math.BigDecimal;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;

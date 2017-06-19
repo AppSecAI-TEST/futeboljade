@@ -22,4 +22,19 @@ public class OuvinteAgentes implements CampoAgentesListener {
 	public void bolaEmJogo() {
 	}
 
+	@Override
+	public void jogadorPegouBola(String nome) {
+		campo.setJogadorComBola(campo.getJogador(nome));
+	}
+	
+	@Override
+	public void jogadorDeveParar(String nome) {
+		campo.getJogador(nome).setVelocidade(0);
+	}
+
+	@Override
+	public void jogadorDeveChutar(String nome, int erro, int aceleracao, int velocidade) {
+		campo.jogadorComBolaChutarGol(erro, aceleracao, velocidade);
+	}
+
 }
