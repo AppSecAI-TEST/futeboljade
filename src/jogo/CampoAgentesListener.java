@@ -12,6 +12,6 @@ public interface CampoAgentesListener {
 
 	void jogadorDeveParar(String nome);
 
-	void jogadorDeveChutar(String nome, int erro, int aceleracao, int velocidade);
+	void jogadorDeveChutar(String nome, MovimentoBola movimentoBola);
 
 }

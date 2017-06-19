@@ -48,6 +48,7 @@ public class Estadio extends JFrame {
 	
 	private Component barraTestes() {
 		JPanel barraTestes = new JPanel();
+		barraTestes.setPreferredSize(new Dimension(400,100));
 		
 		JButton btnMoverBola = new JButton("MOVER BOLA");
 		barraTestes.add(btnMoverBola);
@@ -113,6 +114,26 @@ public class Estadio extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				campo.jogadorComBolaChutarGol();
+			}
+		});
+		
+		JButton btnAddParceiro = new JButton("ADD PARCEIRO");
+		barraTestes.add(btnAddParceiro);
+		btnAddParceiro.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				campo.addJogador("PARCEIRO", "CASA");
+			}
+		});
+		
+		JButton btnPassar = new JButton("PASSAR");
+		barraTestes.add(btnPassar);
+		btnPassar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				campo.jogadorComBolaPassarPara("PARCEIRO");
 			}
 		});
 		

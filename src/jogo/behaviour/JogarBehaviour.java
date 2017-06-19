@@ -29,8 +29,8 @@ public class JogarBehaviour extends FSMBehaviour {
 		registerTransition(SEM_BOLA, TIME_COM_BOLA, COLEGA_PEGOU_BOLA);
 		registerTransition(SEM_BOLA, COM_BOLA, PEGOU_BOLA);
 		// passe
-		// registerTransition(COM_BOLA, TIME_COM_BOLA, PASSOU_BOLA);
-		// registerTransition(TIME_COM_BOLA, COM_BOLA, RECEBEU_PASSE);
+		registerTransition(COM_BOLA, TIME_COM_BOLA, PASSOU_BOLA);
+		registerTransition(TIME_COM_BOLA, COM_BOLA, RECEBEU_PASSE);
 		// quando chuta ou perde bola
 		registerTransition(COM_BOLA, SEM_BOLA, PERDEU_OU_CHUTOU_BOLA);
 		registerTransition(TIME_COM_BOLA, SEM_BOLA, PERDEU_OU_CHUTOU_BOLA);

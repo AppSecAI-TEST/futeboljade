@@ -23,6 +23,7 @@ import grafico.PosicionadorJogador;
 import grafico.StatusJogo;
 import grafico.Time;
 import jogo.CampoAgentesListener;
+import jogo.MovimentoBola;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -204,20 +205,20 @@ public class Campo extends Canvas {
 		return (Jogador) objetosJogo.get(nomeJogador);
 	}
 
-	public void jogadorComBolaChutarGol(int erro, int aceleracao, int velocidade) {
+	public void jogadorComBolaChutarGol(MovimentoBola movimentoBola) {
 		if (jogadorComBola != null) {
-			Gol golAlvo = jogadorComBola.getTime().getGolAlvo();
-			ObjetoJogo bola = getBola();
-			bola.apontarPara(golAlvo.getLimites().getX(),
-					golAlvo.getLimites().getY() + golAlvo.getLimites().getHeight() / 2);
-			bola.setDirecao(bola.getDirecao() + erro);
-			bola.setAceleracao(aceleracao);
-			bola.setVelocidade(velocidade);
+			jogadorComBola.chutarGol(movimentoBola);
 		}
-		jogadorComBola = null;
 	}
 
 	public void jogadorComBolaChutarGol() {
-		jogadorComBolaChutarGol((int) (Math.random() * 20 + 10), 4, 5);
+		jogadorComBolaChutarGol(MovimentoBola.instance());
 	}
+
+	public void jogadorComBolaPassarPara(String parceiro) {
+		if(jogadorComBola != null){
+			jogadorComBola.passarPara(parceiro);
+		}
+	}
+
 }

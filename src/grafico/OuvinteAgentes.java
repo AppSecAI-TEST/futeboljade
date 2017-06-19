@@ -1,6 +1,7 @@
 package grafico;
 
 import jogo.CampoAgentesListener;
+import jogo.MovimentoBola;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -33,8 +34,8 @@ public class OuvinteAgentes implements CampoAgentesListener {
 	}
 
 	@Override
-	public void jogadorDeveChutar(String nome, int erro, int aceleracao, int velocidade) {
-		campo.jogadorComBolaChutarGol(erro, aceleracao, velocidade);
+	public void jogadorDeveChutar(String nome, MovimentoBola movimentoBola) {
+		campo.jogadorComBolaChutarGol(movimentoBola);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 
+import jogo.MovimentoBola;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -65,6 +66,36 @@ public class Jogador extends ObjetoJogo {
 	@Override
 	protected void aoColidirComLaterais() {
 		inverterTragetoria();
+	}
+	
+	public void passarPara(String jogador){
+		ObjetoJogo parceiro = getCampo().getObjetosJogo().get(jogador);
+		ObjetoJogo bola = getCampo().getBola();
+		if(parceiro != null){
+			apontarPara(parceiro.getX(), parceiro.getY());
+			bola.apontarPara(parceiro.getX(), parceiro.getY());
+		}
+		bola.setAceleracao(4);
+		bola.setVelocidade(5);
+		getCampo().setJogadorComBola(null);
+	}
+
+	public void chutarGol(MovimentoBola movimentoBola) {
+//		Gol golAlvo = getTime().getGolAlvo();
+//		ObjetoJogo bola = getCampo().getBola();
+//		bola.apontarPara(golAlvo.getLimites().getX(), golAlvo.getLimites().getY()+golAlvo.getLimites().getHeight()/2);
+//		bola.setDirecao(bola.getDirecao() + Math.random() * 20 - 10);
+//		bola.setAceleracao(4);
+//		bola.setVelocidade(5);
+		
+		Gol golAlvo = getTime().getGolAlvo();
+		ObjetoJogo bola = getCampo().getBola();
+		bola.apontarPara(golAlvo.getLimites().getX(),
+				golAlvo.getLimites().getY() + golAlvo.getLimites().getHeight() / 2);
+		bola.setDirecao(bola.getDirecao() + movimentoBola.getErro());
+		bola.setAceleracao(movimentoBola.getAceleracao());
+		bola.setVelocidade(movimentoBola.getVelocidade());
+		getCampo().setJogadorComBola(null);
 	}
 
 }

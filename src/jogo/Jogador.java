@@ -60,7 +60,6 @@ public class Jogador extends Agent {
 
 	public void setColidiuComBola() {
 		colisoesAtePegarBola--;
-		fala("colidi:  " + colisoesAtePegarBola);
 		if (colisoesAtePegarBola == 0) {
 			colisoesAtePegarBola = COLISOES_ATE_PEGAR_BOLA;
 			listeners.forEach(listener -> listener.pegouBola());
@@ -88,7 +87,7 @@ public class Jogador extends Agent {
 			int erro = estiloDeJogo.calculaErroDirecaoChute();
 			int aceleracao = estiloDeJogo.calculaAceleracaoChute();
 			int velocidade = estiloDeJogo.calculaVelocidadeChute();
-			getCampo().notificaJogadorDeveChutar(nome, erro, aceleracao, velocidade );
+			getCampo().notificaJogadorDeveChutar(nome, MovimentoBola.instance(erro, aceleracao, velocidade));
 			chutou(true);
 		}
 	}

@@ -23,7 +23,7 @@ public class CampoListenerAdapter implements CampoAgentesListener {
 	}
 
 	@Override
-	public void jogadorDeveChutar(String nome, int erro, int aceleracao, int velocidade) {	
+	public void jogadorDeveChutar(String nome, MovimentoBola movimentoBola) {	
 	}
 
 }

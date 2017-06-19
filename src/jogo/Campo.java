@@ -88,8 +88,8 @@ public class Campo {
 		listeners.forEach(listener->listener.jogadorDeveParar(nome));
 	}
 
-	public void notificaJogadorDeveChutar(String nome, int erro, int aceleracao, int velocidade) {
-		listeners.forEach(listener->listener.jogadorDeveChutar(nome, erro, aceleracao, velocidade));
+	public void notificaJogadorDeveChutar(String nome, MovimentoBola movimentoBola) {
+		listeners.forEach(listener->listener.jogadorDeveChutar(nome, movimentoBola));
 	}
 
 }
