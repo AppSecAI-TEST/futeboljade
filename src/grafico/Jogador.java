@@ -36,7 +36,7 @@ public class Jogador extends ObjetoJogo {
 	@Override
 	protected void desenha(Graphics2D g2) {
 		g2.setColor(getColor());
-		g2.fill(getBolaGrafica());
+		g2.fill(getGeometria());
 	}
 	
 	@Override
@@ -45,22 +45,38 @@ public class Jogador extends ObjetoJogo {
 		if(colidiuComBola()){
 			aoColidirComBola();
 		}
+		if(colidiuComJogador()){
+			aoColidirComJogador();
+		}
 	}
 		
+	private void aoColidirComJogador() {
+		setVelocidade(0);
+	}
+
+	private boolean colidiuComJogador() {
+		for(Jogador j : getCampo().getJogadores()){
+			if(j != this && j.getGeometria().intersects(this.getGeometria().getBounds())){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private void aoColidirComBola() {
 		getCampo().jogadorColidiuComBola(this);
 	}
 
 	private boolean colidiuComBola() {
-		Shape bola = getCampo().getBola().getBolaGrafica();
-		return getBolaGrafica().intersects(bola.getBounds());
+		Shape bola = getCampo().getBola().getGeometria();
+		return getGeometria().intersects(bola.getBounds());
 	}
 	
 	protected boolean colidiuComLaterais() {
 		return getCampo()
 				.getInfoAreasCampo()
 				.getLaterais()
-				.intersects(getBolaGrafica().getBounds2D());
+				.intersects(getGeometria().getBounds2D());
 	}
 
 	@Override

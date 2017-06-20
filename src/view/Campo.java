@@ -8,9 +8,11 @@ import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import grafico.Bola;
 import grafico.GeometriaUtil;
@@ -219,6 +221,15 @@ public class Campo extends Canvas {
 		if(jogadorComBola != null){
 			jogadorComBola.passarPara(parceiro);
 		}
+	}
+
+	public List<Jogador> getJogadores() {
+		return getObjetosJogo()
+				.values()
+				.stream()
+				.filter(o->o instanceof Jogador)
+				.map(o->(Jogador) o)
+				.collect(Collectors.toList());
 	}
 
 }

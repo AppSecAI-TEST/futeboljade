@@ -17,7 +17,7 @@ public abstract class ObjetoJogo {
 	private double x, y, w, h, direcao;
 	private double aceleracao, velocidade;
 	private Campo campo;
-	private Shape bolaGrafica;
+	private Shape geometria;
 	private int folgaTesteColisao = 0;
 
 	public void atualiza() {
@@ -61,7 +61,7 @@ public abstract class ObjetoJogo {
 		return getCampo()
 				.getInfoAreasCampo()
 				.getCampoNaoJogavel()
-				.intersects(getBolaGrafica().getBounds2D());
+				.intersects(getGeometria().getBounds2D());
 	}
 
 	protected void aoColidirComLaterais() {
@@ -73,16 +73,16 @@ public abstract class ObjetoJogo {
 		boolean colisaoLinhaFundo = getCampo()
 				.getInfoAreasCampo()
 				.getLinhaDeFundo()
-				.intersects(getBolaGrafica().getBounds2D());
+				.intersects(getGeometria().getBounds2D());
 		setDirecao((getDirecao() + (colisaoLinhaFundo ? 180 : 0)) * -1);
 	}
 
 	public void diminuiAceleracao() {
 	}
 
-	public Shape getBolaGrafica() {
-		bolaGrafica = new Ellipse2D.Double(getX(), getY(), getW(), getH());
-		return this.bolaGrafica;
+	public Shape getGeometria() {
+		geometria = new Ellipse2D.Double(getX(), getY(), getW(), getH());
+		return this.geometria;
 	}
 	
 	public void apontarPara(double xdest, double ydest){
