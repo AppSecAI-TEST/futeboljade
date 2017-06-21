@@ -55,7 +55,7 @@ public class Jogador extends ObjetoJogo {
 	}
 		
 	private void aoColidirComJogador() {
-		setDirecao(getDirecao()+180);
+		//setDirecao(getDirecao()+10);
 	}
 
 	private boolean colidiuComJogador() {

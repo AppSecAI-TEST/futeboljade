@@ -1,7 +1,5 @@
 package jogo.behaviour;
 
-import java.util.Set;
-
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;

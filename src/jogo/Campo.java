@@ -33,6 +33,26 @@ public class Campo {
 		jogadores = new HashMap<>();
 		jogadoresInformar = new HashSet<>();
 		listeners = new HashSet<>();
+		
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while(true){
+					jogadores.values().forEach(j -> {
+						try {
+							j.putO2AObject(jogadoresInformar, false);
+						} catch (StaleProxyException e) {
+							e.printStackTrace();
+						}
+					});
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}).start();
 	}
 
 	public void setBolaEmJogo(boolean bolaEmJogo) {
@@ -51,13 +71,6 @@ public class Campo {
 			controller.start();
 			jogadores.put(nome, controller);
 			jogadoresInformar.add(new Jogador(nome).setTime(new Time(time)));
-			jogadores.values().forEach(j -> {
-				try {
-					j.putO2AObject(jogadoresInformar, false);
-				} catch (StaleProxyException e) {
-					e.printStackTrace();
-				}
-			});
 		} catch (StaleProxyException e) {
 			throw new RuntimeException(e);
 		}
