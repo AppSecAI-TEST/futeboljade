@@ -18,7 +18,7 @@ public class Main {
 				estadio.getCampo().addListener(new OuvinteParteGrafica(campo));
 				campo.setBolaEmJogo(true);
 				
-				//campo.adicionaJogador("1", "CASA");
+				campo.adicionaJogador("1", "CASA");
 				campo.adicionaJogador("2", "CASA");
 			}
 		});

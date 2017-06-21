@@ -38,4 +38,10 @@ public class OuvinteAgentes implements CampoAgentesListener {
 		campo.jogadorComBolaChutarGol(movimentoBola);
 	}
 
+	@Override
+	public void jogadorDevePassar(String passador, String recebedor) {
+		System.out.println(passador + " " + recebedor);
+		campo.getJogador(passador).passarPara(recebedor);
+	}
+
 }

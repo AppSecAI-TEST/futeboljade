@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -18,6 +20,7 @@ public class Campo {
 
 	private final AgentContainer mainContainer;
 	private Map<String, AgentController> jogadores;
+	private Set<Jogador> jogadoresInformar;
 	private Set<CampoAgentesListener> listeners;
 	@Getter
 	private boolean bolaEmJogo;
@@ -28,6 +31,7 @@ public class Campo {
 		Profile profile = new ProfileImpl("127.0.0.1", 1999, "linux");
 		mainContainer = jade.createMainContainer(profile);
 		jogadores = new HashMap<>();
+		jogadoresInformar = new HashSet<>();
 		listeners = new HashSet<>();
 	}
 
@@ -46,6 +50,14 @@ public class Campo {
 			AgentController controller = mainContainer.createNewAgent(nome, Jogador.class.getName(), args);
 			controller.start();
 			jogadores.put(nome, controller);
+			jogadoresInformar.add(new Jogador(nome).setTime(new Time(time)));
+			jogadores.values().forEach(j -> {
+				try {
+					j.putO2AObject(jogadoresInformar, false);
+				} catch (StaleProxyException e) {
+					e.printStackTrace();
+				}
+			});
 		} catch (StaleProxyException e) {
 			throw new RuntimeException(e);
 		}
@@ -73,19 +85,24 @@ public class Campo {
 	}
 
 	private void notificaJogadorAdicionado(String nome, String time) {
-		listeners.forEach(listener->listener.jogadorAdicionado(nome, time));
+		listeners.forEach(listener -> listener.jogadorAdicionado(nome, time));
 	}
 
-	public void notificaJogadorPegouBola(String nome){
-		listeners.forEach(listener->listener.jogadorPegouBola(nome));
+	public void notificaJogadorPegouBola(String nome) {
+		listeners.forEach(listener -> listener.jogadorPegouBola(nome));
 	}
 
 	public void notificaQueJogadorDeveParar(String nome) {
-		listeners.forEach(listener->listener.jogadorDeveParar(nome));
+		listeners.forEach(listener -> listener.jogadorDeveParar(nome));
 	}
 
 	public void notificaJogadorDeveChutar(String nome, MovimentoBola movimentoBola) {
-		listeners.forEach(listener->listener.jogadorDeveChutar(nome, movimentoBola));
+		listeners.forEach(listener -> listener.jogadorDeveChutar(nome, movimentoBola));
+	}
+
+	public void notificaJogadorDevePassar(String passador, String recebedor) {
+		listeners.forEach(listener -> listener.jogadorDevePassar(passador, recebedor));
+
 	}
 
 }

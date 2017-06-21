@@ -1,22 +1,31 @@
 package jogo;
 
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
 
-import lombok.AllArgsConstructor;
+import jade.util.leap.Serializable;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-@AllArgsConstructor
-public class Time {
+@RequiredArgsConstructor
+public class Time implements Serializable {
 	@Getter
 	private final String nome;
 
-	private final Collection<jogo.Jogador> jogadores = new HashSet<>();
+	@Getter @Setter
+	private Set<jogo.Jogador> jogadores = new HashSet<>();
 
 	public void addJogador(jogo.Jogador jogador) {
 		jogadores.add(jogador);
 	}
 
+	public Stream<Jogador> getParceirosDe(Jogador jogador){
+		System.out.println(jogador);
+		return jogadores.stream().filter(j->!j.equals(jogador));
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
