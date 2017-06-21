@@ -81,13 +81,6 @@ public class Jogador extends ObjetoJogo {
 	}
 
 	public void chutarGol(MovimentoBola movimentoBola) {
-//		Gol golAlvo = getTime().getGolAlvo();
-//		ObjetoJogo bola = getCampo().getBola();
-//		bola.apontarPara(golAlvo.getLimites().getX(), golAlvo.getLimites().getY()+golAlvo.getLimites().getHeight()/2);
-//		bola.setDirecao(bola.getDirecao() + Math.random() * 20 - 10);
-//		bola.setAceleracao(4);
-//		bola.setVelocidade(5);
-		
 		Gol golAlvo = getTime().getGolAlvo();
 		ObjetoJogo bola = getCampo().getBola();
 		bola.apontarPara(golAlvo.getLimites().getX(),

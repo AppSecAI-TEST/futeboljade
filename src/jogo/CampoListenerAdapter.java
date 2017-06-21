@@ -26,4 +26,7 @@ public class CampoListenerAdapter implements CampoAgentesListener {
 	public void jogadorDeveChutar(String nome, MovimentoBola movimentoBola) {	
 	}
 
+	@Override
+	public void jogadorDevePassar(String passador, String recebedor) {}
+
 }

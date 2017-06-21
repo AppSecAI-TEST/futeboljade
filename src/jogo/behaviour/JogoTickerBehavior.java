@@ -1,5 +1,7 @@
 package jogo.behaviour;
 
+import java.util.Set;
+
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
@@ -20,13 +22,23 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 		stop();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onTick() {
-		//getJogador().fala(getBehaviourName());
+		// getJogador().fala(getBehaviourName());
 		message = myAgent.receive();
-//		if (message != null)
-//			getJogador().fala("eu ouvi " + message.getContent() + " vinda de " + message.getSender().getLocalName());
-		mensagemVindaDaInterface = (String) myAgent.getO2AObject();
+		// if (message != null)
+		// getJogador().fala("eu ouvi " + message.getContent() + " vinda de " +
+		// message.getSender().getLocalName());
+		Object men = getJogador().getO2AObject();
+		if( men != null ){
+			getJogador().fala("Mensagem: " + men);
+		}
+//		if (men instanceof Set) { // recebe os jogadores
+//			Set<Jogador> jogadores = (Set<Jogador>) men;
+//			getJogador().getTime().setJogadores(jogadores);
+//		}
+//		mensagemVindaDaInterface = (String) myAgent.getO2AObject();
 		executaPassoJogo();
 	}
 
@@ -34,7 +46,7 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 
 	@Override
 	public int onEnd() {
-		//getJogador().fala("Finaliza com " + transicao);
+		// getJogador().fala("Finaliza com " + transicao);
 		reset(JogarBehaviour.TEMPO_ACAO);
 		return transicao;
 	}
@@ -95,7 +107,8 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 		ACLMessage message = new ACLMessage(ACLMessage.PROPAGATE);
 		getJogador().getCampo().getJogadores().forEach(nomeJogador -> {
 			if (!nomeJogador.equals(getJogador().getNome())) {
-				//getJogador().fala("Vou dizer para " + nomeJogador + " que " + conteudo);
+				// getJogador().fala("Vou dizer para " + nomeJogador + " que " +
+				// conteudo);
 				message.addReceiver(new AID(nomeJogador, AID.ISLOCALNAME));
 			}
 		});
