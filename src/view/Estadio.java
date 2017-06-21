@@ -53,25 +53,24 @@ public class Estadio extends JFrame {
 		JButton btnMoverBola = new JButton("MOVER BOLA");
 		barraTestes.add(btnMoverBola);
 		btnMoverBola.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				campo.moverBola();
 			}
 		});
+		
 		JButton btnAddJogador = new JButton("ADD JOGADOR CASA");
 		barraTestes.add(btnAddJogador);
 		btnAddJogador.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				campo.addJogador(System.currentTimeMillis()+"", "CASA");
 			}
 		});
+		
 		JButton btnAddJogadorVisitante = new JButton("ADD JOGADOR VISITANTE");
 		barraTestes.add(btnAddJogadorVisitante);
 		btnAddJogadorVisitante.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				campo.addJogador(System.currentTimeMillis()+"", "VISITANTE");
@@ -110,7 +109,6 @@ public class Estadio extends JFrame {
 		JButton btnChutar = new JButton("CHUTAR");
 		barraTestes.add(btnChutar);
 		btnChutar.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				campo.jogadorComBolaChutarGol();
@@ -120,7 +118,6 @@ public class Estadio extends JFrame {
 		JButton btnAddParceiro = new JButton("ADD PARCEIRO");
 		barraTestes.add(btnAddParceiro);
 		btnAddParceiro.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				campo.addJogador("PARCEIRO", "CASA");
@@ -130,10 +127,18 @@ public class Estadio extends JFrame {
 		JButton btnPassar = new JButton("PASSAR");
 		barraTestes.add(btnPassar);
 		btnPassar.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				campo.jogadorComBolaPassarPara("PARCEIRO");
+			}
+		});
+		
+		JButton btnAvancarAtaque = new JButton("CASA AVANÇAR");
+		barraTestes.add(btnAvancarAtaque);
+		btnAvancarAtaque.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				campo.timeCasaAvancarAtaque();
 			}
 		});
 		

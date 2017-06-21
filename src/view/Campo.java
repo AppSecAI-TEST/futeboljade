@@ -232,4 +232,13 @@ public class Campo extends Canvas {
 				.collect(Collectors.toList());
 	}
 
+	public void timeCasaAvancarAtaque() {
+		getJogadores()
+		.stream()
+		.filter(j->j.getTime() == casa)
+		.forEach(j->{
+			j.atacar();
+		});
+	}
+
 }

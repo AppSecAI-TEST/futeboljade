@@ -64,12 +64,8 @@ public class Campo {
 
 	@SneakyThrows
 	public void jogadorColidiuComBola(String nome) {
-		try{
-			AgentController agentController = jogadores.get(nome);
-			agentController.putO2AObject("colidiu_com_bola", false);
-		}catch (Exception e) {
-			System.out.println("cala a boca: " + e.getMessage());
-		}
+		AgentController agentController = jogadores.get(nome);
+		agentController.putO2AObject("colidiu_com_bola", false);
 	}
 
 	public Set<String> getJogadores() {

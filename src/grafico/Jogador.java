@@ -2,6 +2,7 @@ package grafico;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Shape;
 
 import jogo.MovimentoBola;
@@ -21,6 +22,7 @@ public class Jogador extends ObjetoJogo {
 	private Color color;
 	private Time time;
 	private String nome;
+	private Point posicaoAtaque;
 	
 	public Jogador() {
 		setW(TAMANHO_JOGADOR);
@@ -37,6 +39,8 @@ public class Jogador extends ObjetoJogo {
 	protected void desenha(Graphics2D g2) {
 		g2.setColor(getColor());
 		g2.fill(getGeometria());
+		g2.fillOval((int)getPosicaoAtaque().getX(), (int)getPosicaoAtaque().getY(), 10, 10);
+		g2.drawString(getNome(), (int)getX(), (int)getY());
 	}
 	
 	@Override
@@ -51,7 +55,7 @@ public class Jogador extends ObjetoJogo {
 	}
 		
 	private void aoColidirComJogador() {
-		setVelocidade(0);
+		setDirecao(getDirecao()+180);
 	}
 
 	private boolean colidiuComJogador() {
@@ -97,13 +101,6 @@ public class Jogador extends ObjetoJogo {
 	}
 
 	public void chutarGol(MovimentoBola movimentoBola) {
-//		Gol golAlvo = getTime().getGolAlvo();
-//		ObjetoJogo bola = getCampo().getBola();
-//		bola.apontarPara(golAlvo.getLimites().getX(), golAlvo.getLimites().getY()+golAlvo.getLimites().getHeight()/2);
-//		bola.setDirecao(bola.getDirecao() + Math.random() * 20 - 10);
-//		bola.setAceleracao(4);
-//		bola.setVelocidade(5);
-		
 		Gol golAlvo = getTime().getGolAlvo();
 		ObjetoJogo bola = getCampo().getBola();
 		bola.apontarPara(golAlvo.getLimites().getX(),
@@ -112,6 +109,12 @@ public class Jogador extends ObjetoJogo {
 		bola.setAceleracao(movimentoBola.getAceleracao());
 		bola.setVelocidade(movimentoBola.getVelocidade());
 		getCampo().setJogadorComBola(null);
+	}
+
+	public void atacar() {
+		apontarPara(getPosicaoAtaque().getX(), getPosicaoAtaque().getY());
+		setVelocidade(3);
+		setAceleracao(1);
 	}
 
 }
