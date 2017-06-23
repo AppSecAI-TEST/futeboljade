@@ -118,4 +118,16 @@ public class Campo {
 
 	}
 
+	@SneakyThrows
+	public void jogadorEstaAXDistancia(String nome, double distanciaX) {
+		AgentController agentController = jogadores.get(nome);
+		agentController.putO2AObject("distancia_bola:"+distanciaX, false);
+	}
+
+	@SneakyThrows
+	public void jogadorEstaNaGrandeAreaAlvo(String nome) {
+		AgentController agentController = jogadores.get(nome);
+		agentController.putO2AObject("chegou_na_grande_area_alvo:"+nome, false);
+	}
+
 }

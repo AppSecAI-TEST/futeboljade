@@ -3,7 +3,9 @@ package grafico;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 
 import jogo.MovimentoBola;
 import lombok.Getter;
@@ -31,6 +33,29 @@ public class Jogador extends ObjetoJogo {
 		setH(TAMANHO_JOGADOR);
 	}
 	
+	public void atualiza() {
+		reposiciona();
+		desenha();
+		detectaColisao();
+		avisaSeEstaNaGrandeArea();
+		avisaAQueDistanciaEstaDaBola();
+	}
+	
+	private void avisaAQueDistanciaEstaDaBola() {
+		ObjetoJogo bola = getCampo().getBola();
+		double distancia = GeometriaUtil.getDistanciaAte(getX(), getY(), bola.getX(), bola.getY());
+		getCampo().getListeners().forEach(l->l.jogadorEstaAXDistancia(getNome(), distancia));
+	}
+
+	private void avisaSeEstaNaGrandeArea() {
+		Rectangle2D minhaArea = getGeometria().getBounds2D();
+		Rectangle grandeAreaAlvo = getTime().getGrandeAreaAlvo().getLimites();
+		boolean estaNaGrandeArea = grandeAreaAlvo.intersects(minhaArea);
+		if(estaNaGrandeArea){
+			getCampo().getListeners().forEach(l->l.jogadorEstaNaGrandeAreaAlvo(getNome()));
+		}
+	}
+
 	public Jogador(String nome, Color color){
 		this();
 		this.nome = nome;

@@ -28,9 +28,9 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 		// if (message != null)
 		// getJogador().fala("eu ouvi " + message.getContent() + " vinda de " +
 		// message.getSender().getLocalName());
-		Object men = getJogador().getO2AObject();
-		if( men != null ){
-			getJogador().fala("Mensagem: " + men);
+		Object msg = getJogador().getO2AObject();
+		if( msg != null ){
+			getJogador().fala("Mensagem: " + msg);
 		}
 //		if (men instanceof Set) { // recebe os jogadores
 //			Set<Jogador> jogadores = (Set<Jogador>) men;

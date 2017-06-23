@@ -19,4 +19,9 @@ public class GeometriaUtil {
 		Rectangle subRetangulo = new Rectangle((int)x,(int)y,(int)w,(int)h);
 		return subRetangulo;
 	}
+	
+	public static double getDistanciaAte(double x1, double y1, double x2, double y2) {
+		double distance = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+		return distance;
+	}
 }
