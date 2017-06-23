@@ -23,6 +23,8 @@ public class Jogador extends ObjetoJogo {
 	private Time time;
 	private String nome;
 	private Point posicaoAtaque;
+	private Point posicaoDefesa;
+	private int folgaTesteColisaoJogador = 0;
 	
 	public Jogador() {
 		setW(TAMANHO_JOGADOR);
@@ -39,8 +41,9 @@ public class Jogador extends ObjetoJogo {
 	protected void desenha(Graphics2D g2) {
 		g2.setColor(getColor());
 		g2.fill(getGeometria());
-		g2.fillOval((int)getPosicaoAtaque().getX(), (int)getPosicaoAtaque().getY(), 10, 10);
 		g2.drawString(getNome(), (int)getX(), (int)getY());
+		g2.drawString(getDirecao()+"", (int)getX(), (int)getY()-20);
+		g2.draw(this.getGeometria().getBounds2D());
 	}
 	
 	@Override
@@ -49,22 +52,28 @@ public class Jogador extends ObjetoJogo {
 		if(colidiuComBola()){
 			aoColidirComBola();
 		}
-		if(colidiuComJogador()){
-			aoColidirComJogador();
+		Jogador j;
+		if((j = colidiuComJogador()) != null && folgaTesteColisaoJogador <= 0){
+			aoColidirComJogador(j);
+			folgaTesteColisaoJogador = 7;
 		}
+		folgaTesteColisaoJogador--;
 	}
 		
-	private void aoColidirComJogador() {
-		//setDirecao(getDirecao()+10);
+	private void aoColidirComJogador(Jogador j) {
+		double anguloAteJogador = GeometriaUtil.getDirecaoPara(getX(), getY(), j.getX(), j.getY());
+		double direcao = getDirecao();
+		double diff = (direcao - anguloAteJogador);
+		setDirecao(getDirecao() + (180 - diff));
 	}
 
-	private boolean colidiuComJogador() {
+	private Jogador colidiuComJogador() {
 		for(Jogador j : getCampo().getJogadores()){
-			if(j != this && j.getGeometria().intersects(this.getGeometria().getBounds())){
-				return true;
+			if(j != this && this.getGeometria().intersects(j.getGeometria().getBounds())){
+				return j;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	private void aoColidirComBola() {
@@ -113,6 +122,12 @@ public class Jogador extends ObjetoJogo {
 
 	public void atacar() {
 		apontarPara(getPosicaoAtaque().getX(), getPosicaoAtaque().getY());
+		setVelocidade(3);
+		setAceleracao(1);
+	}
+	
+	public void defender() {
+		apontarPara(getPosicaoDefesa().getX(), getPosicaoDefesa().getY());
 		setVelocidade(3);
 		setAceleracao(1);
 	}

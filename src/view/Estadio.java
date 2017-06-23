@@ -73,7 +73,10 @@ public class Estadio extends JFrame {
 		btnAddJogadorVisitante.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				campo.addJogador(System.currentTimeMillis()+"", "VISITANTE");
+				String nome = System.currentTimeMillis()+"";
+				campo.addJogador(nome, "VISITANTE");
+				Jogador visitante = campo.getJogador(nome);
+				visitante.setY(visitante.getY()-25);
 			}
 		});
 		
@@ -138,7 +141,7 @@ public class Estadio extends JFrame {
 		btnAvancarAtaque.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				campo.timeCasaAvancarAtaque();
+				campo.timeVisitanteAvancarAtaque();
 			}
 		});
 		

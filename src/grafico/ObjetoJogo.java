@@ -88,4 +88,12 @@ public abstract class ObjetoJogo {
 	public void apontarPara(double xdest, double ydest){
 		setDirecao(GeometriaUtil.getDirecaoPara(getX(), getY(), xdest, ydest));
 	}
+	
+	public void setDirecao(double direcao){
+		direcao = direcao % 360;
+		if (direcao < 0){
+		    direcao += 360;
+		}
+		this.direcao = direcao;
+	}
 }
