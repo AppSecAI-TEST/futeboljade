@@ -17,12 +17,15 @@ public class InfoAreasCampo {
 	private Area linhaDeFundo;
 	private Rectangle limitesGolEsquerda;
 	private Rectangle limitesGolDireita;
+	private Rectangle limitesGrandeAreaEsquerda;
+	private Rectangle limitesGrandeAreaDireita;
 	private Campo campo;
 	private Area campoJogavel;
 
 	public void inicializa(Campo campo){
 		this.campo = campo;
 		iniciaLimitesGols();
+		iniciaLimitesGrandesAreas();
 		iniciaCamposJogaveisOuNao();
 		iniciaLinhaDeFundo();
 	}
@@ -66,6 +69,20 @@ public class InfoAreasCampo {
 		getLimitesGolDireita().setLocation(
 				(int) (getLimitesDentroQuatroLinhas().getMaxX()),
 				(int) (getYMeio() - getLimitesGolEsquerda().getHeight()/2));
+	}
+	
+	private void iniciaLimitesGrandesAreas() {
+		int margemLinhaDeFundo = (int) getCampo().getGolEsquerda().getLimites().getWidth();
+		setLimitesGrandeAreaEsquerda(getCampo().getGrandeAreaEsquerda().getLimites());
+		getLimitesGrandeAreaEsquerda().setLocation(
+				getXBordaEsquerda()+1+margemLinhaDeFundo,
+				(int) (getYMeio() - getLimitesGrandeAreaEsquerda().getHeight()/2));
+		
+		int widthCampo = (int) getCampo().getGrandeAreaDireita().getLimites().getWidth();
+		setLimitesGrandeAreaDireita(getCampo().getGrandeAreaDireita().getLimites());
+		getLimitesGrandeAreaDireita().setLocation(
+				(int) (getLimitesDentroQuatroLinhas().getMaxX()-widthCampo),
+				(int) (getYMeio() - getLimitesGrandeAreaDireita().getHeight()/2));
 	}
 	
 	public Rectangle getLimitesDentroQuatroLinhas() {

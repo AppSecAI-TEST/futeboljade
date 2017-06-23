@@ -17,6 +17,7 @@ public class Time {
 	private Set<Jogador> jogadores = new HashSet<>();
 	private Color cor;
 	private Gol golAlvo;
+	private GrandeArea grandeAreaAlvo;
 	public Time(Color cor) {
 		this.cor = cor;
 	}
