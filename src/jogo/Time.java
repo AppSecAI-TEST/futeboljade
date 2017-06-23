@@ -14,18 +14,18 @@ public class Time implements Serializable {
 	@Getter
 	private final String nome;
 
-	@Getter @Setter
+	@Getter
+	@Setter
 	private Set<jogo.Jogador> jogadores = new HashSet<>();
 
 	public void addJogador(jogo.Jogador jogador) {
 		jogadores.add(jogador);
 	}
 
-	public Stream<Jogador> getParceirosDe(Jogador jogador){
-		System.out.println(jogador);
-		return jogadores.stream().filter(j->!j.equals(jogador));
+	public Stream<Jogador> getParceirosDe(Jogador jogador) {
+		return jogadores.stream().filter(j -> !j.equals(jogador) && j.getTime().equals(jogador.getTime()));
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

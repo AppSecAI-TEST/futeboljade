@@ -84,8 +84,8 @@ public class Jogador extends Agent implements Serializable {
 		System.out.println(getNome() + ": " + mensagem);
 	}
 
-	public void para() {
-		getCampo().notificaQueJogadorDeveParar(nome);
+	public void vaiProAtaque() {
+		getCampo().notificaQueJogadorDeveIrProAtaque(nome);
 	}
 
 	public void jogaComBola() {
@@ -104,6 +104,10 @@ public class Jogador extends Agent implements Serializable {
 
 	public Stream<Jogador> getParceiros() {
 		return getTime().getParceirosDe(this);
+	}
+
+	public void preparaParaReceberPasse() {
+		colisoesAtePegarBola = 1;
 	}
 
 }

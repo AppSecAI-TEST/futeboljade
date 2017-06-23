@@ -19,7 +19,7 @@ public class CampoListenerAdapter implements CampoAgentesListener {
 	}
 
 	@Override
-	public void jogadorDeveParar(String nome) {
+	public void jogadorDeveIrProAtaque(String nome) {
 	}
 
 	@Override

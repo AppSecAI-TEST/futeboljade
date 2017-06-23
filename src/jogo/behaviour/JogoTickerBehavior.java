@@ -1,5 +1,7 @@
 package jogo.behaviour;
 
+import java.util.Set;
+
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
@@ -23,21 +25,23 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void onTick() {
-		// getJogador().fala(getBehaviourName());
 		message = myAgent.receive();
-		// if (message != null)
-		// getJogador().fala("eu ouvi " + message.getContent() + " vinda de " +
-		// message.getSender().getLocalName());
-		Object msg = getJogador().getO2AObject();
-		if( msg != null ){
-			getJogador().fala("Mensagem: " + msg);
+		Object objetoMensagemVindaInterface = getJogador().getO2AObject();
+		if (objetoMensagemVindaInterface instanceof Set) {
+			Set<Jogador> jogadores = (Set<Jogador>) objetoMensagemVindaInterface;
+			getJogador().getTime().setJogadores(jogadores);
+		} else {
+			mensagemVindaDaInterface = (String) objetoMensagemVindaInterface;
 		}
-//		if (men instanceof Set) { // recebe os jogadores
-//			Set<Jogador> jogadores = (Set<Jogador>) men;
-//			getJogador().getTime().setJogadores(jogadores);
-//		}
-//		mensagemVindaDaInterface = (String) myAgent.getO2AObject();
+		log();
 		executaPassoJogo();
+	}
+
+	private void log() {
+		getJogador().fala(getBehaviourName());
+		getJogador().fala("Mensagem interface: " + mensagemVindaDaInterface);
+		if (message != null)
+			getJogador().fala("eu ouvi " + message.getContent() + " vinda de " + message.getSender().getLocalName());
 	}
 
 	abstract void executaPassoJogo();
@@ -61,9 +65,9 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 		return false;
 	}
 
-	protected boolean chutouBola() {
+	protected boolean disse(String evento) {
 		if (message != null) {
-			return Mensagens.CHUTEI.equals(message.getContent());
+			return evento.equals(message.getContent());
 		}
 		return false;
 	}

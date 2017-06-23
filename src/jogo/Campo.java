@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -46,7 +44,7 @@ public class Campo {
 						}
 					});
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(2000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -105,8 +103,8 @@ public class Campo {
 		listeners.forEach(listener -> listener.jogadorPegouBola(nome));
 	}
 
-	public void notificaQueJogadorDeveParar(String nome) {
-		listeners.forEach(listener -> listener.jogadorDeveParar(nome));
+	public void notificaQueJogadorDeveIrProAtaque(String nome) {
+		listeners.forEach(listener -> listener.jogadorDeveIrProAtaque(nome));
 	}
 
 	public void notificaJogadorDeveChutar(String nome, MovimentoBola movimentoBola) {
