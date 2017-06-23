@@ -42,6 +42,11 @@ public class PosicionadorJogador {
 	private void posicionar(Jogador jogador, Rectangle limitesCampo, Integer x, Integer y) {
 		Rectangle area = GeometriaUtil.getSubArea(limitesCampo, 2, 3, x % 2, y % 3);
 		jogador.setX(area.getCenterX() - jogador.getW() / 2).setY(area.getCenterY() - jogador.getH() / 2);
+		guardaPosicaoDefesa(jogador);
+	}
+
+	private void guardaPosicaoDefesa(Jogador jogador) {
+		jogador.setPosicaoDefesa(new Point((int)jogador.getX(), (int)jogador.getY()));
 	}
 	
 	private void guardaPosicaoAtaque(Jogador jogador, Rectangle limitesCampo, Integer x, Integer y) {

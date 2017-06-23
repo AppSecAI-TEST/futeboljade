@@ -4,8 +4,8 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 
 public class GeometriaUtil {
-	public static double getDirecaoPara(double d, double e, double f, double g) {
-		float angulo = (float) Math.toDegrees(Math.atan2(g - e, f - d));
+	public static double getDirecaoPara(double x1, double y1, double x2, double y2) {
+		float angulo = (float) Math.toDegrees(Math.atan2(y2 - y1, x2 - x1));
 		if (angulo < 0)
 			angulo += 360;
 		return angulo;
