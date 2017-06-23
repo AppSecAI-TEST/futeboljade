@@ -15,7 +15,7 @@ public class JogarBehaviour extends FSMBehaviour {
 	private static final byte PASSOU_BOLA = 4;
 	private static final byte PERDEU_OU_PASSOU_OU_CHUTOU_BOLA = 5;
 	public static final byte BOLA_EM_JOGO = 7;
-	public static final short TEMPO_ACAO = 300;
+	public static final short TEMPO_ACAO = 60;
 
 	public JogarBehaviour(Agent agent) {
 		super(agent);
@@ -86,8 +86,10 @@ public class JogarBehaviour extends FSMBehaviour {
 
 		@Override
 		protected void executaPassoJogo() {
-			getJogador().para();
-			if (chutouBola()) {
+			getJogador().vaiProAtaque();
+			if(disse(Mensagens.PASSEI) && mensagemMesmoTime())
+				getJogador().preparaParaReceberPasse();
+			if (disse(Mensagens.CHUTEI) || disse(Mensagens.PASSEI)) {
 				finalizaCom(PERDEU_OU_PASSOU_OU_CHUTOU_BOLA);
 			}
 		}

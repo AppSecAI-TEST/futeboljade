@@ -13,7 +13,7 @@ public class EstiloAleatorio implements EstiloDeJogo {
 
 	@Override
 	public int calculaErroDirecaoChute() {
-		int random = randomEntre1eh100();
+		int random = MathUtil.randomEntre1eh100();
 		if ((random % 2) == 0) {
 			return (int) (Math.random() * 20) + 10;
 		} else {
@@ -21,9 +21,6 @@ public class EstiloAleatorio implements EstiloDeJogo {
 		}
 	}
 
-	private int randomEntre1eh100() {
-		return (int) (Math.random() * 100) + 1;
-	}
 
 	@Override
 	public int calculaAceleracaoChute() {
@@ -37,19 +34,16 @@ public class EstiloAleatorio implements EstiloDeJogo {
 
 	@Override
 	public boolean devePassar() {
-		return true; // chanceDeXPorcento(4);
+		return chanceDeXPorcento(4);
 	}
 
-	private boolean chanceDeXPorcento(int porcentagem) {
-		if (porcentagem == 0)
-			porcentagem = Integer.MAX_VALUE;
-		int fator = 100 / porcentagem;
-		return randomEntre1eh100() % fator == 0;
+	private boolean chanceDeXPorcento(int chance) {
+		return MathUtil.randomEntre1eh100() < chance;
 	}
 
 	@Override
 	public Jogador selecionaColegaPassarBola(Stream<Jogador> parceiros) {
-		return parceiros.sorted((a, b) -> randomEntre1eh100() % 2 == 0 ? 1 : -1).findAny().orElse(Jogador.NULL);
+		return parceiros.sorted((a, b) -> MathUtil.randomEntre1eh100() % 2 == 0 ? 1 : -1).findAny().orElse(Jogador.NULL);
 	}
 
 }

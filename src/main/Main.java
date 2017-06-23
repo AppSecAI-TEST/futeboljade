@@ -20,6 +20,8 @@ public class Main {
 				
 				campo.adicionaJogador("1", "CASA");
 				campo.adicionaJogador("2", "CASA");
+				campo.adicionaJogador("3", "VISITANTE");
+				campo.adicionaJogador("4", "VISITANTE");
 			}
 		});
 		

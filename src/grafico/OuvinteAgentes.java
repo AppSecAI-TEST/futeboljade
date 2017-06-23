@@ -29,8 +29,8 @@ public class OuvinteAgentes implements CampoAgentesListener {
 	}
 	
 	@Override
-	public void jogadorDeveParar(String nome) {
-		campo.getJogador(nome).setVelocidade(0);
+	public void jogadorDeveIrProAtaque(String nome) {
+		campo.getJogador(nome).atacar();
 	}
 
 	@Override
