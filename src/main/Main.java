@@ -29,8 +29,8 @@ public class Main {
 //				campo.adicionaJogador("9", "VISITANTE");
 //				campo.adicionaJogador("10", "VISITANTE");
 				
-				campo.adicionaGoleiro("5", "CASA");
-				campo.adicionaGoleiro("6", "VISITANTE");
+//				campo.adicionaGoleiro("5", "CASA");
+//				campo.adicionaGoleiro("6", "VISITANTE");
 			}
 		});
 		
