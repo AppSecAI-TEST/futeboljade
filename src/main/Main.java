@@ -20,8 +20,15 @@ public class Main {
 				
 				campo.adicionaJogador("1", "CASA");
 				campo.adicionaJogador("2", "CASA");
-				campo.adicionaJogador("3", "VISITANTE");
-				campo.adicionaJogador("4", "VISITANTE");
+//				campo.adicionaJogador("3", "CASA");
+//				campo.adicionaJogador("4", "CASA");
+//				campo.adicionaJogador("5", "CASA");
+				campo.adicionaJogador("6", "VISITANTE");
+				campo.adicionaJogador("7", "VISITANTE");
+//				campo.adicionaJogador("8", "VISITANTE");
+//				campo.adicionaJogador("9", "VISITANTE");
+//				campo.adicionaJogador("10", "VISITANTE");
+				
 			}
 		});
 		

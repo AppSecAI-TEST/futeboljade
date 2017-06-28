@@ -26,6 +26,7 @@ import grafico.StatusJogo;
 import grafico.Time;
 import jogo.CampoAgentesListener;
 import jogo.MovimentoBola;
+import jogo.behaviour.Constants;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,7 +34,7 @@ import lombok.Setter;
 @Setter
 public class Campo extends Canvas {
 
-	public static final byte GAME_LOOP_SLEEP = 30;
+	public static final int GAME_LOOP_SLEEP = Constants.GAME_LOOP_SLEEP;
 	private static final Color COR_CAMPO = new Color(86, 188, 96);
 	private static final Color COR_LATERAIS = new Color(56, 158, 66);
 	private static final Color COR_CASA = new Color(255, 69, 28);

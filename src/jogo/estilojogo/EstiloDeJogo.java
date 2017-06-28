@@ -18,4 +18,6 @@ public interface EstiloDeJogo {
 
 	Jogador selecionaColegaPassarBola(Stream<Jogador> stream);
 
+	void movimentaComBola(Jogador jogador);
+
 }

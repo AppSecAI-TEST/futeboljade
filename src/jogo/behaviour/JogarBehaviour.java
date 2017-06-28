@@ -15,7 +15,7 @@ public class JogarBehaviour extends FSMBehaviour {
 	private static final byte PASSOU_BOLA = 4;
 	private static final byte PERDEU_OU_PASSOU_OU_CHUTOU_BOLA = 5;
 	public static final byte BOLA_EM_JOGO = 7;
-	public static final short TEMPO_ACAO = 60;
+	public static final short TEMPO_ACAO = Constants.GAME_LOOP_SLEEP;
 
 	public JogarBehaviour(Agent agent) {
 		super(agent);
@@ -47,7 +47,7 @@ public class JogarBehaviour extends FSMBehaviour {
 		private final class FinalizadorAoPegarBola extends JogadorListenerAdapter {
 			@Override
 			public void pegouBola() {
-				propaga(Mensagens.PEGUEI_BOLA);
+				propagaAoTime(Mensagens.PEGUEI_BOLA);
 				finalizaCom(PEGOU_BOLA);
 			}
 		}
@@ -59,9 +59,6 @@ public class JogarBehaviour extends FSMBehaviour {
 
 		@Override
 		protected void executaPassoJogo() {
-			if (pegouBola() && !mensagemMesmoJogador()) {
-				getJogador().reiniciaContagemColisoesAtePegarBola();
-			}
 			if (pegouBola() && mensagemMesmoTime()) {
 				finalizaCom(COLEGA_PEGOU_BOLA);
 			}
@@ -72,7 +69,6 @@ public class JogarBehaviour extends FSMBehaviour {
 		}
 
 		private void correAtrasDaBola() {
-			propaga(Mensagens.CORRENDO_ATRAS_DA_BOLA);
 			getJogador().correAtrasDaBola();
 		}
 
@@ -88,7 +84,7 @@ public class JogarBehaviour extends FSMBehaviour {
 		protected void executaPassoJogo() {
 			getJogador().vaiProAtaque();
 			if(disse(Mensagens.PASSEI) && mensagemMesmoTime())
-				getJogador().preparaParaReceberPasse();
+				getJogador().preparaPegarBola();
 			if (disse(Mensagens.CHUTEI) || disse(Mensagens.PASSEI)) {
 				finalizaCom(PERDEU_OU_PASSOU_OU_CHUTOU_BOLA);
 			}
@@ -102,7 +98,11 @@ public class JogarBehaviour extends FSMBehaviour {
 
 		@Override
 		protected void executaPassoJogo() {
-			propaga(Mensagens.TENHO_A_BOLA);
+			if (pegouBola() && !mensagemMesmoJogador()) {
+				getJogador().reiniciaContagemColisoesAtePegarBola();
+				finalizaCom(PERDEU_OU_PASSOU_OU_CHUTOU_BOLA);
+			}
+			propagaAoTime(Mensagens.TENHO_A_BOLA);
 			getJogador().getCampo().notificaJogadorPegouBola(getJogador().getNome());
 			getJogador().jogaComBola();
 			if (getJogador().chutou()) {
