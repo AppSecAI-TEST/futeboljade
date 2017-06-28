@@ -46,4 +46,8 @@ public class EstiloAleatorio implements EstiloDeJogo {
 		return parceiros.sorted((a, b) -> MathUtil.randomEntre1eh100() % 2 == 0 ? 1 : -1).findAny().orElse(Jogador.NULL);
 	}
 
+	@Override
+	public void movimentaComBola(Jogador jogador) {
+		jogador.vaiProAtaque();
+	}
 }

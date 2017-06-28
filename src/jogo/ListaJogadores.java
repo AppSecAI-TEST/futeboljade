@@ -10,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @RequiredArgsConstructor
-public class Time implements Serializable {
-	@Getter
-	private final String nome;
-
+public class ListaJogadores implements Serializable {
 	@Getter
 	@Setter
 	private Set<jogo.Jogador> jogadores = new HashSet<>();
@@ -27,15 +24,6 @@ public class Time implements Serializable {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((jogadores == null) ? 0 : jogadores.hashCode());
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		return result;
-	}
-
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -43,16 +31,11 @@ public class Time implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Time other = (Time) obj;
+		ListaJogadores other = (ListaJogadores) obj;
 		if (jogadores == null) {
 			if (other.jogadores != null)
 				return false;
 		} else if (!jogadores.equals(other.jogadores))
-			return false;
-		if (nome == null) {
-			if (other.nome != null)
-				return false;
-		} else if (!nome.equals(other.nome))
 			return false;
 		return true;
 	}

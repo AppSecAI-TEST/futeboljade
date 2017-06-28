@@ -20,6 +20,13 @@ public class Main {
 				
 				campo.adicionaJogador("1", "CASA");
 				campo.adicionaJogador("2", "CASA");
+<<<<<<< HEAD
+				campo.adicionaJogador("3", "VISITANTE");
+				campo.adicionaJogador("4", "VISITANTE");
+				
+				campo.adicionaGoleiro("5", "CASA");
+				campo.adicionaGoleiro("6", "VISITANTE");
+=
 //				campo.adicionaJogador("3", "CASA");
 //				campo.adicionaJogador("4", "CASA");
 //				campo.adicionaJogador("5", "CASA");
@@ -29,8 +36,7 @@ public class Main {
 //				campo.adicionaJogador("9", "VISITANTE");
 //				campo.adicionaJogador("10", "VISITANTE");
 				
-				campo.adicionaGoleiro("5", "CASA");
-				campo.adicionaGoleiro("6", "VISITANTE");
+>>>>>>> 1712e59636399e48bc13294bb0080cfe792b06ce
 			}
 		});
 		

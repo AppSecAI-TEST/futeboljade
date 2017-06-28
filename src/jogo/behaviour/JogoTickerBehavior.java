@@ -1,6 +1,7 @@
 package jogo.behaviour;
 
 import java.util.Set;
+import java.util.function.Predicate;
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -29,26 +30,32 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 		Object objetoMensagemVindaInterface = getJogador().getO2AObject();
 		if (objetoMensagemVindaInterface instanceof Set) {
 			Set<Jogador> jogadores = (Set<Jogador>) objetoMensagemVindaInterface;
-			getJogador().getTime().setJogadores(jogadores);
-		} else {
+			getJogador().getListaJogadores().setJogadores(jogadores);
+		} else if (objetoMensagemVindaInterface instanceof String) {
 			mensagemVindaDaInterface = (String) objetoMensagemVindaInterface;
+		} else {
+			mensagemVindaDaInterface = null;
 		}
 		log();
 		executaPassoJogo();
+		if (pegouBola() && mensagemMesmoJogador()) {
+			getJogador().reiniciaColisoesPraPegarBola();
+		}
 	}
 
 	private void log() {
-		getJogador().fala(getBehaviourName());
-		getJogador().fala("Mensagem interface: " + mensagemVindaDaInterface);
-		if (message != null)
-			getJogador().fala("eu ouvi " + message.getContent() + " vinda de " + message.getSender().getLocalName());
+		getJogador().debuga(getBehaviourName());
+		getJogador().debuga("Mensagem interface: " + mensagemVindaDaInterface);
+//		if (message != null)
+//		getJogador().fala("eu ouvi " + message.getContent() + " vinda de " +
+		// message.getSender().getLocalName());
 	}
 
 	abstract void executaPassoJogo();
 
 	@Override
 	public int onEnd() {
-		// getJogador().fala("Finaliza com " + transicao);
+		getJogador().debuga("Finaliza com " + transicao);
 		reset(JogarBehaviour.TEMPO_ACAO);
 		return transicao;
 	}
@@ -85,9 +92,7 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 		if (message != null) {
 			String parametroTime = message.getUserDefinedParameter("time");
 			if (parametroTime != null) {
-				String timeJogador = getJogador().getTime().getNome();
-				boolean estaNoMesmoTime = parametroTime.equals(timeJogador);
-				// não é o próprio jogador e está no mesmo time
+				boolean estaNoMesmoTime = parametroTime.equals(getJogador().getTime());
 				return !mensagemMesmoJogador() && estaNoMesmoTime;
 			}
 		}
@@ -101,20 +106,34 @@ abstract class JogoTickerBehavior extends TickerBehaviour {
 		return false;
 	}
 
-	protected void propaga(String conteudo) {
-		getAgent().send(mensagemPropagacao(conteudo));
+	protected boolean mensagemOutroJogador() {
+		return !mensagemMesmoJogador();
 	}
 
-	private ACLMessage mensagemPropagacao(String conteudo) {
+	protected void propaga(String conteudo) {
+		getAgent().send(mensagemPropagacao(conteudo, jogador -> outro(jogador)));
+	}
+
+	protected void propagaAoTime(String conteudo) {
+		getAgent().send(mensagemPropagacao(conteudo, jogador -> mesmoTime(jogador)));
+	}
+
+	private boolean mesmoTime(Jogador jogador) {
+		return outro(jogador) && jogador.getTime().equals(getJogador().getTime());
+	}
+
+	private boolean outro(Jogador jogador) {
+		return !jogador.getNome().equals(getJogador().getNome());
+	}
+
+
+	private ACLMessage mensagemPropagacao(String conteudo, Predicate<? super Jogador> predicate) {
 		ACLMessage message = new ACLMessage(ACLMessage.PROPAGATE);
-		getJogador().getCampo().getJogadores().forEach(nomeJogador -> {
-			if (!nomeJogador.equals(getJogador().getNome())) {
-				// getJogador().fala("Vou dizer para " + nomeJogador + " que " +
-				// conteudo);
-				message.addReceiver(new AID(nomeJogador, AID.ISLOCALNAME));
-			}
+		getJogador().getListaJogadores().getJogadores().stream().filter(predicate).forEach(jogador -> {
+			getJogador().debuga("vou notificar " + jogador.getNome() + " que " + conteudo);
+			message.addReceiver(new AID(jogador.getNome(), AID.ISLOCALNAME));
 		});
-		message.addUserDefinedParameter("time", getJogador().getTime().getNome());
+		message.addUserDefinedParameter("time", getJogador().getTime());
 		message.setContent(conteudo);
 		return message;
 	}

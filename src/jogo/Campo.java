@@ -71,7 +71,7 @@ public class Campo {
 			AgentController controller = mainContainer.createNewAgent(nome, Jogador.class.getName(), args);
 			controller.start();
 			jogadores.put(nome, controller);
-			jogadoresInformar.add(new Jogador(nome).setTime(new Time(time)));
+			jogadoresInformar.add(new Jogador(nome).setTime(time).setOutrosJogadores(new ListaJogadores()));
 		} catch (StaleProxyException e) {
 			throw new RuntimeException(e);
 		}
