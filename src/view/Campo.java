@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import grafico.Bola;
 import grafico.GeometriaUtil;
 import grafico.Gol;
+import grafico.GrandeArea;
 import grafico.InfoAreasCampo;
 import grafico.Jogador;
 import grafico.ObjetoJogo;
@@ -47,6 +48,8 @@ public class Campo extends Canvas {
 
 	private Gol golEsquerda;
 	private Gol golDireita;
+	private GrandeArea grandeAreaEsquerda;
+	private GrandeArea grandeAreaDireita;
 	private StatusJogo status;
 	private InfoAreasCampo infoAreasCampo;
 	private PosicionadorJogador posicionador;
@@ -61,6 +64,9 @@ public class Campo extends Canvas {
 
 		golEsquerda = new Gol();
 		golDireita = new Gol();
+		grandeAreaEsquerda = new GrandeArea();
+		grandeAreaDireita = new GrandeArea();
+		
 		objetosJogo.put("BOLA", new Bola());
 		ouvinteAgentes = new OuvinteAgentes(this);
 		listeners = new HashSet<>();
@@ -120,10 +126,13 @@ public class Campo extends Canvas {
 				infoAreasCampo.getXMeio(), (int) infoAreasCampo.getLimitesDentroQuatroLinhas().getMaxY());
 
 		g2.fillOval(infoAreasCampo.getXMeio() - 5, infoAreasCampo.getYMeio() - 5, 10, 10);
-		g2.drawOval(infoAreasCampo.getXMeio() - 30, infoAreasCampo.getYMeio() - 30, 60, 60);
+		g2.drawOval(infoAreasCampo.getXMeio() - 60, infoAreasCampo.getYMeio() - 60, 120, 120);
 
 		g2.draw(infoAreasCampo.getLimitesGolEsquerda());
 		g2.draw(infoAreasCampo.getLimitesGolDireita());
+		g2.draw(infoAreasCampo.getLimitesGrandeAreaEsquerda());
+		g2.draw(infoAreasCampo.getLimitesGrandeAreaDireita());
+		
 		g2.draw(infoAreasCampo.getLimitesDentroQuatroLinhas());
 
 		g2.setColor(COR_LATERAIS);
@@ -150,10 +159,14 @@ public class Campo extends Canvas {
 	}
 
 	public void addJogador(String nome, String nomeTime) {
-		if (casa == null)
+		if (casa == null){
 			casa = new Time(nomeTime).setCor(COR_CASA).setGolAlvo(golDireita);
-		else if (visitante == null)
+			casa.setGrandeAreaAlvo(grandeAreaDireita);
+		}
+		else if (visitante == null){
 			visitante = new Time(nomeTime).setCor(COR_VISITANTE).setGolAlvo(golEsquerda);
+			visitante.setGrandeAreaAlvo(grandeAreaEsquerda);
+		}
 
 		Time time = null;
 		Jogador jogador = new Jogador().setNome(nome);

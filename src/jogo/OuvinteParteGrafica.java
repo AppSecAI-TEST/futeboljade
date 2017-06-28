@@ -13,4 +13,14 @@ public class OuvinteParteGrafica implements CampoGraficoListener {
 		campo.jogadorColidiuComBola(nome);
 	}
 
+	@Override
+	public void jogadorEstaAXDistancia(String nome, double distancia) {
+		campo.jogadorEstaAXDistancia(nome, distancia);
+	}
+
+	@Override
+	public void jogadorEstaNaGrandeAreaAlvo(String nome) {
+		campo.jogadorEstaNaGrandeAreaAlvo(nome);
+	}
+
 }
