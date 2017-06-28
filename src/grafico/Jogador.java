@@ -1,6 +1,7 @@
 package grafico;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -17,6 +18,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain=true)
 public class Jogador extends ObjetoJogo {
 	
+	private static final int FOLGA_TESTE_COLISAO_JOGADOR = 7;
 	public static final Color COR_CASA = new Color(255, 51, 51);
 	public static final Color COR_VISITANTE = new Color(0, 170, 255);
 	public static final int TAMANHO_JOGADOR = 30;
@@ -40,7 +42,7 @@ public class Jogador extends ObjetoJogo {
 		avisaSeEstaNaGrandeArea();
 		avisaAQueDistanciaEstaDaBola();
 	}
-	
+
 	private void avisaAQueDistanciaEstaDaBola() {
 		ObjetoJogo bola = getCampo().getBola();
 		double distancia = GeometriaUtil.getDistanciaAte(getX(), getY(), bola.getX(), bola.getY());
@@ -78,11 +80,12 @@ public class Jogador extends ObjetoJogo {
 			aoColidirComBola();
 		}
 		Jogador j;
-		if((j = colidiuComJogador()) != null && folgaTesteColisaoJogador <= 0){
+		if((j = colidiuComJogador()) != null && getFolgaTesteColisaoJogador() <= 0){
 			aoColidirComJogador(j);
-			folgaTesteColisaoJogador = 7;
+			setFolgaTesteColisaoJogador(FOLGA_TESTE_COLISAO_JOGADOR);
 		}
-		folgaTesteColisaoJogador--;
+		setFolgaTesteColisaoJogador(getFolgaTesteColisaoJogador()-1);
+
 	}
 		
 	private void aoColidirComJogador(Jogador j) {

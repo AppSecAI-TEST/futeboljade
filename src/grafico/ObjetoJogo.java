@@ -14,6 +14,7 @@ import view.Campo;
 @Accessors(chain=true)
 public abstract class ObjetoJogo {
 
+	private static final int FOLGA_TESTE_COLISAO = 3;
 	private double x, y, w, h, direcao;
 	private double aceleracao, velocidade;
 	private Campo campo;
@@ -50,8 +51,7 @@ public abstract class ObjetoJogo {
 	protected void detectaColisao() {
 		if (colidiuComLaterais() && getFolgaTesteColisao() == 0) {
 			aoColidirComLaterais();
-			int tamanhoObjeto = (int) 3;
-			setFolgaTesteColisao(tamanhoObjeto);
+			setFolgaTesteColisao(FOLGA_TESTE_COLISAO);
 		}
 		if (getFolgaTesteColisao() > 0)
 			setFolgaTesteColisao(getFolgaTesteColisao() - 1);
