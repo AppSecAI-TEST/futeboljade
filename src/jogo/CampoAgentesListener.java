@@ -16,4 +16,6 @@ public interface CampoAgentesListener {
 
 	void jogadorDevePassar(String passador, String recebedor);
 
+	void goleiroAdicionado(String nome, String time);
+
 }

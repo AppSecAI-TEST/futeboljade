@@ -55,4 +55,18 @@ public class PosicionadorJogador {
 		double yAtaque = area.getCenterY() - jogador.getH() / 2;
 		jogador.setPosicaoAtaque(new Point((int)xAtaque, (int)yAtaque));
 	}
+
+	public void posicionaGoleiroCasa(Jogador goleiro) {
+		Rectangle limitesGrandeAreaEsquerda = campo.getInfoAreasCampo().getLimitesGrandeAreaEsquerda();
+		double x = limitesGrandeAreaEsquerda.getMinX();
+		double y = limitesGrandeAreaEsquerda.getMinY() + limitesGrandeAreaEsquerda.getHeight()/2 - goleiro.getW()/2;
+		goleiro.setX(x).setY(y);
+	}
+	
+	public void posicionaGoleiroVisitante(Jogador goleiro) {
+		Rectangle limitesGrandeAreaDireita = campo.getInfoAreasCampo().getLimitesGrandeAreaDireita();
+		double x = limitesGrandeAreaDireita.getMaxX()-goleiro.getW();
+		double y = limitesGrandeAreaDireita.getMinY() + limitesGrandeAreaDireita.getHeight()/2 - goleiro.getW()/2;
+		goleiro.setX(x).setY(y);
+	}
 }

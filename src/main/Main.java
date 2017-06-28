@@ -22,6 +22,9 @@ public class Main {
 				campo.adicionaJogador("2", "CASA");
 				campo.adicionaJogador("3", "VISITANTE");
 				campo.adicionaJogador("4", "VISITANTE");
+				
+				campo.adicionaGoleiro("5", "CASA");
+				campo.adicionaGoleiro("6", "VISITANTE");
 			}
 		});
 		

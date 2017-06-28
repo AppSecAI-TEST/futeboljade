@@ -143,6 +143,24 @@ public class Estadio extends JFrame {
 			}
 		});
 		
+		JButton addGoleiroCasa = new JButton("ADD GOLEIRO CASA");
+		barraTestes.add(addGoleiroCasa);
+		addGoleiroCasa.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				campo.addGoleiroCasa("casa_goleiro");
+			}
+		});
+		
+		JButton addGoleiroVisitante = new JButton("ADD GOLEIRO VISITANTE");
+		barraTestes.add(addGoleiroVisitante);
+		addGoleiroVisitante.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				campo.addGoleiroVisitante("visitante_goleiro");
+			}
+		});
+		
 		return barraTestes;
 	}
 

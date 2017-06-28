@@ -160,4 +160,5 @@ public class Jogador extends ObjetoJogo {
 		setAceleracao(1);
 	}
 
+
 }

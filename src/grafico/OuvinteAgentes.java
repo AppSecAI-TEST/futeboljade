@@ -15,8 +15,12 @@ public class OuvinteAgentes implements CampoAgentesListener {
 	}
 
 	@Override
-	public void jogadorAdicionado(String nomeJogador, String time) {
+	public void jogadorAdicionado(String nomeJogador, String time) {		
 		campo.addJogador(nomeJogador, time);
+	}
+	@Override
+	public void goleiroAdicionado(String nomeGoleiro, String time) {
+		campo.addGoleiro(nomeGoleiro, time);
 	}
 
 	@Override
@@ -43,5 +47,4 @@ public class OuvinteAgentes implements CampoAgentesListener {
 		System.out.println(passador + " " + recebedor);
 		campo.getJogador(passador).passarPara(recebedor);
 	}
-
 }

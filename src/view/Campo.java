@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import grafico.Bola;
 import grafico.GeometriaUtil;
 import grafico.Gol;
+import grafico.Goleiro;
 import grafico.GrandeArea;
 import grafico.InfoAreasCampo;
 import grafico.Jogador;
@@ -55,6 +56,8 @@ public class Campo extends Canvas {
 	private CampoAgentesListener ouvinteAgentes;
 	private Set<CampoGraficoListener> listeners;
 	private Jogador jogadorComBola;
+	private Goleiro goleiroCasa;
+	private Goleiro goleiroVisitante;
 
 	public Campo() {
 		infoAreasCampo = new InfoAreasCampo();
@@ -66,7 +69,7 @@ public class Campo extends Canvas {
 		grandeAreaEsquerda = new GrandeArea();
 		grandeAreaDireita = new GrandeArea();
 		
-		objetosJogo.put("BOLA", new Bola());
+		addObjetoJogo("BOLA", new Bola());
 		ouvinteAgentes = new OuvinteAgentes(this);
 		listeners = new HashSet<>();
 	}
@@ -169,8 +172,7 @@ public class Campo extends Canvas {
 
 		Time time = null;
 		Jogador jogador = new Jogador().setNome(nome);
-		jogador.setCampo(this);
-		objetosJogo.put(jogador.getNome(), jogador);
+		addObjetoJogo(jogador.getNome(), jogador);
 		if (nomeTime.equals(casa.getNome())) {
 			posicionador.posicionaJogadorCasa(jogador);
 			time = casa;
@@ -186,8 +188,7 @@ public class Campo extends Canvas {
 		Bola bola = new Bola();
 		bola.setX(infoAreasCampo.getXMeio());
 		bola.setY(infoAreasCampo.getYMeio());
-		objetosJogo.put("BOLA", bola);
-		bola.setCampo(this);
+		addObjetoJogo("BOLA", bola);		
 	}
 
 	public void jogadorSeguirBola(String nome) {
@@ -261,5 +262,32 @@ public class Campo extends Canvas {
 			j.atacar();
 		});
 	}
+	
+	public void addGoleiro(String nome, String time) {
+		if(time.equals("CASA"))
+			addGoleiroCasa(nome);
+		if(time.equals("VISITANTE"))
+			addGoleiroVisitante(nome);
+	}
 
+	public void addGoleiroCasa(String nome) {
+		goleiroCasa = new Goleiro(casa);
+		goleiroCasa.setNome(nome);
+		posicionador.posicionaGoleiroCasa(goleiroCasa);
+		goleiroCasa.setGrandeAreaDefender(grandeAreaEsquerda);
+		addObjetoJogo(goleiroCasa.getNome(), goleiroCasa);
+	}
+	
+	public void addGoleiroVisitante(String nome) {
+		goleiroVisitante = new Goleiro(visitante);
+		goleiroVisitante.setNome(nome);
+		goleiroVisitante.setGrandeAreaDefender(grandeAreaDireita);
+		posicionador.posicionaGoleiroVisitante(goleiroVisitante);
+		addObjetoJogo(goleiroVisitante.getNome(), goleiroVisitante);
+	}
+	
+	private void addObjetoJogo(String nome, ObjetoJogo o){
+		o.setCampo(this);
+		getObjetosJogo().put(nome, o);
+	}
 }

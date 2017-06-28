@@ -8,4 +8,6 @@ public interface CampoGraficoListener {
 
 	void jogadorEstaNaGrandeAreaAlvo(String nome);
 
+	void bolaEstaNaGrandeAreaDoTime(String nome);
+
 }

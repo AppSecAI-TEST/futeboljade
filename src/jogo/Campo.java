@@ -20,6 +20,8 @@ public class Campo {
 	private Map<String, AgentController> jogadores;
 	private Set<Jogador> jogadoresInformar;
 	private Set<CampoAgentesListener> listeners;
+	private Map<String, AgentController> goleiros;
+	
 	@Getter
 	private boolean bolaEmJogo;
 
@@ -31,6 +33,7 @@ public class Campo {
 		jogadores = new HashMap<>();
 		jogadoresInformar = new HashSet<>();
 		listeners = new HashSet<>();
+		goleiros = new HashMap<>();
 		
 		new Thread(new Runnable() {
 			@Override
@@ -126,6 +129,24 @@ public class Campo {
 	public void jogadorEstaNaGrandeAreaAlvo(String nome) {
 		AgentController agentController = jogadores.get(nome);
 		agentController.putO2AObject("chegou_na_grande_area_alvo:"+nome, false);
+	}
+
+	public void bolaEstaNoGrandeAreaDoTime(String time) {
+		/*AgentController agentController = jogadores.get(nome);
+		agentController.putO2AObject("chegou_na_grande_area_alvo:"+nome, false);*/
+	}
+
+	@SneakyThrows
+	public void adicionaGoleiro(String nome, String time) {
+		try{
+			AgentController goleiroController = mainContainer
+					.createNewAgent(nome, GoleiroAgent.class.getName(), 
+				new String[]{nome, time});
+			goleiros.put(nome, goleiroController);
+			listeners.forEach(listener -> listener.goleiroAdicionado(nome, time));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
