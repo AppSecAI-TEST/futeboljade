@@ -6,6 +6,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import jogo.MovimentoBola;
 import lombok.Getter;
@@ -26,7 +28,7 @@ public class Jogador extends ObjetoJogo {
 	private Time time;
 	private String nome;
 	private Point posicaoAtaque, posicaoDefesa;
-	private int folgaTesteColisaoJogador = 0;
+	private int folgaTesteColisaoJogador = 0;	
 
 	public Jogador() {
 		setW(TAMANHO_JOGADOR);
@@ -39,6 +41,20 @@ public class Jogador extends ObjetoJogo {
 		detectaColisao();
 		avisaSeEstaNaGrandeArea();
 		avisaAQueDistanciaEstaDaBola();
+		avisaSeEstaNoAtaque();
+		avisaJogadoresAFrente();
+	}
+
+	private void avisaJogadoresAFrente() {
+		List<Jogador> jogadores = getTime().getJogadoresAFrente(this);
+		List<String> names = jogadores.stream().map(Jogador::getNome).collect(Collectors.toList());
+		getCampo().avisaJogadoresAFrente(names);
+	}
+
+	private void avisaSeEstaNoAtaque() {
+		if(getGeometria().getBounds().intersects(getTime().getCampoAtaque().getArea())){
+			getCampo().avisaJogadorEstaNoAtaque(this);
+		}
 	}
 
 	private void avisaAQueDistanciaEstaDaBola() {

@@ -1,5 +1,7 @@
 package view;
 
+import java.util.List;
+
 public interface CampoGraficoListener {
 
 	void jogadorColidiuComBola(String nome);
@@ -13,4 +15,8 @@ public interface CampoGraficoListener {
     void bolaNaoEstaNaGrandeAreaDoTime(String nome);
     
     void bolaSaiu();
+
+	void jogadorEstaNoAtaque(String nome);
+
+	void jogadoresAFrente(List<String> nomes);
 }
