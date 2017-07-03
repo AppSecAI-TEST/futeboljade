@@ -20,4 +20,5 @@ public interface EstiloDeJogo {
 
 	void movimentaComBola(Jogador jogador);
 
+    boolean deveCorrerAtrasDaBola(Jogador jogador);
 }

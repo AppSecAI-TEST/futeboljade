@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 import jade.core.Agent;
 import jade.util.leap.Serializable;
 import jogo.behaviour.Constants;
-import jogo.behaviour.JogarBehaviour;
+import jogo.behaviour.JogadorBehaviour;
 import jogo.estilojogo.EstiloDeJogo;
 import jogo.estilojogo.EstiloDeJogoFactory;
 import lombok.Getter;
@@ -15,8 +15,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 public class Jogador extends Agent implements Serializable {
-	private static final short COLISOES_ATE_PEGAR_BOLA = 5;
-	private static final int QUANTIDADE_MENSAGENS_FILA = 1;
+	private static final int QUANTIDADE_MENSAGENS_FILA = 3;
 	public static final Jogador NULL = new Jogador("nulo");
 	@Getter
 	@Setter @Accessors(chain=true)
@@ -26,10 +25,13 @@ public class Jogador extends Agent implements Serializable {
 	@Getter
 	@Setter @Accessors(chain=true)
 	private Campo campo;
+	@Setter
 	private EstiloDeJogo estiloDeJogo;
 	private Set<JogadorListener> listeners;
-	private int colisoesAtePegarBola = COLISOES_ATE_PEGAR_BOLA;
-	
+	private int colisoesAtePegarBola;
+	@Getter
+	@Setter @Accessors(chain=true)
+	private float distanciaBola;
 	@Getter @Setter @Accessors(chain=true)
 	private String time;
 
@@ -45,8 +47,13 @@ public class Jogador extends Agent implements Serializable {
 		setOutrosJogadores(new ListaJogadores());
 		setTime((String) arguments[1]);
 		setCampo((Campo) arguments[2]);
-		addBehaviour(new JogarBehaviour(this));
 		setEnabledO2ACommunication(true, QUANTIDADE_MENSAGENS_FILA);
+		reiniciaColisoesPraPegarBola();
+		configuraComportamento();
+	}
+
+	protected void configuraComportamento() {
+		addBehaviour(new JogadorBehaviour(this));
 	}
 
 	public Jogador() {
@@ -65,33 +72,42 @@ public class Jogador extends Agent implements Serializable {
 		return this;
 	}
 
-	public void correAtrasDaBola() {
-		getCampo().mostraJogadorCorrendoAtrasDaBolaIgualUmTanso(this);
+	public void jogaSemBola() {
+		if(estiloDeJogo.deveCorrerAtrasDaBola(this)) {
+			getCampo().mostraJogadorCorrendoAtrasDaBolaIgualUmTanso(this);
+		} else {
+			System.out.println("defender......................");
+			defender();
+		}
 	}
 
 	public void setColidiuComBola() {
 		colisoesAtePegarBola--;
 		if (colisoesAtePegarBola == 0) {
-			colisoesAtePegarBola = COLISOES_ATE_PEGAR_BOLA;
+			colisoesAtePegarBola = getColisoesAtePegarBola();
 			listeners.forEach(listener -> listener.pegouBola());
 		}
+	}
+
+	protected int getColisoesAtePegarBola() {
+		return 5;
 	}
 
 	public void addListener(JogadorListener jogadorListener) {
 		this.listeners.add(jogadorListener);
 	}
 
-	public void reiniciaContagemColisoesAtePegarBola() {
-		colisoesAtePegarBola = COLISOES_ATE_PEGAR_BOLA;
-	}
-
-	public void debuga(String mensagem) {
+	public void debugaSeAtivo(String mensagem) {
 		if(Constants.DEBUG)
 			System.out.println(getNome() + ": " + mensagem);
 	}
 
-	public void vaiProAtaque() {
-		getCampo().notificaQueJogadorDeveIrProAtaque(nome);
+	public void atacar() {
+		getCampo().notificaQueJogadorDeveAtacar(nome);
+	}
+	
+	public void defender() {
+		getCampo().notificaQueJogadorDeveDefender(nome);
 	}
 
 	public void jogaComBola() {
@@ -106,6 +122,7 @@ public class Jogador extends Agent implements Serializable {
 		} else if (estiloDeJogo.devePassar()) {
 			String recebedor = estiloDeJogo.selecionaColegaPassarBola(getParceiros()).getNome();
 			getCampo().notificaJogadorDevePassar(nome, recebedor);
+			reiniciaColisoesPraPegarBola();
 			passou(true);
 		}
 	}
@@ -119,11 +136,14 @@ public class Jogador extends Agent implements Serializable {
 	}
 
 	public void reiniciaColisoesPraPegarBola() {
-		colisoesAtePegarBola = COLISOES_ATE_PEGAR_BOLA;
+		colisoesAtePegarBola = getColisoesAtePegarBola() * 2;
 	}
 	
 	public void preparaPegarBola() {
 		colisoesAtePegarBola = 1;
 	}
 
+	public void informaEstado(String nome, String estado) {
+		getCampo().informaEstado(nome, estado);
+	}
 }

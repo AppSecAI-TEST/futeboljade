@@ -10,7 +10,9 @@ public interface CampoAgentesListener {
 
 	void jogadorPegouBola(String nome);
 
-	void jogadorDeveIrProAtaque(String nome);
+	void jogadorDeveAtacar(String nome);
+
+	void jogadorDeveDefender(String nome);
 
 	void jogadorDeveChutar(String nome, MovimentoBola movimentoBola);
 
@@ -18,4 +20,5 @@ public interface CampoAgentesListener {
 
 	void goleiroAdicionado(String nome, String time);
 
+    void informaEstado(String nome, String estado);
 }

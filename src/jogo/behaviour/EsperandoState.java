@@ -2,16 +2,16 @@ package jogo.behaviour;
 
 import jade.core.Agent;
 
-public class EsperandoState extends JogoTickerBehavior {
+public class EsperandoState extends JogadorTickerBehavior {
 
 		public EsperandoState(Agent a, long period) {
 			super(a, period);
 		}
 
 		@Override
-		protected void executaPassoJogo() {
+		protected void executaEstado() {
 			if (bolaEmJogo())
-				finalizaCom(JogarBehaviour.BOLA_EM_JOGO);
+				finalizaCom(JogadorBehaviour.BOLA_EM_JOGO);
 		}
 
 		private boolean bolaEmJogo() {

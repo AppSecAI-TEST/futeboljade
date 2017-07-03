@@ -20,8 +20,8 @@ public class Campo {
 	private Map<String, AgentController> jogadores;
 	private Set<Jogador> jogadoresInformar;
 	private Set<CampoAgentesListener> listeners;
-	private Map<String, AgentController> goleiros;
-	
+	private static final boolean BLOCKING = false;
+
 	@Getter
 	private boolean bolaEmJogo;
 
@@ -33,15 +33,14 @@ public class Campo {
 		jogadores = new HashMap<>();
 		jogadoresInformar = new HashSet<>();
 		listeners = new HashSet<>();
-		goleiros = new HashMap<>();
 		
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while(true){
+				while (true) {
 					jogadores.values().forEach(j -> {
 						try {
-							j.putO2AObject(jogadoresInformar, false);
+							j.putO2AObject(jogadoresInformar, BLOCKING);
 						} catch (StaleProxyException e) {
 							e.printStackTrace();
 						}
@@ -61,21 +60,28 @@ public class Campo {
 		listeners.forEach(CampoAgentesListener::bolaEmJogo);
 	}
 
-	public void adicionaJogador(String nome) {
-		adicionaJogador(nome, "Sem Time");
+	public void adicionaJogador(String nome, String time) {
+		adicionaJogador(nome, time, Jogador.class.getName());
 	}
 
-	public void adicionaJogador(String nome, String time) {
+	public void adicionaGoleiro(String nome, String time) {
+		adicionaJogador(nome, time, Goleiro.class.getName());
+	}
+
+	public void adicionaJogador(String nome, String time, String className) {
 		Object[] args = new Object[] { nome, time, this };
 		try {
-			AgentController controller = mainContainer.createNewAgent(nome, Jogador.class.getName(), args);
+			AgentController controller = mainContainer.createNewAgent(nome, className, args);
 			controller.start();
 			jogadores.put(nome, controller);
 			jogadoresInformar.add(new Jogador(nome).setTime(time).setOutrosJogadores(new ListaJogadores()));
 		} catch (StaleProxyException e) {
 			throw new RuntimeException(e);
 		}
-		notificaJogadorAdicionado(nome, time);
+		if (className.equals(Goleiro.class.getName()))
+			notificaGoleiroAdicionado(nome, time);
+		else
+			notificaJogadorAdicionado(nome, time);
 	}
 
 	public void addListener(CampoAgentesListener jogoListener) {
@@ -91,23 +97,27 @@ public class Campo {
 	@SneakyThrows
 	public void jogadorColidiuComBola(String nome) {
 		AgentController agentController = jogadores.get(nome);
-		agentController.putO2AObject("colidiu_com_bola", false);
-	}
-
-	public Set<String> getJogadores() {
-		return jogadores.keySet();
+		agentController.putO2AObject("colidiu_com_bola", BLOCKING);
 	}
 
 	private void notificaJogadorAdicionado(String nome, String time) {
 		listeners.forEach(listener -> listener.jogadorAdicionado(nome, time));
 	}
 
+	private void notificaGoleiroAdicionado(String nome, String time) {
+		listeners.forEach(listener -> listener.goleiroAdicionado(nome, time));
+	}
+
 	public void notificaJogadorPegouBola(String nome) {
 		listeners.forEach(listener -> listener.jogadorPegouBola(nome));
 	}
 
-	public void notificaQueJogadorDeveIrProAtaque(String nome) {
-		listeners.forEach(listener -> listener.jogadorDeveIrProAtaque(nome));
+	public void notificaQueJogadorDeveAtacar(String nome) {
+		listeners.forEach(listener -> listener.jogadorDeveAtacar(nome));
+	}
+	
+	public void notificaQueJogadorDeveDefender(String nome) {
+		listeners.forEach(listener -> listener.jogadorDeveDefender(nome));
 	}
 
 	public void notificaJogadorDeveChutar(String nome, MovimentoBola movimentoBola) {
@@ -116,37 +126,46 @@ public class Campo {
 
 	public void notificaJogadorDevePassar(String passador, String recebedor) {
 		listeners.forEach(listener -> listener.jogadorDevePassar(passador, recebedor));
-
 	}
 
 	@SneakyThrows
 	public void jogadorEstaAXDistancia(String nome, double distanciaX) {
 		AgentController agentController = jogadores.get(nome);
-		agentController.putO2AObject("distancia_bola:"+distanciaX, false);
+		agentController.putO2AObject("distancia_bola:" + distanciaX, BLOCKING);
 	}
 
 	@SneakyThrows
 	public void jogadorEstaNaGrandeAreaAlvo(String nome) {
 		AgentController agentController = jogadores.get(nome);
-		agentController.putO2AObject("chegou_na_grande_area_alvo:"+nome, false);
-	}
-
-	public void bolaEstaNoGrandeAreaDoTime(String time) {
-		/*AgentController agentController = jogadores.get(nome);
-		agentController.putO2AObject("chegou_na_grande_area_alvo:"+nome, false);*/
+		agentController.putO2AObject("chegou_na_grande_area_alvo:" + nome, BLOCKING);
 	}
 
 	@SneakyThrows
-	public void adicionaGoleiro(String nome, String time) {
-		try{
-			AgentController goleiroController = mainContainer
-					.createNewAgent(nome, GoleiroAgent.class.getName(), 
-				new String[]{nome, time});
-			goleiros.put(nome, goleiroController);
-			listeners.forEach(listener -> listener.goleiroAdicionado(nome, time));
-		}catch (Exception e) {
-			e.printStackTrace();
+	public void bolaEstaNaGrandeAreaDoTime(String time) {
+		if(!jogadores.isEmpty()){
+			jogadores.forEach((j, ac) -> {
+				try {
+					ac.putO2AObject("chegou_na_grande_area_alvo:" + time, BLOCKING);
+				} catch (StaleProxyException e) {
+					e.printStackTrace();
+				}
+			});
 		}
 	}
 
+	public void bolaNaoEstaNaGrandeAreaDoTime(String time) {
+		if(!jogadores.isEmpty()){
+			jogadores.forEach((j, ac) -> {
+				try {
+					ac.putO2AObject("saiu_da_area:" + time, BLOCKING);
+				} catch (StaleProxyException e) {
+					e.printStackTrace();
+				}
+			});
+		}
+	}
+
+	public void informaEstado(String nome, String estado) {
+		listeners.forEach(l->l.informaEstado(nome, estado));
+	}
 }

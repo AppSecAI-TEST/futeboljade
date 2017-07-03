@@ -48,6 +48,11 @@ public class EstiloAleatorio implements EstiloDeJogo {
 
 	@Override
 	public void movimentaComBola(Jogador jogador) {
-		jogador.vaiProAtaque();
+		jogador.atacar();
+	}
+
+	@Override
+	public boolean deveCorrerAtrasDaBola(Jogador jogador) {
+		return jogador.getDistanciaBola() < 150;
 	}
 }

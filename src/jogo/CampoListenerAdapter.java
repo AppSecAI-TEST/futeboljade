@@ -19,7 +19,11 @@ public class CampoListenerAdapter implements CampoAgentesListener {
 	}
 
 	@Override
-	public void jogadorDeveIrProAtaque(String nome) {
+	public void jogadorDeveAtacar(String nome) {
+	}
+
+	@Override
+	public void jogadorDeveDefender(String nome) {
 	}
 
 	@Override
@@ -31,7 +35,10 @@ public class CampoListenerAdapter implements CampoAgentesListener {
 
 	@Override
 	public void goleiroAdicionado(String nome, String time) {
-		
+	}
+
+	@Override
+	public void informaEstado(String nome, String estado) {
 	}
 
 }

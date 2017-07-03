@@ -41,8 +41,7 @@ public class PosicionadorJogador {
 
 	private void posicionar(Jogador jogador, Rectangle limitesCampo, Integer x, Integer y) {
 		Rectangle area = GeometriaUtil.getSubArea(limitesCampo, 2, 3, x % 2, y % 3);
-		jogador.setX(area.getCenterX() - jogador.getW() / 2).setY(area.getCenterY() - jogador.getH() / 2);
-		guardaPosicaoDefesa(jogador);
+		posicionaInicioJogo(jogador, area.getCenterX() - jogador.getW() / 2, area.getCenterY() - jogador.getH() / 2);
 	}
 
 	private void guardaPosicaoDefesa(Jogador jogador) {
@@ -60,13 +59,22 @@ public class PosicionadorJogador {
 		Rectangle limitesGrandeAreaEsquerda = campo.getInfoAreasCampo().getLimitesGrandeAreaEsquerda();
 		double x = limitesGrandeAreaEsquerda.getMinX();
 		double y = limitesGrandeAreaEsquerda.getMinY() + limitesGrandeAreaEsquerda.getHeight()/2 - goleiro.getW()/2;
-		goleiro.setX(x).setY(y);
+		posicionaInicioJogo(goleiro, x, y);
+		int xAtaque = (int) limitesGrandeAreaEsquerda.getMaxX();
+		guardaPosicaoAtaque(goleiro, limitesGrandeAreaEsquerda, xAtaque, (int) y);
 	}
-	
+
 	public void posicionaGoleiroVisitante(Jogador goleiro) {
 		Rectangle limitesGrandeAreaDireita = campo.getInfoAreasCampo().getLimitesGrandeAreaDireita();
 		double x = limitesGrandeAreaDireita.getMaxX()-goleiro.getW();
 		double y = limitesGrandeAreaDireita.getMinY() + limitesGrandeAreaDireita.getHeight()/2 - goleiro.getW()/2;
-		goleiro.setX(x).setY(y);
+		posicionaInicioJogo(goleiro, x, y);
+		int xAtaque = (int) limitesGrandeAreaDireita.getMinX();
+		guardaPosicaoAtaque(goleiro, limitesGrandeAreaDireita, xAtaque, (int) y);
+	}
+
+	private void posicionaInicioJogo(Jogador jogador, double x, double y) {
+		jogador.setX(x).setY(y);
+		guardaPosicaoDefesa(jogador);
 	}
 }

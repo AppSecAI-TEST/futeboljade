@@ -6,7 +6,11 @@ public class EstiloDeJogoFactory {
 		return new EstiloAleatorio();
 //		return new EstiloAleatorioFominha();
 	}
-	
+
+	public static EstiloDeJogo criaEstiloDeJogoGoleiro() {
+		return new EstiloDeJogoGoleiro();
+	}
+
 //	public static EstiloDeJogo estiloAleatorioFominha() {
 //	}
 

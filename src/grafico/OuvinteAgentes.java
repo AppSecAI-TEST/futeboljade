@@ -24,6 +24,11 @@ public class OuvinteAgentes implements CampoAgentesListener {
 	}
 
 	@Override
+	public void informaEstado(String nome, String estado) {
+		campo.getJogador(nome).setInfo(estado);
+	}
+
+	@Override
 	public void bolaEmJogo() {
 	}
 
@@ -33,8 +38,13 @@ public class OuvinteAgentes implements CampoAgentesListener {
 	}
 	
 	@Override
-	public void jogadorDeveIrProAtaque(String nome) {
+	public void jogadorDeveAtacar(String nome) {
 		campo.getJogador(nome).atacar();
+	}
+
+	@Override
+	public void jogadorDeveDefender(String nome) {
+		campo.getJogador(nome).defender();
 	}
 
 	@Override
@@ -44,7 +54,6 @@ public class OuvinteAgentes implements CampoAgentesListener {
 
 	@Override
 	public void jogadorDevePassar(String passador, String recebedor) {
-		System.out.println(passador + " " + recebedor);
 		campo.getJogador(passador).passarPara(recebedor);
 	}
 }

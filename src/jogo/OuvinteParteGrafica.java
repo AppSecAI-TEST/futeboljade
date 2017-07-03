@@ -25,7 +25,12 @@ public class OuvinteParteGrafica implements CampoGraficoListener {
 
 	@Override
 	public void bolaEstaNaGrandeAreaDoTime(String time) {
-		campo.bolaEstaNoGrandeAreaDoTime(time);
+		campo.bolaEstaNaGrandeAreaDoTime(time);
+	}
+
+	@Override
+	public void bolaNaoEstaNaGrandeAreaDoTime(String time) {
+		campo.bolaNaoEstaNaGrandeAreaDoTime(time);
 	}
 
 }

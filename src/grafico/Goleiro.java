@@ -2,11 +2,11 @@ package grafico;
 
 import java.awt.Rectangle;
 
-import lombok.Data;
+import lombok.Setter;
 
-@Data
 public class Goleiro extends Jogador {
 	
+	@Setter
 	private GrandeArea grandeAreaDefender;
 
 	public Goleiro(Time time) {
@@ -21,11 +21,15 @@ public class Goleiro extends Jogador {
 	}
 
 	private void verificaSeBolaEstaNaArea() {
-		Rectangle bola = getCampo().getBola().getGeometria().getBounds();
-		Rectangle minhaArea = grandeAreaDefender.getLimites();
-		if(minhaArea.contains(bola)){
+		if(bolaEstaNaArea()){
 			getCampo().getListeners().forEach(l->l.bolaEstaNaGrandeAreaDoTime(getTime().getNome()));
 		}
 	}
-	
+
+	private boolean bolaEstaNaArea() {
+		Rectangle bola = getCampo().getBola().getGeometria().getBounds();
+		Rectangle minhaArea = grandeAreaDefender.getLimites();
+		return minhaArea.contains(bola);
+	}
+
 }

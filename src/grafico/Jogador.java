@@ -1,7 +1,6 @@
 package grafico;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -26,10 +25,9 @@ public class Jogador extends ObjetoJogo {
 	private Color color;
 	private Time time;
 	private String nome;
-	private Point posicaoAtaque;
-	private Point posicaoDefesa;
+	private Point posicaoAtaque, posicaoDefesa;
 	private int folgaTesteColisaoJogador = 0;
-	
+
 	public Jogador() {
 		setW(TAMANHO_JOGADOR);
 		setH(TAMANHO_JOGADOR);
@@ -63,13 +61,14 @@ public class Jogador extends ObjetoJogo {
 		this.nome = nome;
 		this.color = color;
 	}
-	
+
 	@Override
 	protected void desenha(Graphics2D g2) {
 		g2.setColor(getColor());
 		g2.fill(getGeometria());
-		g2.drawString(getNome(), (int)getX(), (int)getY());
-		g2.drawString(getDirecao()+"", (int)getX(), (int)getY()-20);
+		g2.drawString(getNome(), (int) getX(), (int) getY());
+		g2.drawString(getDirecao() + "", (int) getX(), (int) getY() - 20);
+		g2.drawString(getInfo() + "", (int) getX(), (int) getY() - 40);
 		g2.draw(this.getGeometria().getBounds2D());
 	}
 	
@@ -159,6 +158,5 @@ public class Jogador extends ObjetoJogo {
 		setVelocidade(3);
 		setAceleracao(1);
 	}
-
 
 }

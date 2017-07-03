@@ -162,16 +162,8 @@ public class Campo extends Canvas {
 	}
 
 	public void addJogador(String nome, String nomeTime) {
-		if (casa == null){
-			casa = new Time(nomeTime).setCor(COR_CASA).setGolAlvo(golDireita);
-			casa.setGrandeAreaAlvo(grandeAreaDireita);
-		}
-		else if (visitante == null){
-			visitante = new Time(nomeTime).setCor(COR_VISITANTE).setGolAlvo(golEsquerda);
-			visitante.setGrandeAreaAlvo(grandeAreaEsquerda);
-		}
-
-		Time time = null;
+		instanciaTime(nomeTime);
+		Time time;
 		Jogador jogador = new Jogador().setNome(nome);
 		addObjetoJogo(jogador.getNome(), jogador);
 		if (nomeTime.equals(casa.getNome())) {
@@ -183,6 +175,17 @@ public class Campo extends Canvas {
 		}
 		jogador.setColor(time.getCor());
 		time.addJogador(jogador);
+	}
+
+	private void instanciaTime(String nomeTime) {
+		if (casa == null){
+			casa = new Time(nomeTime).setCor(COR_CASA).setGolAlvo(golDireita);
+			casa.setGrandeAreaAlvo(grandeAreaDireita);
+		}
+		else if (visitante == null){
+			visitante = new Time(nomeTime).setCor(COR_VISITANTE).setGolAlvo(golEsquerda);
+			visitante.setGrandeAreaAlvo(grandeAreaEsquerda);
+		}
 	}
 
 	public void addBola() {
@@ -265,6 +268,7 @@ public class Campo extends Canvas {
 	}
 	
 	public void addGoleiro(String nome, String time) {
+		instanciaTime(time);
 		if(time.equals("CASA"))
 			addGoleiroCasa(nome);
 		if(time.equals("VISITANTE"))
