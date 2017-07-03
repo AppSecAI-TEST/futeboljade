@@ -14,6 +14,22 @@ public class Bola extends ObjetoJogo {
 		setW(TAMANHO_BOLA);
 		setH(TAMANHO_BOLA);
 	}
+	
+	@Override
+	public void atualiza() {
+		super.atualiza();
+		verificaSeSaiu();
+	}
+
+	private void verificaSeSaiu() {
+		if(!getCampo().getInfoAreasCampo().getCampoJogavel().intersects(getGeometria().getBounds())){
+			avisaQueSaiu();
+		}
+	}
+
+	private void avisaQueSaiu() {
+		getCampo().avisaQueBolaSaiu();
+	}
 
 	@Override
 	public void desenha(Graphics2D g2) {

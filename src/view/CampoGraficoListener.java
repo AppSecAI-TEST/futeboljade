@@ -11,4 +11,6 @@ public interface CampoGraficoListener {
 	void bolaEstaNaGrandeAreaDoTime(String nome);
 
     void bolaNaoEstaNaGrandeAreaDoTime(String nome);
+    
+    void bolaSaiu();
 }

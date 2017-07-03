@@ -28,6 +28,7 @@ import grafico.StatusJogo;
 import grafico.Time;
 import jogo.CampoAgentesListener;
 import jogo.MovimentoBola;
+import jogo.OuvinteParteGrafica;
 import jogo.behaviour.Constants;
 import lombok.Getter;
 import lombok.Setter;
@@ -294,5 +295,9 @@ public class Campo extends Canvas {
 	private void addObjetoJogo(String nome, ObjetoJogo o){
 		o.setCampo(this);
 		getObjetosJogo().put(nome, o);
+	}
+
+	public void avisaQueBolaSaiu() {
+		listeners.forEach(CampoGraficoListener::bolaSaiu);
 	}
 }
