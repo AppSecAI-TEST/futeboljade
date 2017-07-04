@@ -1,13 +1,13 @@
 package jogo;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Stream;
-
 import jade.util.leap.Serializable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public class ListaJogadores implements Serializable {

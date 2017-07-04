@@ -1,12 +1,12 @@
 package jogo.behaviour;
 
-import java.util.Set;
-
 import jade.core.Agent;
 import jade.core.behaviours.CompositeBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 import jogo.Jogador;
+
+import java.util.Set;
 
 abstract class JogadorTickerBehavior extends TickerBehaviour {
 	private int transicao;

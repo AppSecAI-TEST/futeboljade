@@ -1,10 +1,5 @@
 package jogo;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
@@ -13,6 +8,11 @@ import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 import lombok.Getter;
 import lombok.SneakyThrows;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class Campo {
 
@@ -34,25 +34,22 @@ public class Campo {
 		jogadoresInformar = new HashSet<>();
 		listeners = new HashSet<>();
 		
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (true) {
-					jogadores.values().forEach(j -> {
-						try {
-							j.putO2AObject(jogadoresInformar, BLOCKING);
-						} catch (StaleProxyException e) {
-							e.printStackTrace();
-						}
-					});
-					try {
-						Thread.sleep(2000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}).start();
+		new Thread(() -> {
+            while (true) {
+                jogadores.values().forEach(j -> {
+                    try {
+                        j.putO2AObject(jogadoresInformar, BLOCKING);
+                    } catch (StaleProxyException e) {
+                        e.printStackTrace();
+                    }
+                });
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 	}
 
 	public void setBolaEmJogo(boolean bolaEmJogo) {

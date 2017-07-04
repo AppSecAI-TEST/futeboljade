@@ -1,7 +1,6 @@
 package grafico;
 
-import java.awt.Rectangle;
-import java.awt.Shape;
+import java.awt.*;
 
 public class GeometriaUtil {
 	public static double getDirecaoPara(double x1, double y1, double x2, double y2) {

@@ -1,36 +1,18 @@
 package view;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.Toolkit;
-import java.awt.image.BufferStrategy;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-
-import grafico.Bola;
-import grafico.GeometriaUtil;
-import grafico.Gol;
-import grafico.Goleiro;
-import grafico.GrandeArea;
-import grafico.InfoAreasCampo;
-import grafico.Jogador;
-import grafico.ObjetoJogo;
-import grafico.OuvinteAgentes;
-import grafico.PosicionadorJogador;
-import grafico.StatusJogo;
-import grafico.Time;
+import grafico.*;
 import jogo.CampoAgentesListener;
 import jogo.MovimentoBola;
 import jogo.behaviour.Constants;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.awt.*;
+import java.awt.image.BufferStrategy;
+import java.util.*;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter

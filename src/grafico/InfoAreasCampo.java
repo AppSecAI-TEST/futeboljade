@@ -1,13 +1,12 @@
 package grafico;
 
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.geom.Area;
-import java.awt.geom.Rectangle2D;
-
 import lombok.Getter;
 import lombok.Setter;
 import view.Campo;
+
+import java.awt.*;
+import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
 
 @Getter
 @Setter

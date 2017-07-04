@@ -1,8 +1,8 @@
 package jogo.estilojogo;
 
-import java.util.stream.Stream;
-
 import jogo.Jogador;
+
+import java.util.stream.Stream;
 
 public interface EstiloDeJogo {
 

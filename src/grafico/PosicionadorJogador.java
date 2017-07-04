@@ -1,9 +1,8 @@
 package grafico;
 
-import java.awt.Point;
-import java.awt.Rectangle;
-
 import view.Campo;
+
+import java.awt.*;
 
 public class PosicionadorJogador {
 

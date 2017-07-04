@@ -1,9 +1,5 @@
 package jogo;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Stream;
-
 import jade.core.Agent;
 import jade.util.leap.Serializable;
 import jogo.behaviour.Constants;
@@ -13,6 +9,10 @@ import jogo.estilojogo.EstiloDeJogoFactory;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
 
 public class Jogador extends Agent implements Serializable {
 	private static final int QUANTIDADE_MENSAGENS_FILA = 3;
@@ -76,7 +76,6 @@ public class Jogador extends Agent implements Serializable {
 		if(estiloDeJogo.deveCorrerAtrasDaBola(this)) {
 			getCampo().mostraJogadorCorrendoAtrasDaBolaIgualUmTanso(this);
 		} else {
-			System.out.println("defender......................");
 			defender();
 		}
 	}

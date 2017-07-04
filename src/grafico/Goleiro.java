@@ -1,8 +1,8 @@
 package grafico;
 
-import java.awt.Rectangle;
-
 import lombok.Setter;
+
+import java.awt.*;
 
 public class Goleiro extends Jogador {
 	

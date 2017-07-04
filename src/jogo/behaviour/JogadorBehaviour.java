@@ -6,6 +6,7 @@ import jade.core.behaviours.FSMBehaviour;
 import jade.lang.acl.ACLMessage;
 import jogo.Jogador;
 import jogo.JogadorListenerAdapter;
+
 import java.util.function.Predicate;
 
 public class JogadorBehaviour extends FSMBehaviour {

@@ -1,12 +1,12 @@
 package grafico;
 
-import java.awt.Color;
-import java.util.HashSet;
-import java.util.Set;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter

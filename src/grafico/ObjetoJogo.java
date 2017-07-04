@@ -1,13 +1,12 @@
 package grafico;
 
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import view.Campo;
+
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
 
 @Getter
 @Setter

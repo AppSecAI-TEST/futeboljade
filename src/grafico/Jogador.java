@@ -1,16 +1,12 @@
 package grafico;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
-
 import jogo.MovimentoBola;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 @Getter
 @Setter
