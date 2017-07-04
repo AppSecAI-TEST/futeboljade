@@ -121,6 +121,16 @@ public class InfoAreasCampo {
 		laterais.subtract(new Area(getLimitesDentroQuatroLinhas()));
 		return laterais;
 	}
-
+	
+	public Rectangle getCampoEsquerda(){
+		Rectangle bounds = getCampoJogavel().getBounds();
+		return new Rectangle((int)bounds.getMinX(), (int)bounds.getMinY(), (int)bounds.getWidth()/2, (int)bounds.getHeight());
+	}
+	
+	public Rectangle getCampoDireita(){
+		Rectangle bounds = getCampoJogavel().getBounds();
+		int largura = (int)bounds.getWidth()/2;
+		return new Rectangle((int)bounds.getMinX()+largura, (int)bounds.getMinY(), largura, (int)bounds.getHeight());
+	}
 	
 }

@@ -21,4 +21,6 @@ public interface CampoAgentesListener {
 	void goleiroAdicionado(String nome, String time);
 
     void informaEstado(String nome, String estado);
+
+    void debuga(String nome, String mensagem);
 }

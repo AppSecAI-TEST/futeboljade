@@ -49,19 +49,18 @@ abstract class JogadorTickerBehavior extends TickerBehaviour {
 	}
 
 	private void log() {
-		getJogador().debugaSeAtivo(getBehaviourName());
-//		getJogador().debugaSeAtivo("Mensagem interface: " + mensagemVindaDaInterface);
-//		if (message != null) {
-//			String string = "eu ouvi " + message.getContent() + " vinda de " + message.getSender().getLocalName();
-//			getJogador().debugaSeAtivo(string);
-//		}
+		if(mensagemVindaDaInterface != null)
+			getJogador().debugaSeAtivo("MI: " + mensagemVindaDaInterface);
+		if (message != null) {
+			String string = "ouvi " + message.getContent() + " de " + message.getSender().getLocalName();
+			getJogador().debugaSeAtivo(string);
+		}
 	}
 
 	abstract void executaEstado();
 
 	@Override
 	public int onEnd() {
-		//getJogador().debugaSeAtivo("Finaliza com " + transicao);
 		reset(JogadorBehaviour.TEMPO_ACAO);
 		return transicao;
 	}

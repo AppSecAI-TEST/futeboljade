@@ -41,4 +41,8 @@ public class CampoListenerAdapter implements CampoAgentesListener {
 	public void informaEstado(String nome, String estado) {
 	}
 
+	@Override
+	public void debuga(String nome, String mensagem) {
+	}
+
 }

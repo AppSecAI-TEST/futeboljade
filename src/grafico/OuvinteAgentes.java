@@ -29,6 +29,11 @@ public class OuvinteAgentes implements CampoAgentesListener {
 	}
 
 	@Override
+	public void debuga(String nome, String mensagem) {
+		campo.getJogador(nome).setDebug(mensagem);
+	}
+
+	@Override
 	public void bolaEmJogo() {
 	}
 

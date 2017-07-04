@@ -97,8 +97,7 @@ public class Jogador extends Agent implements Serializable {
 	}
 
 	public void debugaSeAtivo(String mensagem) {
-		if(Constants.DEBUG)
-			System.out.println(getNome() + ": " + mensagem);
+		getCampo().debuga(getNome(), mensagem);
 	}
 
 	public void atacar() {

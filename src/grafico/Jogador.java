@@ -7,6 +7,8 @@ import lombok.experimental.Accessors;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -22,7 +24,7 @@ public class Jogador extends ObjetoJogo {
 	private Time time;
 	private String nome;
 	private Point posicaoAtaque, posicaoDefesa;
-	private int folgaTesteColisaoJogador = 0;
+	private int folgaTesteColisaoJogador = 0;	
 
 	public Jogador() {
 		setW(TAMANHO_JOGADOR);
@@ -35,6 +37,20 @@ public class Jogador extends ObjetoJogo {
 		detectaColisao();
 		avisaSeEstaNaGrandeArea();
 		avisaAQueDistanciaEstaDaBola();
+		avisaSeEstaNoAtaque();
+		avisaJogadoresAFrente();
+	}
+
+	private void avisaJogadoresAFrente() {
+		List<Jogador> jogadores = getTime().getJogadoresAFrente(this);
+		List<String> names = jogadores.stream().map(Jogador::getNome).collect(Collectors.toList());
+		getCampo().avisaJogadoresAFrente(names);
+	}
+
+	private void avisaSeEstaNoAtaque() {
+		if(getGeometria().getBounds().intersects(getTime().getCampoAtaque().getArea())){
+			getCampo().avisaJogadorEstaNoAtaque(this);
+		}
 	}
 
 	private void avisaAQueDistanciaEstaDaBola() {
@@ -65,6 +81,7 @@ public class Jogador extends ObjetoJogo {
 		g2.drawString(getNome(), (int) getX(), (int) getY());
 		g2.drawString(getDirecao() + "", (int) getX(), (int) getY() - 20);
 		g2.drawString(getInfo() + "", (int) getX(), (int) getY() - 40);
+		g2.drawString(getDebug() + "", (int) getX(), (int) getY() - 60);
 		g2.draw(this.getGeometria().getBounds2D());
 	}
 	

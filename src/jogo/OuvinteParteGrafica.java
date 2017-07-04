@@ -1,5 +1,7 @@
 package jogo;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import view.CampoGraficoListener;
 
@@ -33,4 +35,19 @@ public class OuvinteParteGrafica implements CampoGraficoListener {
 		campo.bolaNaoEstaNaGrandeAreaDoTime(time);
 	}
 
+	@Override
+	public void bolaSaiu() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void jogadorEstaNoAtaque(String nome) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void jogadoresAFrente(List<String> nomes) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -65,7 +65,7 @@ public class Campo {
 		adicionaJogador(nome, time, Goleiro.class.getName());
 	}
 
-	public void adicionaJogador(String nome, String time, String className) {
+	private void adicionaJogador(String nome, String time, String className) {
 		Object[] args = new Object[] { nome, time, this };
 		try {
 			AgentController controller = mainContainer.createNewAgent(nome, className, args);
@@ -85,14 +85,12 @@ public class Campo {
 		this.listeners.add(jogoListener);
 	}
 
-	public void mostraJogadorCorrendoAtrasDaBolaIgualUmTanso(Jogador jogador) {
-		this.listeners.forEach(listener -> {
-			listener.jogadorIndoNaDirecaoDaBolaBemLoko(jogador);
-		});
+	void mostraJogadorCorrendoAtrasDaBolaIgualUmTanso(Jogador jogador) {
+		this.listeners.forEach(listener -> listener.jogadorIndoNaDirecaoDaBolaBemLoko(jogador));
 	}
 
 	@SneakyThrows
-	public void jogadorColidiuComBola(String nome) {
+	void jogadorColidiuComBola(String nome) {
 		AgentController agentController = jogadores.get(nome);
 		agentController.putO2AObject("colidiu_com_bola", BLOCKING);
 	}
@@ -109,36 +107,36 @@ public class Campo {
 		listeners.forEach(listener -> listener.jogadorPegouBola(nome));
 	}
 
-	public void notificaQueJogadorDeveAtacar(String nome) {
+	void notificaQueJogadorDeveAtacar(String nome) {
 		listeners.forEach(listener -> listener.jogadorDeveAtacar(nome));
 	}
 	
-	public void notificaQueJogadorDeveDefender(String nome) {
+	void notificaQueJogadorDeveDefender(String nome) {
 		listeners.forEach(listener -> listener.jogadorDeveDefender(nome));
 	}
 
-	public void notificaJogadorDeveChutar(String nome, MovimentoBola movimentoBola) {
+	void notificaJogadorDeveChutar(String nome, MovimentoBola movimentoBola) {
 		listeners.forEach(listener -> listener.jogadorDeveChutar(nome, movimentoBola));
 	}
 
-	public void notificaJogadorDevePassar(String passador, String recebedor) {
+	void notificaJogadorDevePassar(String passador, String recebedor) {
 		listeners.forEach(listener -> listener.jogadorDevePassar(passador, recebedor));
 	}
 
 	@SneakyThrows
-	public void jogadorEstaAXDistancia(String nome, double distanciaX) {
+	void jogadorEstaAXDistancia(String nome, double distanciaX) {
 		AgentController agentController = jogadores.get(nome);
-		agentController.putO2AObject("distancia_bola:" + distanciaX, BLOCKING);
+		agentController.putO2AObject("distancia_bola:" + (int) distanciaX, BLOCKING);
 	}
 
 	@SneakyThrows
-	public void jogadorEstaNaGrandeAreaAlvo(String nome) {
+	void jogadorEstaNaGrandeAreaAlvo(String nome) {
 		AgentController agentController = jogadores.get(nome);
 		agentController.putO2AObject("chegou_na_grande_area_alvo:" + nome, BLOCKING);
 	}
 
 	@SneakyThrows
-	public void bolaEstaNaGrandeAreaDoTime(String time) {
+	void bolaEstaNaGrandeAreaDoTime(String time) {
 		if(!jogadores.isEmpty()){
 			jogadores.forEach((j, ac) -> {
 				try {
@@ -150,7 +148,7 @@ public class Campo {
 		}
 	}
 
-	public void bolaNaoEstaNaGrandeAreaDoTime(String time) {
+	void bolaNaoEstaNaGrandeAreaDoTime(String time) {
 		if(!jogadores.isEmpty()){
 			jogadores.forEach((j, ac) -> {
 				try {
@@ -162,7 +160,11 @@ public class Campo {
 		}
 	}
 
-	public void informaEstado(String nome, String estado) {
+	void informaEstado(String nome, String estado) {
 		listeners.forEach(l->l.informaEstado(nome, estado));
 	}
+
+    void debuga(String nome, String mensagem) {
+		listeners.forEach(l->l.debuga(nome, mensagem));
+    }
 }

@@ -160,7 +160,7 @@ public class JogadorBehaviour extends FSMBehaviour {
 
 		private void seOutroPegouBolaFinaliza() {
 			if (pegouBola() && mensagemOutroJogador()) {
-				System.out.println("Outro pegou");
+				getJogador().debugaSeAtivo("Perdi a bola :(");
 				getJogador().reiniciaColisoesPraPegarBola();
 				finalizaCom(PERDEU_OU_PASSOU_OU_CHUTOU_BOLA);
 			}

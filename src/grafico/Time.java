@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 
 import java.awt.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -18,6 +19,9 @@ public class Time {
 	private Color cor;
 	private Gol golAlvo;
 	private GrandeArea grandeAreaAlvo;
+	private CampoAtaque campoAtaque;
+	private TipoTime tipoTime;
+	
 	public Time(Color cor) {
 		this.cor = cor;
 	}
@@ -27,6 +31,9 @@ public class Time {
 	public void addJogador(Jogador jogador) {
 		getJogadores().add(jogador);
 		jogador.setTime(this);
+	}
+	public List<Jogador> getJogadoresAFrente(Jogador jogador) {
+		return tipoTime.getJogadoresAFrente(jogador, jogadores);
 	}
 	
 }

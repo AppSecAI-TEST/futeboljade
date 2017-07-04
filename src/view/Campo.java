@@ -144,7 +144,7 @@ public class Campo extends Canvas {
 	}
 
 	public void addJogador(String nome, String nomeTime) {
-		instanciaTime(nomeTime);
+		addTime(nomeTime);
 		Time time;
 		Jogador jogador = new Jogador().setNome(nome);
 		addObjetoJogo(jogador.getNome(), jogador);
@@ -159,14 +159,18 @@ public class Campo extends Canvas {
 		time.addJogador(jogador);
 	}
 
-	private void instanciaTime(String nomeTime) {
+	private void addTime(String nomeTime) {
 		if (casa == null){
 			casa = new Time(nomeTime).setCor(COR_CASA).setGolAlvo(golDireita);
 			casa.setGrandeAreaAlvo(grandeAreaDireita);
+			casa.setCampoAtaque(new CampoAtaque(infoAreasCampo.getCampoDireita()));
+			casa.setTipoTime(TipoTime.CASA);
 		}
 		else if (visitante == null){
 			visitante = new Time(nomeTime).setCor(COR_VISITANTE).setGolAlvo(golEsquerda);
 			visitante.setGrandeAreaAlvo(grandeAreaEsquerda);
+			visitante.setCampoAtaque(new CampoAtaque(infoAreasCampo.getCampoEsquerda()));
+			visitante.setTipoTime(TipoTime.VISITANTE);
 		}
 	}
 
@@ -250,7 +254,7 @@ public class Campo extends Canvas {
 	}
 	
 	public void addGoleiro(String nome, String time) {
-		instanciaTime(time);
+		addTime(time);
 		if(time.equals("CASA"))
 			addGoleiroCasa(nome);
 		if(time.equals("VISITANTE"))
@@ -276,5 +280,17 @@ public class Campo extends Canvas {
 	private void addObjetoJogo(String nome, ObjetoJogo o){
 		o.setCampo(this);
 		getObjetosJogo().put(nome, o);
+	}
+
+	public void avisaQueBolaSaiu() {
+		listeners.forEach(CampoGraficoListener::bolaSaiu);
+	}
+
+	public void avisaJogadorEstaNoAtaque(Jogador jogador) {
+		listeners.forEach(l->{l.jogadorEstaNoAtaque(jogador.getNome());});
+	}
+
+	public void avisaJogadoresAFrente(List<String> names) {
+		listeners.forEach(l->{l.jogadoresAFrente(names);});
 	}
 }
