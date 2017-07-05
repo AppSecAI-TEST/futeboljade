@@ -287,10 +287,10 @@ public class Campo extends Canvas {
 	}
 
 	public void avisaJogadorEstaNoAtaque(Jogador jogador) {
-		listeners.forEach(l->{l.jogadorEstaNoAtaque(jogador.getNome());});
+		listeners.forEach(l->l.jogadorEstaNoAtaque(jogador.getNome()));
 	}
 
-	public void avisaJogadoresAFrente(List<String> names) {
-		listeners.forEach(l->{l.jogadoresAFrente(names);});
+	public void avisaJogadoresAFrente(Jogador jogador, List<String> names) {
+		listeners.forEach(l->l.jogadoresAFrente(jogador.getNome(), names));
 	}
 }

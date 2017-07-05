@@ -16,19 +16,24 @@ public class Main {
             estadio.getCampo().addListener(new OuvinteParteGrafica(campo));
             campo.setBolaEmJogo(true);
 
-            campo.adicionaJogador("1", "CASA");
-            campo.adicionaJogador("2", "CASA");
-            campo.adicionaJogador("3", "CASA");
-            campo.adicionaJogador("4", "CASA");
-            campo.adicionaJogador("5", "CASA");
-            campo.adicionaJogador("6", "VISITANTE");
-            campo.adicionaJogador("7", "VISITANTE");
-            campo.adicionaJogador("8", "VISITANTE");
-            campo.adicionaJogador("9", "VISITANTE");
-            campo.adicionaJogador("10", "VISITANTE");
-
             campo.adicionaGoleiro("01", "CASA");
-            campo.adicionaGoleiro("02", "VISITANTE");
+
+            campo.adicionaJogador("02", "CASA");
+            campo.adicionaJogador("03", "CASA");
+            campo.adicionaJogador("04", "CASA");
+            campo.adicionaJogador("05", "CASA");
+            campo.adicionaJogador("06", "CASA");
+            campo.adicionaJogador("07", "CASA");
+
+            campo.adicionaGoleiro("11", "VISITANTE");
+
+            campo.adicionaJogador("12", "VISITANTE");
+            campo.adicionaJogador("13", "VISITANTE");
+            campo.adicionaJogador("14", "VISITANTE");
+            campo.adicionaJogador("15", "VISITANTE");
+            campo.adicionaJogador("16", "VISITANTE");
+            campo.adicionaJogador("17", "VISITANTE");
+
         });
 		
 	}

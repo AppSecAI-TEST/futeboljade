@@ -42,12 +42,11 @@ public class OuvinteParteGrafica implements CampoGraficoListener {
 
 	@Override
 	public void jogadorEstaNoAtaque(String nome) {
-		// TODO Auto-generated method stub
+		campo.jogadorEstaNoAtaque(nome);
 	}
 
 	@Override
-	public void jogadoresAFrente(List<String> nomes) {
-		// TODO Auto-generated method stub
-		
+	public void jogadoresAFrente(String nome, List<String> nomes) {
+		campo.jogadoresAFrente(nome, nomes);
 	}
 }

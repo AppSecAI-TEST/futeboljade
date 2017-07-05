@@ -44,7 +44,7 @@ public class Jogador extends ObjetoJogo {
 	private void avisaJogadoresAFrente() {
 		List<Jogador> jogadores = getTime().getJogadoresAFrente(this);
 		List<String> names = jogadores.stream().map(Jogador::getNome).collect(Collectors.toList());
-		getCampo().avisaJogadoresAFrente(names);
+		getCampo().avisaJogadoresAFrente(this, names);
 	}
 
 	private void avisaSeEstaNoAtaque() {

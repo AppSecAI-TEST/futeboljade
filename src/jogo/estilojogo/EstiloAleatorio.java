@@ -1,14 +1,21 @@
 package jogo.estilojogo;
 
 import jogo.Jogador;
+import lombok.Setter;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Setter
 public class EstiloAleatorio implements EstiloDeJogo {
+
+	private Jogador.PosicaoCampo posicaoCampo = Jogador.PosicaoCampo.INDETERMINADA;
+	private int numeroRespostasDistanciaBola = 0;
 
 	@Override
 	public boolean deveChutar() {
-		return chanceDeXPorcento(2);
+		return chanceDeXPorcento( posicaoCampo.getChanceChutar() );
 	}
 
 	@Override
@@ -34,7 +41,7 @@ public class EstiloAleatorio implements EstiloDeJogo {
 
 	@Override
 	public boolean devePassar() {
-		return chanceDeXPorcento(4);
+		return chanceDeXPorcento(posicaoCampo.getChancePassar());
 	}
 
 	private boolean chanceDeXPorcento(int chance) {
@@ -42,8 +49,14 @@ public class EstiloAleatorio implements EstiloDeJogo {
 	}
 
 	@Override
-	public Jogador selecionaColegaPassarBola(Stream<Jogador> parceiros) {
-		return parceiros.sorted((a, b) -> MathUtil.randomEntre1eh100() % 2 == 0 ? 1 : -1).findAny().orElse(Jogador.NULL);
+	public Jogador selecionaColegaPassarBola(List<Jogador> parceiros) {
+		if(numeroRespostasDistanciaBola < parceiros.size() )
+			return Jogador.NULL;
+		parceiros.stream().forEach(j->j.getDistanciaBola());
+		Jogador jogador = parceiros.stream()
+				.sorted((a, b) -> a.getDistanciaBola() > b.getDistanciaBola() ? 1 : -1)
+				.limit(2).findAny().orElse(Jogador.NULL);
+		return jogador;
 	}
 
 	@Override
@@ -54,5 +67,15 @@ public class EstiloAleatorio implements EstiloDeJogo {
 	@Override
 	public boolean deveCorrerAtrasDaBola(Jogador jogador) {
 		return jogador.getDistanciaBola() < 150;
+	}
+
+	@Override
+	public void incrementaNumeroRespostasDistanciaBola() {
+		this.numeroRespostasDistanciaBola++;
+	}
+
+	@Override
+	public void resetaNumeroRespostasDistanciaBola() {
+
 	}
 }

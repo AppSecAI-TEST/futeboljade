@@ -8,7 +8,7 @@ public class Goleiro extends Jogador {
 	@Override
 	protected void configuraComportamento() {
 		addBehaviour(new GoleiroBehaviour(this));
-		setEstiloDeJogo( EstiloDeJogoFactory.criaEstiloDeJogo());
+		setEstiloDeJogo( EstiloDeJogoFactory.criaEstiloDeJogoGoleiro());
 	}
 
 	@Override

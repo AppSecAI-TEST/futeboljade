@@ -11,7 +11,4 @@ public class EstiloDeJogoFactory {
 		return new EstiloDeJogoGoleiro();
 	}
 
-//	public static EstiloDeJogo estiloAleatorioFominha() {
-//	}
-
 }

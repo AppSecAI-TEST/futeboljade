@@ -2,7 +2,7 @@ package jogo.estilojogo;
 
 import jogo.Jogador;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 public interface EstiloDeJogo {
 
@@ -16,9 +16,15 @@ public interface EstiloDeJogo {
 
 	boolean devePassar();
 
-	Jogador selecionaColegaPassarBola(Stream<Jogador> stream);
+	Jogador selecionaColegaPassarBola(List<Jogador> stream);
 
 	void movimentaComBola(Jogador jogador);
 
     boolean deveCorrerAtrasDaBola(Jogador jogador);
+
+    void setPosicaoCampo(Jogador.PosicaoCampo posicaoCampo);
+
+	void incrementaNumeroRespostasDistanciaBola();
+
+	void resetaNumeroRespostasDistanciaBola();
 }

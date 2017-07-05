@@ -18,5 +18,5 @@ public interface CampoGraficoListener {
 
 	void jogadorEstaNoAtaque(String nome);
 
-	void jogadoresAFrente(List<String> nomes);
+	void jogadoresAFrente(String nome, List<String> nomes);
 }
