@@ -21,11 +21,6 @@ public class OuvinteParteGrafica implements CampoGraficoListener {
 	}
 
 	@Override
-	public void jogadorEstaNaGrandeAreaAlvo(String nome) {
-		campo.jogadorEstaNaGrandeAreaAlvo(nome);
-	}
-
-	@Override
 	public void bolaEstaNaGrandeAreaDoTime(String time) {
 		campo.bolaEstaNaGrandeAreaDoTime(time);
 	}
@@ -37,16 +32,21 @@ public class OuvinteParteGrafica implements CampoGraficoListener {
 
 	@Override
 	public void bolaSaiu() {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void jogadorEstaNoAtaque(String nome) {
-		campo.jogadorEstaNoAtaque(nome);
+	public void jogadorEstaNaPosicao(String nome, Jogador.PosicaoCampo posicaoCampo) {
+		campo.jogadorEstaNaPosicao(nome, posicaoCampo);
 	}
 
 	@Override
 	public void jogadoresAFrente(String nome, List<String> nomes) {
 		campo.jogadoresAFrente(nome, nomes);
 	}
+
+	@Override
+	public void golTime(String nomeTime) {
+		campo.golTime(nomeTime);
+	}
+
 }

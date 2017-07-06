@@ -30,7 +30,7 @@ public class OuvinteAgentes implements CampoAgentesListener {
 
 	@Override
 	public void debuga(String nome, String mensagem) {
-		campo.getJogador(nome).setDebug(mensagem);
+		campo.getJogador(nome).setInfoDebug(mensagem);
 	}
 
 	@Override
@@ -60,5 +60,10 @@ public class OuvinteAgentes implements CampoAgentesListener {
 	@Override
 	public void jogadorDevePassar(String passador, String recebedor) {
 		campo.getJogador(passador).passarPara(recebedor);
+	}
+
+	@Override
+	public void informaPosicaoCampo(String nome, String posicao) {
+		campo.informaPosicaoCampo(nome, posicao);
 	}
 }

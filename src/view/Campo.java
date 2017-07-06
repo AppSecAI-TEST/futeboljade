@@ -1,8 +1,9 @@
 package view;
 
 import grafico.*;
-import jogo.CampoAgentesListener;
-import jogo.MovimentoBola;
+import grafico.Goleiro;
+import grafico.Jogador;
+import jogo.*;
 import jogo.behaviour.Constants;
 import lombok.Getter;
 import lombok.Setter;
@@ -134,13 +135,13 @@ public class Campo extends Canvas {
 	}
 
 	public void gooolTimeEsquerda() {
-		System.out.println("Goool esquerda");
 		status = StatusJogo.GOOOL;
+		listeners.forEach(l->l.golTime(casa.getNome()));
 	}
 
 	public void gooolTimeDireita() {
-		System.out.println("Goool direita");
 		status = StatusJogo.GOOOL;
+		listeners.forEach(l->l.golTime(visitante.getNome()));
 	}
 
 	public void addJogador(String nome, String nomeTime) {
@@ -163,13 +164,13 @@ public class Campo extends Canvas {
 		if (casa == null){
 			casa = new Time(nomeTime).setCor(COR_CASA).setGolAlvo(golDireita);
 			casa.setGrandeAreaAlvo(grandeAreaDireita);
-			casa.setCampoAtaque(new CampoAtaque(infoAreasCampo.getCampoDireita()));
+			casa.setCampoAtaque(new CampoMetade(infoAreasCampo.getCampoDireita()));
 			casa.setTipoTime(TipoTime.CASA);
 		}
 		else if (visitante == null){
 			visitante = new Time(nomeTime).setCor(COR_VISITANTE).setGolAlvo(golEsquerda);
 			visitante.setGrandeAreaAlvo(grandeAreaEsquerda);
-			visitante.setCampoAtaque(new CampoAtaque(infoAreasCampo.getCampoEsquerda()));
+			visitante.setCampoAtaque(new CampoMetade(infoAreasCampo.getCampoEsquerda()));
 			visitante.setTipoTime(TipoTime.VISITANTE);
 		}
 	}
@@ -286,11 +287,16 @@ public class Campo extends Canvas {
 		listeners.forEach(CampoGraficoListener::bolaSaiu);
 	}
 
-	public void avisaJogadorEstaNoAtaque(Jogador jogador) {
-		listeners.forEach(l->l.jogadorEstaNoAtaque(jogador.getNome()));
+	public void avisaJogadorEstaNaPosicao(Jogador jogador, jogo.Jogador.PosicaoCampo posicaoCampo) {
+		listeners.forEach(l->l.jogadorEstaNaPosicao(jogador.getNome(), posicaoCampo));
 	}
 
 	public void avisaJogadoresAFrente(Jogador jogador, List<String> names) {
 		listeners.forEach(l->l.jogadoresAFrente(jogador.getNome(), names));
 	}
+
+	public void informaPosicaoCampo(String nome, String posicao) {
+		getJogador(nome).setInfoPosicaoAtual(posicao);
+	}
+
 }

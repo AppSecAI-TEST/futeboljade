@@ -4,13 +4,11 @@ import jogo.Jogador;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Setter
 public class EstiloAleatorio implements EstiloDeJogo {
 
-	private Jogador.PosicaoCampo posicaoCampo = Jogador.PosicaoCampo.INDETERMINADA;
+	private Jogador.PosicaoCampo posicaoCampo = Jogador.PosicaoCampo.DEFESA;
 	private int numeroRespostasDistanciaBola = 0;
 
 	@Override

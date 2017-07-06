@@ -11,12 +11,17 @@ public class JogadorBehaviour extends FSMBehaviour {
     private static final String COM_BOLA = "comBola";
     private static final String TIME_COM_BOLA = "timeComBola";
     private static final String SEM_BOLA = "semBola";
+    private static final String COLOCANDO_BOLA_NO_CENTRO = "colocandoBolaNoCentro";
     private static final byte COLEGA_PEGOU_BOLA = 1;
     private static final byte PEGOU_BOLA = 2;
     private static final byte PASSOU_BOLA = 4;
     private static final byte RECEBEU_PASSE = 3;
     private static final byte PERDEU_OU_PASSOU_OU_CHUTOU_BOLA = 5;
     static final byte BOLA_EM_JOGO = 7;
+    static final byte GOL = 8;
+    static final int SELECIONADO_COLOCAR_BOLA_NO_CENTRO = 9;
+    private static final int PEGOU_BOLA_PRA_COLOCAR_NO_CENTRO = 10;
+    private static final int OUTRO_VAI_COLOCAR_BOLA_NO_CENTRO = 11;
     static final short TEMPO_ACAO = Constants.GAME_LOOP_SLEEP;
 
     protected ACLMessage message;
@@ -28,7 +33,7 @@ public class JogadorBehaviour extends FSMBehaviour {
         registerState(new SemBolaState(agent, TEMPO_ACAO), SEM_BOLA);
         registerState(new TimeComBolaState(agent, TEMPO_ACAO), TIME_COM_BOLA);
         registerState(new ComBolaState(agent, TEMPO_ACAO), COM_BOLA);
-
+        registerState(new ColocandoBolaNoCentroState(agent, TEMPO_ACAO), COLOCANDO_BOLA_NO_CENTRO);
         registerTransition(ESPERANDO, SEM_BOLA, BOLA_EM_JOGO);
 
         registerTransition(SEM_BOLA, TIME_COM_BOLA, COLEGA_PEGOU_BOLA);
@@ -39,6 +44,16 @@ public class JogadorBehaviour extends FSMBehaviour {
         // quando chuta ou perde bola
         registerTransition(COM_BOLA, SEM_BOLA, PERDEU_OU_PASSOU_OU_CHUTOU_BOLA);
         registerTransition(TIME_COM_BOLA, SEM_BOLA, PERDEU_OU_PASSOU_OU_CHUTOU_BOLA);
+
+        registerTransition(TIME_COM_BOLA, ESPERANDO, GOL);
+        registerTransition(SEM_BOLA, ESPERANDO, GOL);
+        registerTransition(COM_BOLA, ESPERANDO, GOL);
+        registerTransition(ESPERANDO, ESPERANDO, GOL);
+
+        registerTransition(SEM_BOLA, COLOCANDO_BOLA_NO_CENTRO, SELECIONADO_COLOCAR_BOLA_NO_CENTRO);
+        registerTransition(ESPERANDO, COLOCANDO_BOLA_NO_CENTRO, SELECIONADO_COLOCAR_BOLA_NO_CENTRO);
+        registerTransition(COLOCANDO_BOLA_NO_CENTRO, ESPERANDO, OUTRO_VAI_COLOCAR_BOLA_NO_CENTRO);
+        registerTransition(COLOCANDO_BOLA_NO_CENTRO, COLOCANDO_BOLA_NO_CENTRO, SELECIONADO_COLOCAR_BOLA_NO_CENTRO);
     }
 
     public int onEnd() {
@@ -55,7 +70,7 @@ public class JogadorBehaviour extends FSMBehaviour {
         getJogador().atacar();
     }
 
-    protected void jogaSemBola() {
+    private void jogaSemBola() {
         getJogador().jogaSemBola();
     }
 
@@ -64,8 +79,12 @@ public class JogadorBehaviour extends FSMBehaviour {
     }
 
     private void atualizaPosicaoCampo() {
-        if(Jogador.PosicaoCampo.ATAQUE.toString().equals(mensagemVindaDaInterface))
+        if (Jogador.PosicaoCampo.ATAQUE.toString().equals(mensagemVindaDaInterface))
             getJogador().setPosicaoCampo(Jogador.PosicaoCampo.ATAQUE);
+        if (Jogador.PosicaoCampo.NA_AREA.toString().equals(mensagemVindaDaInterface))
+            getJogador().setPosicaoCampo(Jogador.PosicaoCampo.NA_AREA);
+        if (Jogador.PosicaoCampo.DEFESA.toString().equals(mensagemVindaDaInterface))
+            getJogador().setPosicaoCampo(Jogador.PosicaoCampo.DEFESA);
     }
 
     public void executaPassoJogo(InformacoesPassoJogo informacoesPassoJogo) {
@@ -74,7 +93,7 @@ public class JogadorBehaviour extends FSMBehaviour {
         if (pegouBola() && mensagemMesmoJogador()) {
             getJogador().reiniciaColisoesPraPegarBola();
         }
-        if (mensagemVindaDaInterface != null && mensagemVindaDaInterface.contains(Mensagens.Gui.DISTANCIA_BOLA)) {
+        if (mensagemDaInterface(Mensagens.Gui.DISTANCIA_BOLA)) {
             float distancia = Float.parseFloat(mensagemVindaDaInterface.split(":")[1]);
             getJogador().setDistanciaBola(distancia);
         }
@@ -84,7 +103,10 @@ public class JogadorBehaviour extends FSMBehaviour {
         if (recebendoRespostaDistanciaBola()) {
             guardaRespostaDistanciaBola();
         }
+    }
 
+    private boolean mensagemDaInterface(String distanciaBola) {
+        return mensagemVindaDaInterface != null && mensagemVindaDaInterface.contains(distanciaBola);
     }
 
     private boolean perguntandoDistanciaBola() {
@@ -195,7 +217,7 @@ public class JogadorBehaviour extends FSMBehaviour {
 
         private void seOutroPegouBolaFinaliza() {
             if (pegouBola() && mensagemOutroJogador()) {
-                getJogador().debugaSeAtivo("Perdi a bola :(");
+                getJogador().debuga("Perdi a bola :(");
                 getJogador().reiniciaColisoesPraPegarBola();
                 finalizaCom(PERDEU_OU_PASSOU_OU_CHUTOU_BOLA);
             }
@@ -203,6 +225,44 @@ public class JogadorBehaviour extends FSMBehaviour {
 
     }
 
+    class ColocandoBolaNoCentroState extends JogadorTickerBehavior {
+
+        ColocandoBolaNoCentroState(Agent a, long period) {
+            super(a, period);
+        }
+
+        @Override
+        void executaEstado() {
+            System.out.println(getJogador().getNome() + " -> colocando" );
+            perguntaSeOutroEstaColocandoBolaNoCentro();
+            respondeCasoPergunteSeEstouColocandoBolaNoCentro();
+            if (outroRespondeuQueEstaColocandoBolaNoCentro()){
+                if(!message.getSender().getName().equals(getJogador().getNome()))
+                    finalizaCom(OUTRO_VAI_COLOCAR_BOLA_NO_CENTRO);
+            }
+            getJogador().propagaAoTime(Mensagens.VOU_BOTAR_BOLA_NO_CENTRO);
+            getJogador().seguirBola();
+            if (pegouBola() && mensagemMesmoJogador())
+                finalizaCom(PEGOU_BOLA_PRA_COLOCAR_NO_CENTRO);
+        }
+
+        private void perguntaSeOutroEstaColocandoBolaNoCentro() {
+            getJogador().propagaAoTime(Mensagens.ESTA_COLOCANDO_BOLA_NO_CENTRO);
+        }
+
+        private void respondeCasoPergunteSeEstouColocandoBolaNoCentro(){
+            if( disse(Mensagens.ESTA_COLOCANDO_BOLA_NO_CENTRO) && mensagemOutroJogador() ){
+                ACLMessage reply = message.createReply();
+                reply.setOntology(Mensagens.ESTA_COLOCANDO_BOLA_NO_CENTRO);
+                reply.setContent(Mensagens.VOU_BOTAR_BOLA_NO_CENTRO);
+                getJogador().send(reply);
+            }
+        }
+
+        private boolean outroRespondeuQueEstaColocandoBolaNoCentro() {
+            return disse(Mensagens.VOU_BOTAR_BOLA_NO_CENTRO) && mensagemOutroJogador();
+        }
+    }
 
     private boolean pegouBola() {
         return message != null && (Mensagens.PEGUEI_BOLA.equals(message.getContent()) || Mensagens.TENHO_A_BOLA.equals(message.getContent()));

@@ -12,11 +12,12 @@ abstract class JogadorTickerBehavior extends TickerBehaviour {
 	private int transicao;
 	private ACLMessage message;
 	private String mensagemVindaDaInterface;
-	public JogadorTickerBehavior(Agent a, long period) {
+
+	JogadorTickerBehavior(Agent a, long period) {
 		super(a, period);
 	}
 
-	protected void finalizaCom(int transicao) {
+	void finalizaCom(int transicao) {
 		this.transicao = transicao;
 		stop();
 	}
@@ -39,6 +40,18 @@ abstract class JogadorTickerBehavior extends TickerBehaviour {
 		getJogador().informaEstado( getJogador().getNome(), getBehaviourName() );
 		executaPassoJogo();
 		executaEstado();
+		if(mensagemDaInterface(Mensagens.Gui.GOL)){
+			getJogador().getCampo().setBolaEmJogo(false);
+			if (mensagemVindaDaInterface.split(":")[1].equals(getJogador().getTime())) {
+				finalizaCom(JogadorBehaviour.SELECIONADO_COLOCAR_BOLA_NO_CENTRO);
+			} else {
+				finalizaCom(JogadorBehaviour.GOL);
+			}
+		}
+	}
+
+	private boolean mensagemDaInterface(String distanciaBola) {
+		return mensagemVindaDaInterface != null && mensagemVindaDaInterface.contains(distanciaBola);
 	}
 
 	private void executaPassoJogo() {
@@ -50,10 +63,10 @@ abstract class JogadorTickerBehavior extends TickerBehaviour {
 
 	private void log() {
 		if(mensagemVindaDaInterface != null)
-			getJogador().debugaSeAtivo("MI: " + mensagemVindaDaInterface);
+			getJogador().debuga("MI: " + mensagemVindaDaInterface);
 		if (message != null) {
 			String string = "ouvi " + message.getContent() + " de " + message.getSender().getLocalName();
-			getJogador().debugaSeAtivo(string);
+			getJogador().debuga(string);
 		}
 	}
 

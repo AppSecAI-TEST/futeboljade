@@ -1,6 +1,7 @@
 package jogo.behaviour;
 
 import jade.core.Agent;
+import jogo.Jogador;
 
 public class EsperandoState extends JogadorTickerBehavior {
 
@@ -10,6 +11,8 @@ public class EsperandoState extends JogadorTickerBehavior {
 
 		@Override
 		protected void executaEstado() {
+			getJogador().defender();
+			getJogador().setPosicaoCampo(Jogador.PosicaoCampo.DEFESA);
 			if (bolaEmJogo())
 				finalizaCom(JogadorBehaviour.BOLA_EM_JOGO);
 		}

@@ -15,9 +15,9 @@ import java.util.*;
 public class Campo {
 
     private final AgentContainer mainContainer;
-    private Map<String, AgentController> jogadores;
-    private Set<Jogador> jogadoresInformar;
-    private Set<CampoAgentesListener> listeners;
+    private final Map<String, AgentController> jogadores;
+    private final Set<Jogador> jogadoresInformar;
+    private final Set<CampoAgentesListener> listeners;
     private static final boolean BLOCKING = false;
 
     @Getter
@@ -128,29 +128,20 @@ public class Campo {
     }
 
     @SneakyThrows
-    void jogadorEstaNaGrandeAreaAlvo(String nome) {
-        AgentController agentController = jogadores.get(nome);
-        agentController.putO2AObject(Mensagens.Gui.CHEGOU_NA_AREA_ALVO + ":" + nome, BLOCKING);
-    }
-
-    @SneakyThrows
     void bolaEstaNaGrandeAreaDoTime(String time) {
-        if (!jogadores.isEmpty()) {
-            jogadores.forEach((j, ac) -> {
-                try {
-                    ac.putO2AObject(Mensagens.Gui.BOLA_NA_AREA_DO_TIME + ":" + time, BLOCKING);
-                } catch (StaleProxyException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
+        notificaJogadores(Mensagens.Gui.BOLA_NA_AREA_DO_TIME + ":" + time);
     }
 
     void bolaNaoEstaNaGrandeAreaDoTime(String time) {
+        String mensagem = "saiu_da_area:" + time;
+        notificaJogadores(mensagem);
+    }
+
+    private void notificaJogadores(String mensagem) {
         if (!jogadores.isEmpty()) {
             jogadores.forEach((j, ac) -> {
                 try {
-                    ac.putO2AObject("saiu_da_area:" + time, BLOCKING);
+                    ac.putO2AObject(mensagem, BLOCKING);
                 } catch (StaleProxyException e) {
                     e.printStackTrace();
                 }
@@ -167,11 +158,24 @@ public class Campo {
     }
 
     @SneakyThrows
-    void jogadorEstaNoAtaque(String nome) {
-        jogadores.get(nome).putO2AObject("ATAQUE", BLOCKING);
+    void jogadorEstaNaPosicao(String nome, Jogador.PosicaoCampo posicaoCampo) {
+        jogadores.get(nome).putO2AObject(posicaoCampo.toString(), BLOCKING);
     }
 
     void jogadoresAFrente(String nome, List<String> nomes) {
-        // TODO
     }
+
+    void bolaNoCentroDepoisDoGol() {
+        this.setBolaEmJogo(true);
+    }
+
+    @SneakyThrows
+    void golTime(String nomeTime) {
+        notificaJogadores(Mensagens.Gui.GOL+":"+nomeTime);
+    }
+
+    void informaPosicaoCampo(String nome, String posicao) {
+        listeners.forEach(l -> l.informaPosicaoCampo(nome, posicao));
+    }
+
 }

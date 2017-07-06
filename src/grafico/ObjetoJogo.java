@@ -19,7 +19,7 @@ public abstract class ObjetoJogo {
 	private Campo campo;
 	private Shape geometria;
 	private int folgaTesteColisao = 0;
-	private String info, debug;
+	private String info = "", infoDebug = "", infoPosicaoAtual = "";
 
 	public void atualiza() {
 		reposiciona();
@@ -33,13 +33,13 @@ public abstract class ObjetoJogo {
 		setY(getY() + Math.sin(Math.toRadians(getDirecao())) * getVelocidade() * getAceleracao());
 	}
 	
-	public Point getProximaPosicao(int distancia) {
+	Point getProximaPosicao(int distancia) {
 		int x = (int) (getX() + Math.cos(Math.toRadians(getDirecao())) * distancia);
 		int y = (int) (getY() + Math.sin(Math.toRadians(getDirecao())) * distancia);
 		return new Point(x, y);
 	}
 
-	public void desenha() {
+	void desenha() {
 		Graphics2D g2 = getCampo().g;
 		desenha(g2);
 	}
@@ -69,7 +69,7 @@ public abstract class ObjetoJogo {
 		setAceleracao(getAceleracao() / 2);
 	}
 
-	protected void inverterTragetoria() {
+	void inverterTragetoria() {
 		boolean colisaoLinhaFundo = getCampo()
 				.getInfoAreasCampo()
 				.getLinhaDeFundo()
@@ -80,12 +80,12 @@ public abstract class ObjetoJogo {
 	public void diminuiAceleracao() {
 	}
 
-	public Shape getGeometria() {
+	Shape getGeometria() {
 		geometria = new Ellipse2D.Double(getX(), getY(), getW(), getH());
 		return this.geometria;
 	}
 	
-	public void apontarPara(double xdest, double ydest){
+	void apontarPara(double xdest, double ydest){
 		setDirecao(GeometriaUtil.getDirecaoPara(getX(), getY(), xdest, ydest));
 	}
 	

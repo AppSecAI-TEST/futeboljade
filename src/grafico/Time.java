@@ -19,7 +19,7 @@ public class Time {
 	private Color cor;
 	private Gol golAlvo;
 	private GrandeArea grandeAreaAlvo;
-	private CampoAtaque campoAtaque;
+	private CampoMetade campoAtaque;
 	private TipoTime tipoTime;
 	
 	public Time(Color cor) {

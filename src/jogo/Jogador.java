@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
-@EqualsAndHashCode(of = "nome")
+@EqualsAndHashCode(of = "nome", callSuper = false)
 public class Jogador extends Agent implements Serializable {
     private static final int QUANTIDADE_MENSAGENS_FILA = 3;
     public static final Jogador NULL = new Jogador("nulo");
@@ -77,7 +77,7 @@ public class Jogador extends Agent implements Serializable {
         this.estiloDeJogo = EstiloDeJogoFactory.criaEstiloDeJogo();
     }
 
-    public Jogador setOutrosJogadores(ListaJogadores listaJogadores) {
+    Jogador setOutrosJogadores(ListaJogadores listaJogadores) {
         listaJogadores.addJogador(this);
         this.listaJogadores = listaJogadores;
         return this;
@@ -85,17 +85,21 @@ public class Jogador extends Agent implements Serializable {
 
     public void jogaSemBola() {
         if (estiloDeJogo.deveCorrerAtrasDaBola(this)) {
-            getCampo().mostraJogadorCorrendoAtrasDaBolaIgualUmTanso(this);
+            seguirBola();
         } else {
             defender();
         }
+    }
+
+    public void seguirBola() {
+        getCampo().mostraJogadorCorrendoAtrasDaBolaIgualUmTanso(this);
     }
 
     public void setColidiuComBola() {
         colisoesAtePegarBola--;
         if (colisoesAtePegarBola == 0) {
             colisoesAtePegarBola = getColisoesAtePegarBola();
-            listeners.forEach(listener -> listener.pegouBola());
+            listeners.forEach(JogadorListener::pegouBola);
         }
     }
 
@@ -107,7 +111,7 @@ public class Jogador extends Agent implements Serializable {
         this.listeners.add(jogadorListener);
     }
 
-    public void debugaSeAtivo(String mensagem) {
+    public void debuga(String mensagem) {
         getCampo().debuga(getNome(), mensagem);
     }
 
@@ -151,7 +155,7 @@ public class Jogador extends Agent implements Serializable {
 
     }
 
-    public List<Jogador> getParceiros() {
+    private List<Jogador> getParceiros() {
         return getListaJogadores().getParceirosDe(this);
     }
 
@@ -169,17 +173,18 @@ public class Jogador extends Agent implements Serializable {
 
     public void setPosicaoCampo(PosicaoCampo posicaoCampo) {
         this.estiloDeJogo.setPosicaoCampo(posicaoCampo);
+        campo.informaPosicaoCampo(nome, posicaoCampo.toString());
     }
 
-    public ACLMessage criaMensagem(String conteudo, Predicate<? super Jogador> predicate) {
+    private ACLMessage criaMensagem(String conteudo, Predicate<? super Jogador> predicate) {
         int perf = ACLMessage.PROPAGATE;
         return criaMensagem(conteudo, predicate, perf, "");
     }
 
-    private ACLMessage criaMensagem(String conteudo, Predicate<? super Jogador> predicate, int perf, String ontology) {
+    public ACLMessage criaMensagem(String conteudo, Predicate<? super Jogador> predicate, int perf, String ontology) {
         ACLMessage message = new ACLMessage(perf);
         getListaJogadores().getJogadores().stream().filter(predicate).forEach(jogador -> {
-            debugaSeAtivo("vou notificar " + jogador.getNome() + " que " + conteudo);
+            debuga("vou notificar " + jogador.getNome() + " que " + conteudo);
             message.addReceiver(new AID(jogador.getNome(), AID.ISLOCALNAME));
         });
         message.addUserDefinedParameter("time", getTime());
@@ -188,11 +193,11 @@ public class Jogador extends Agent implements Serializable {
         return message;
     }
 
-    public boolean isDoMesmoTime(Jogador jogador) {
+    private boolean isDoMesmoTime(Jogador jogador) {
         return isOutro(jogador) && jogador.getTime().equals(getTime());
     }
 
-    public boolean isOutro(Jogador jogador) {
+    private boolean isOutro(Jogador jogador) {
         return !jogador.getNome().equals(getNome());
     }
 
@@ -204,7 +209,7 @@ public class Jogador extends Agent implements Serializable {
         send(criaMensagem(conteudo, this::isOutro));
     }
 
-    public Jogador getParceiro(String name) {
+    private Jogador getParceiro(String name) {
         return getParceiros().stream().filter(j -> j.getNome().equals(name)).findFirst().orElse(Jogador.NULL);
     }
 
@@ -214,7 +219,7 @@ public class Jogador extends Agent implements Serializable {
     }
 
     public enum PosicaoCampo {
-        INDETERMINADA {
+        DEFESA {
             @Override
             public int getChanceChutar() {
                 return 0;
@@ -227,12 +232,21 @@ public class Jogador extends Agent implements Serializable {
         }, ATAQUE {
             @Override
             public int getChanceChutar() {
-                return 100;
+                return 10;
             }
 
             @Override
             public int getChancePassar() {
                 return 1;
+            }
+        }, NA_AREA {
+            @Override
+            public int getChanceChutar() {
+                return 100;
+            }
+            @Override
+            public int getChancePassar() {
+                return 0;
             }
         };
 

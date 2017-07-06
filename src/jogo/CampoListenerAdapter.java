@@ -45,4 +45,8 @@ public class CampoListenerAdapter implements CampoAgentesListener {
 	public void debuga(String nome, String mensagem) {
 	}
 
+	@Override
+	public void informaPosicaoCampo(String nome, String posicao) {
+	}
+
 }

@@ -1,5 +1,7 @@
 package view;
 
+import jogo.Jogador;
+
 import java.util.List;
 
 public interface CampoGraficoListener {
@@ -8,15 +10,15 @@ public interface CampoGraficoListener {
 
 	void jogadorEstaAXDistancia(String nome, double distancia);
 
-	void jogadorEstaNaGrandeAreaAlvo(String nome);
-
 	void bolaEstaNaGrandeAreaDoTime(String nome);
 
     void bolaNaoEstaNaGrandeAreaDoTime(String nome);
     
     void bolaSaiu();
 
-	void jogadorEstaNoAtaque(String nome);
+	void jogadorEstaNaPosicao(String nome, Jogador.PosicaoCampo posicaoCampo);
 
 	void jogadoresAFrente(String nome, List<String> nomes);
+
+    void golTime(String nome);
 }

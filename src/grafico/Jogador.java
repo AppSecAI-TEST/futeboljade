@@ -37,7 +37,7 @@ public class Jogador extends ObjetoJogo {
 		detectaColisao();
 		avisaSeEstaNaGrandeArea();
 		avisaAQueDistanciaEstaDaBola();
-		avisaSeEstaNoAtaque();
+		avisaSeEstaNoAtaqueOuDefesa();
 		avisaJogadoresAFrente();
 	}
 
@@ -47,9 +47,11 @@ public class Jogador extends ObjetoJogo {
 		getCampo().avisaJogadoresAFrente(this, names);
 	}
 
-	private void avisaSeEstaNoAtaque() {
+	private void avisaSeEstaNoAtaqueOuDefesa() {
 		if(getGeometria().getBounds().intersects(getTime().getCampoAtaque().getArea())){
-			getCampo().avisaJogadorEstaNoAtaque(this);
+			getCampo().avisaJogadorEstaNaPosicao(this, jogo.Jogador.PosicaoCampo.ATAQUE);
+		} else {
+			getCampo().avisaJogadorEstaNaPosicao(this, jogo.Jogador.PosicaoCampo.DEFESA);
 		}
 	}
 
@@ -64,7 +66,7 @@ public class Jogador extends ObjetoJogo {
 		Rectangle grandeAreaAlvo = getTime().getGrandeAreaAlvo().getLimites();
 		boolean estaNaGrandeArea = grandeAreaAlvo.intersects(minhaArea);
 		if(estaNaGrandeArea){
-			getCampo().getListeners().forEach(l->l.jogadorEstaNaGrandeAreaAlvo(getNome()));
+			getCampo().avisaJogadorEstaNaPosicao(this, jogo.Jogador.PosicaoCampo.NA_AREA);
 		}
 	}
 
@@ -78,10 +80,11 @@ public class Jogador extends ObjetoJogo {
 	protected void desenha(Graphics2D g2) {
 		g2.setColor(getColor());
 		g2.fill(getGeometria());
+		g2.drawString(getInfoPosicaoAtual(), (int) getX(), (int) getY() - 80);
+		g2.drawString(getInfoDebug(), (int) getX(), (int) getY() - 60);
+		g2.drawString(getInfo(), (int) getX(), (int) getY() - 40);
+		g2.drawString(String.valueOf(getDirecao()), (int) getX(), (int) getY() - 20);
 		g2.drawString(getNome(), (int) getX(), (int) getY());
-		g2.drawString(getDirecao() + "", (int) getX(), (int) getY() - 20);
-		g2.drawString(getInfo() + "", (int) getX(), (int) getY() - 40);
-		g2.drawString(getDebug() + "", (int) getX(), (int) getY() - 60);
 		g2.draw(this.getGeometria().getBounds2D());
 	}
 	

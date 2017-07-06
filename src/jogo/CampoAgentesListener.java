@@ -23,4 +23,7 @@ public interface CampoAgentesListener {
     void informaEstado(String nome, String estado);
 
     void debuga(String nome, String mensagem);
+
+    void informaPosicaoCampo(String nome, String posicao);
+
 }

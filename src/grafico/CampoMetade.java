@@ -5,11 +5,11 @@ import java.awt.Rectangle;
 import lombok.Data;
 
 @Data
-public class CampoAtaque {
+public class CampoMetade {
 	
 	private Rectangle area;
 	
-	public CampoAtaque(Rectangle campo) {
+	public CampoMetade(Rectangle campo) {
 		setArea(campo);
 	}
 	
