@@ -17,5 +17,6 @@ public interface Mensagens {
 		String BOLA_NA_AREA_DO_TIME = "bola_na_area_do_time";
 		String COLIDIU_COM_BOLA = "colidiu_com_bola";
         String GOL = "GOL";
+		String CHEGOU_NO_CENTRO = "chegou_no_centro";
     }
 }

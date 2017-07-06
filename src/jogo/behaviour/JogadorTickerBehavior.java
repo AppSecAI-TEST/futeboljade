@@ -42,8 +42,9 @@ abstract class JogadorTickerBehavior extends TickerBehaviour {
 		executaEstado();
 		if(mensagemDaInterface(Mensagens.Gui.GOL)){
 			getJogador().getCampo().setBolaEmJogo(false);
-			if (mensagemVindaDaInterface.split(":")[1].equals(getJogador().getTime())) {
-				finalizaCom(JogadorBehaviour.SELECIONADO_COLOCAR_BOLA_NO_CENTRO);
+			if (!mensagemVindaDaInterface.split(":")[1].equals(getJogador().getTime())) {
+				if(getJogador().getNome().endsWith("2")) // TODO Melhorar
+					finalizaCom(JogadorBehaviour.SELECIONADO_BUSCAR_BOLA);
 			} else {
 				finalizaCom(JogadorBehaviour.GOL);
 			}

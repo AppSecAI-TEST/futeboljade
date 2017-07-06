@@ -181,7 +181,7 @@ public class Jogador extends Agent implements Serializable {
         return criaMensagem(conteudo, predicate, perf, "");
     }
 
-    public ACLMessage criaMensagem(String conteudo, Predicate<? super Jogador> predicate, int perf, String ontology) {
+    private ACLMessage criaMensagem(String conteudo, Predicate<? super Jogador> predicate, int perf, String ontology) {
         ACLMessage message = new ACLMessage(perf);
         getListaJogadores().getJogadores().stream().filter(predicate).forEach(jogador -> {
             debuga("vou notificar " + jogador.getNome() + " que " + conteudo);
