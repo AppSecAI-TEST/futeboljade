@@ -299,4 +299,12 @@ public class Campo extends Canvas {
 		getJogador(nome).setInfoPosicaoAtual(posicao);
 	}
 
+	public void moveBolaCentro() {
+		int w = (int) getBola().getW();
+		getBola()
+		.setX(infoAreasCampo.getXMeio()-w)
+		.setY(infoAreasCampo.getYMeio()-w);
+		getListeners().forEach(CampoGraficoListener::bolaFoiProCentro);
+	}
+
 }

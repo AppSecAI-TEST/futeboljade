@@ -26,4 +26,6 @@ public interface CampoAgentesListener {
 
     void informaPosicaoCampo(String nome, String posicao);
 
+	void bolaFoiProCentro();
+
 }

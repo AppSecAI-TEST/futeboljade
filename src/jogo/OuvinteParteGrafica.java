@@ -49,4 +49,9 @@ public class OuvinteParteGrafica implements CampoGraficoListener {
 		campo.golTime(nomeTime);
 	}
 
+	@Override
+	public void bolaFoiProCentro() {
+		campo.bolaFoiProCentro();
+	}
+
 }

@@ -155,6 +155,16 @@ public class Estadio extends JFrame {
 			}
 		});
 		
+		JButton moveBolaCentro = new JButton("MOVE BOLA CENTRO");
+		barraTestes.add(moveBolaCentro);
+		moveBolaCentro.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				campo.moveBolaCentro();
+				
+			}
+		});
+		
 		return barraTestes;
 	}
 

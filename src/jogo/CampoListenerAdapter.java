@@ -49,4 +49,10 @@ public class CampoListenerAdapter implements CampoAgentesListener {
 	public void informaPosicaoCampo(String nome, String posicao) {
 	}
 
+	@Override
+	public void bolaFoiProCentro() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

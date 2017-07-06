@@ -178,4 +178,8 @@ public class Campo {
         listeners.forEach(l -> l.informaPosicaoCampo(nome, posicao));
     }
 
+	public void bolaFoiProCentro() {
+		listeners.forEach(l->l.bolaFoiProCentro());
+	}
+
 }
