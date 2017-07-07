@@ -12,25 +12,25 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@Accessors(chain=true)
+@Accessors(chain = true)
 public class Jogador extends ObjetoJogo {
-	
+
 	private static final int FOLGA_TESTE_COLISAO_JOGADOR = 7;
 	public static final Color COR_CASA = new Color(255, 51, 51);
 	public static final Color COR_VISITANTE = new Color(0, 170, 255);
 	public static final int TAMANHO_JOGADOR = 30;
-	
+
 	private Color color;
 	private Time time;
 	private String nome;
 	private Point posicaoAtaque, posicaoDefesa;
-	private int folgaTesteColisaoJogador = 0;	
+	private int folgaTesteColisaoJogador = 0;
 
 	public Jogador() {
 		setW(TAMANHO_JOGADOR);
 		setH(TAMANHO_JOGADOR);
 	}
-	
+
 	public void atualiza() {
 		reposiciona();
 		desenha();
@@ -48,7 +48,7 @@ public class Jogador extends ObjetoJogo {
 	}
 
 	private void avisaSeEstaNoAtaqueOuDefesa() {
-		if(getGeometria().getBounds().intersects(getTime().getCampoAtaque().getArea())){
+		if (getGeometria().getBounds().intersects(getTime().getCampoAtaque().getArea())) {
 			getCampo().avisaJogadorEstaNaPosicao(this, jogo.Jogador.PosicaoCampo.ATAQUE);
 		} else {
 			getCampo().avisaJogadorEstaNaPosicao(this, jogo.Jogador.PosicaoCampo.DEFESA);
@@ -58,19 +58,19 @@ public class Jogador extends ObjetoJogo {
 	private void avisaAQueDistanciaEstaDaBola() {
 		ObjetoJogo bola = getCampo().getBola();
 		double distancia = GeometriaUtil.getDistanciaAte(getX(), getY(), bola.getX(), bola.getY());
-		getCampo().getListeners().forEach(l->l.jogadorEstaAXDistancia(getNome(), distancia));
+		getCampo().getListeners().forEach(l -> l.jogadorEstaAXDistancia(getNome(), distancia));
 	}
 
 	private void avisaSeEstaNaGrandeArea() {
 		Rectangle2D minhaArea = getGeometria().getBounds2D();
 		Rectangle grandeAreaAlvo = getTime().getGrandeAreaAlvo().getLimites();
 		boolean estaNaGrandeArea = grandeAreaAlvo.intersects(minhaArea);
-		if(estaNaGrandeArea){
+		if (estaNaGrandeArea) {
 			getCampo().avisaJogadorEstaNaPosicao(this, jogo.Jogador.PosicaoCampo.NA_AREA);
 		}
 	}
 
-	public Jogador(String nome, Color color){
+	public Jogador(String nome, Color color) {
 		this();
 		this.nome = nome;
 		this.color = color;
@@ -87,22 +87,22 @@ public class Jogador extends ObjetoJogo {
 		g2.drawString(getNome(), (int) getX(), (int) getY());
 		g2.draw(this.getGeometria().getBounds2D());
 	}
-	
+
 	@Override
 	protected void detectaColisao() {
 		super.detectaColisao();
-		if(colidiuComBola()){
+		if (colidiuComBola()) {
 			aoColidirComBola();
 		}
 		Jogador j;
-		if((j = colidiuComJogador()) != null && getFolgaTesteColisaoJogador() <= 0){
+		if ((j = colidiuComJogador()) != null && getFolgaTesteColisaoJogador() <= 0) {
 			aoColidirComJogador(j);
 			setFolgaTesteColisaoJogador(FOLGA_TESTE_COLISAO_JOGADOR);
 		}
-		setFolgaTesteColisaoJogador(getFolgaTesteColisaoJogador()-1);
+		setFolgaTesteColisaoJogador(getFolgaTesteColisaoJogador() - 1);
 
 	}
-		
+
 	private void aoColidirComJogador(Jogador j) {
 		double anguloAteJogador = GeometriaUtil.getDirecaoPara(getX(), getY(), j.getX(), j.getY());
 		double direcao = getDirecao();
@@ -111,8 +111,8 @@ public class Jogador extends ObjetoJogo {
 	}
 
 	private Jogador colidiuComJogador() {
-		for(Jogador j : getCampo().getJogadores()){
-			if(j != this && this.getGeometria().intersects(j.getGeometria().getBounds())){
+		for (Jogador j : getCampo().getJogadores()) {
+			if (j != this && this.getGeometria().intersects(j.getGeometria().getBounds())) {
 				return j;
 			}
 		}
@@ -127,23 +127,20 @@ public class Jogador extends ObjetoJogo {
 		Shape bola = getCampo().getBola().getGeometria();
 		return getGeometria().intersects(bola.getBounds());
 	}
-	
+
 	protected boolean colidiuComLaterais() {
-		return getCampo()
-				.getInfoAreasCampo()
-				.getLaterais()
-				.intersects(getGeometria().getBounds2D());
+		return getCampo().getInfoAreasCampo().getLaterais().intersects(getGeometria().getBounds2D());
 	}
 
 	@Override
 	protected void aoColidirComLaterais() {
 		inverterTragetoria();
 	}
-	
-	public void passarPara(String jogador){
+
+	public void passarPara(String jogador) {
 		ObjetoJogo parceiro = getCampo().getObjetosJogo().get(jogador);
 		ObjetoJogo bola = getCampo().getBola();
-		if(parceiro != null){
+		if (parceiro != null) {
 			apontarPara(parceiro.getX(), parceiro.getY());
 			bola.apontarPara(parceiro.getX(), parceiro.getY());
 		}
@@ -168,11 +165,12 @@ public class Jogador extends ObjetoJogo {
 		setVelocidade(3);
 		setAceleracao(1);
 	}
-	
+
 	public void defender() {
 		apontarPara(getPosicaoDefesa().getX(), getPosicaoDefesa().getY());
 		setVelocidade(3);
 		setAceleracao(1);
+
 	}
 
 }

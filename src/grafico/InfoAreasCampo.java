@@ -12,6 +12,8 @@ import java.awt.geom.Rectangle2D;
 @Setter
 public class InfoAreasCampo {
 
+	private static final int ALTURA_PLACAR = 50;
+	private static final int LARGURA_LATERAL = 15;
 	private Area campoNaoJogavel;
 	private Area linhaDeFundo;
 	private Rectangle limitesGolEsquerda;
@@ -36,19 +38,19 @@ public class InfoAreasCampo {
 						getLimitesGolEsquerda().getX(),
 						getYBordaCima(),
 						getLimitesGolEsquerda().getWidth(),
-						getLimitesTotais().getHeight())));
+						getLimitesCampo().getHeight())));
 		
 		linhaDeFundo.add(new Area(
 				new Rectangle2D.Double(
 						getLimitesGolDireita().getX(),
 						getYBordaCima(),
 						getLimitesGolDireita().getWidth(),
-						getLimitesTotais().getBounds().getHeight())));
+						getLimitesCampo().getBounds().getHeight())));
 	}
 
 	private void iniciaCamposJogaveisOuNao() {
 		Area campoJogavel = new Area(getLimitesDentroQuatroLinhas());
-		Area campoTotal = new Area(getLimitesTotais());
+		Area campoTotal = new Area(getLimitesCampo());
 		
 		campoJogavel.add(new Area(getLimitesGolDireita()));
 		campoJogavel.add(new Area(getLimitesGolEsquerda()));
@@ -85,11 +87,12 @@ public class InfoAreasCampo {
 	}
 	
 	public Rectangle getLimitesDentroQuatroLinhas() {
+		Rectangle t = getLimitesCampo();
 		return new Rectangle(
 				(int)getCampo().getGolEsquerda().getLimites().getMaxX(),
-				(int)getYBordaCima()+10, 
+				(int)t.getMinY()+LARGURA_LATERAL, 
 				(int)(getCampo().getWidth() - ((getLimitesGolDireita().getWidth()*2)))-2,
-				(int)getCampo().getHeight()-20);
+				(int)t.getHeight()-LARGURA_LATERAL*2);
 	}
 	
 	public Rectangle getLimitesTotais() {
@@ -99,6 +102,16 @@ public class InfoAreasCampo {
 				getCampo().getWidth(),
 				getCampo().getHeight());
 	}
+	
+	public Rectangle getLimitesCampo() {
+		return new Rectangle(
+				getXBordaEsquerda(),
+				getYBordaCima()+ALTURA_PLACAR,
+				getCampo().getWidth(),
+				getCampo().getHeight()-ALTURA_PLACAR);
+	}
+	
+	
 	
 	public Rectangle getLimitesCampoEsquerda(){
 		return GeometriaUtil.getSubArea(getLimitesDentroQuatroLinhas(), 2, 1, 0, 0);	
@@ -117,7 +130,7 @@ public class InfoAreasCampo {
 	public int getYMeio() {	return getCampo().getHeight()/2; }
 
 	public Shape getLaterais() {
-		Area laterais = new Area(getLimitesTotais());
+		Area laterais = new Area(getLimitesCampo());
 		laterais.subtract(new Area(getLimitesDentroQuatroLinhas()));
 		return laterais;
 	}
@@ -131,6 +144,11 @@ public class InfoAreasCampo {
 		Rectangle bounds = getCampoJogavel().getBounds();
 		int largura = (int)bounds.getWidth()/2;
 		return new Rectangle((int)bounds.getMinX()+largura, (int)bounds.getMinY(), largura, (int)bounds.getHeight());
+	}
+
+	public Rectangle getTopo() {
+		Rectangle limitesTotais = getLimitesTotais();
+		return new Rectangle(limitesTotais.x, limitesTotais.y, limitesTotais.width, ALTURA_PLACAR);
 	}
 	
 }

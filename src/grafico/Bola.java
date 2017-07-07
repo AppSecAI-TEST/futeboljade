@@ -27,6 +27,7 @@ public class Bola extends ObjetoJogo {
 
 	private void avisaQueSaiu() {
 		getCampo().avisaQueBolaSaiu();
+		getCampo().moveBolaCentro();
 	}
 
 	@Override

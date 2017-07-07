@@ -42,6 +42,7 @@ public class Campo extends Canvas {
 	private Jogador jogadorComBola;
 	private Goleiro goleiroCasa;
 	private Goleiro goleiroVisitante;
+	private Placar placar;
 
 	public Campo() {
 		infoAreasCampo = new InfoAreasCampo();
@@ -56,6 +57,9 @@ public class Campo extends Canvas {
 		addObjetoJogo("BOLA", new Bola());
 		ouvinteAgentes = new OuvinteAgentes(this);
 		listeners = new HashSet<>();
+		placar = new Placar();
+		placar.setCampo(this);
+		objetosJogo.put("PLACAR", placar);
 	}
 
 	public void start() {
@@ -104,7 +108,7 @@ public class Campo extends Canvas {
 
 	private void desenhaCampo(Graphics2D g2) {
 		g2.setColor(COR_CAMPO);
-		g.fill(infoAreasCampo.getLimitesTotais());
+		g.fill(infoAreasCampo.getLimitesCampo());
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(Color.WHITE);
 
@@ -135,11 +139,25 @@ public class Campo extends Canvas {
 	}
 
 	public void gooolTimeEsquerda() {
+		placar.golsEsquerda++;
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		moveBolaCentro();
 		status = StatusJogo.GOOOL;
 		listeners.forEach(l->l.golTime(casa.getNome()));
 	}
 
-	public void gooolTimeDireita() {
+	public void gooolTimeDireita() {		
+		placar.golsDireita++;
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		moveBolaCentro();
 		status = StatusJogo.GOOOL;
 		listeners.forEach(l->l.golTime(visitante.getNome()));
 	}

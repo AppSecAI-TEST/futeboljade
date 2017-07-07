@@ -20,7 +20,7 @@ public class Estadio extends JFrame {
 	private Listener listener;
 	
 	public Estadio() {
-		Dimension tamanho = new Dimension(1000,600);
+		Dimension tamanho = new Dimension(1000,750);
 		setSize(tamanho);
 		setResizable(false);
 		setLocationRelativeTo(null);
