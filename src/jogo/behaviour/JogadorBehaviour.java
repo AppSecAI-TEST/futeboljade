@@ -22,7 +22,7 @@ public class JogadorBehaviour extends FSMBehaviour {
     static final byte GOL = 8;
     static final int SELECIONADO_BUSCAR_BOLA = 9;
     private static final int PEGOU_BOLA_PRA_COLOCAR_NO_CENTRO = 10;
-    static final short TEMPO_ACAO = Constants.GAME_LOOP_SLEEP;
+    static final short TEMPO_ACAO = Globals.GAME_LOOP_SLEEP;
 
     protected ACLMessage message;
     private String mensagemVindaDaInterface = "";
@@ -33,7 +33,7 @@ public class JogadorBehaviour extends FSMBehaviour {
         registerState(new SemBolaState(agent, TEMPO_ACAO), SEM_BOLA);
         registerState(new TimeComBolaState(agent, TEMPO_ACAO), TIME_COM_BOLA);
         registerState(new ComBolaState(agent, TEMPO_ACAO), COM_BOLA);
-        registerState(new PegandoBolaDepoisDoGol(agent, TEMPO_ACAO), PEGANDO_BOLA_DEPOIS_DO_GOL);
+        registerState(new PegandoBolaDepoisDoGolState(agent, TEMPO_ACAO), PEGANDO_BOLA_DEPOIS_DO_GOL);
         registerState(new IndoParaOCentroComABolaState(agent, TEMPO_ACAO), INDO_PARA_O_CENTRO);
 
         registerTransition(ESPERANDO, SEM_BOLA, BOLA_EM_JOGO);
@@ -50,11 +50,9 @@ public class JogadorBehaviour extends FSMBehaviour {
         registerTransition(TIME_COM_BOLA, ESPERANDO, GOL);
         registerTransition(SEM_BOLA, ESPERANDO, GOL);
         registerTransition(COM_BOLA, ESPERANDO, GOL);
-        registerTransition(ESPERANDO, ESPERANDO, GOL);
 
         registerTransition(SEM_BOLA, PEGANDO_BOLA_DEPOIS_DO_GOL, SELECIONADO_BUSCAR_BOLA);
         registerTransition(ESPERANDO, PEGANDO_BOLA_DEPOIS_DO_GOL, SELECIONADO_BUSCAR_BOLA);
-        registerTransition(PEGANDO_BOLA_DEPOIS_DO_GOL, PEGANDO_BOLA_DEPOIS_DO_GOL, SELECIONADO_BUSCAR_BOLA);
         registerTransition(PEGANDO_BOLA_DEPOIS_DO_GOL, INDO_PARA_O_CENTRO, PEGOU_BOLA_PRA_COLOCAR_NO_CENTRO);
         registerTransition(INDO_PARA_O_CENTRO, SEM_BOLA, BOLA_EM_JOGO);
 
@@ -155,6 +153,7 @@ public class JogadorBehaviour extends FSMBehaviour {
 
         @Override
         protected void executaEstado() {
+            escutaGol();
             if (pegouBola() && mensagemMesmoTime()) {
                 finalizaCom(COLEGA_PEGOU_BOLA);
             }
@@ -174,6 +173,7 @@ public class JogadorBehaviour extends FSMBehaviour {
 
         @Override
         protected void executaEstado() {
+            escutaGol();
             seOutroTimePegouBolaFinaliza();
             jogaTimeComBola();
             if (disse(Mensagens.PASSEI) && mensagemMesmoTime())
@@ -199,6 +199,7 @@ public class JogadorBehaviour extends FSMBehaviour {
 
         @Override
         protected void executaEstado() {
+            escutaGol();
             seOutroPegouBolaFinaliza();
             avisaQueTemBola();
             jogaComBola();
@@ -229,9 +230,9 @@ public class JogadorBehaviour extends FSMBehaviour {
 
     }
 
-    class PegandoBolaDepoisDoGol extends JogadorTickerBehavior {
+    class PegandoBolaDepoisDoGolState extends JogadorTickerBehavior {
 
-        PegandoBolaDepoisDoGol(Agent a, long period) {
+        PegandoBolaDepoisDoGolState(Agent a, long period) {
             super(a, period);
         }
 
@@ -255,10 +256,7 @@ public class JogadorBehaviour extends FSMBehaviour {
         @Override
         void executaEstado() {
             getJogador().propagaAoTime(Mensagens.VOU_BOTAR_BOLA_NO_CENTRO);
-            getJogador().seguirBola();
-            if(JogadorBehaviour.this.mensagemDaInterface(Mensagens.Gui.CHEGOU_NO_CENTRO)){
-                finalizaCom(BOLA_EM_JOGO);
-            }
+            getJogador().vaiParaOCentroComABola();
         }
 
     }

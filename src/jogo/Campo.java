@@ -121,6 +121,10 @@ public class Campo {
         listeners.forEach(listener -> listener.jogadorDevePassar(passador, recebedor));
     }
 
+    void notificaJogadorDeveIrParaOCentroComABola(String nome) {
+        listeners.forEach(listener -> listener.jogadorDeveIrParaOCentroComABola(nome));
+    }
+
     @SneakyThrows
     void jogadorEstaAXDistancia(String nome, double distanciaX) {
         AgentController agentController = jogadores.get(nome);
@@ -178,8 +182,7 @@ public class Campo {
         listeners.forEach(l -> l.informaPosicaoCampo(nome, posicao));
     }
 
-	public void bolaFoiProCentro() {
-		listeners.forEach(l->l.bolaFoiProCentro());
+	void bolaFoiProCentro() {
+		listeners.forEach(CampoAgentesListener::bolaFoiProCentro);
 	}
-
 }

@@ -28,4 +28,5 @@ public interface CampoAgentesListener {
 
 	void bolaFoiProCentro();
 
+    void jogadorDeveIrParaOCentroComABola(String nome);
 }

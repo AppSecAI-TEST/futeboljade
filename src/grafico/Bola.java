@@ -59,11 +59,11 @@ public class Bola extends ObjetoJogo {
 		super.detectaColisao();
 		InfoAreasCampo areas = getCampo().getInfoAreasCampo();
 		if (areas.getLimitesGolDireita().contains(getGeometria().getBounds())) {
-			getCampo().gooolTimeEsquerda();
+			getCampo().gooolLadoEsquerdo();
 			setVelocidade(1);
 		}
 		if (areas.getLimitesGolEsquerda().contains(getGeometria().getBounds())) {
-			getCampo().gooolTimeDireita();
+			getCampo().gooolLadoDireito();
 			setVelocidade(1);
 		}
 	}

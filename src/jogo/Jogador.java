@@ -50,6 +50,7 @@ public class Jogador extends Agent implements Serializable {
     @Accessors(fluent = true)
     private boolean chutou, passou;
     private boolean decidiuQueDevePassar;
+    private boolean indoParaCentro;
 
     @Override
     protected void setup() {
@@ -117,10 +118,12 @@ public class Jogador extends Agent implements Serializable {
 
     public void atacar() {
         getCampo().notificaQueJogadorDeveAtacar(nome);
+        indoParaCentro = false;
     }
 
     public void defender() {
         getCampo().notificaQueJogadorDeveDefender(nome);
+        indoParaCentro = false;
     }
 
     public void jogaComBola() {
@@ -216,6 +219,13 @@ public class Jogador extends Agent implements Serializable {
     public void addDistanciaParceiroBola(String nomeParceiro, Float distancia) {
         getParceiro( nomeParceiro ).setDistanciaBola(distancia);
         estiloDeJogo.incrementaNumeroRespostasDistanciaBola();
+    }
+
+    public void vaiParaOCentroComABola() {
+        if(!indoParaCentro) {
+            campo.notificaJogadorDeveIrParaOCentroComABola(nome);
+            indoParaCentro = true;
+        }
     }
 
     public enum PosicaoCampo {

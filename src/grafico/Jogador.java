@@ -1,6 +1,7 @@
 package grafico;
 
 import jogo.MovimentoBola;
+import jogo.behaviour.Globals;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -20,7 +21,7 @@ public class Jogador extends ObjetoJogo {
 	public static final Color COR_VISITANTE = new Color(0, 170, 255);
 	public static final int TAMANHO_JOGADOR = 30;
 
-	private Color color;
+    private Color color;
 	private Time time;
 	private String nome;
 	private Point posicaoAtaque, posicaoDefesa;
@@ -80,12 +81,14 @@ public class Jogador extends ObjetoJogo {
 	protected void desenha(Graphics2D g2) {
 		g2.setColor(getColor());
 		g2.fill(getGeometria());
-		g2.drawString(getInfoPosicaoAtual(), (int) getX(), (int) getY() - 80);
-		g2.drawString(getInfoDebug(), (int) getX(), (int) getY() - 60);
-		g2.drawString(getInfo(), (int) getX(), (int) getY() - 40);
-		g2.drawString(String.valueOf(getDirecao()), (int) getX(), (int) getY() - 20);
+		if(Jogador.DEBUG) {
+			g2.drawString(getInfoPosicaoAtual(), (int) getX(), (int) getY() - 80);
+			g2.drawString(getInfoDebug(), (int) getX(), (int) getY() - 60);
+			g2.drawString(getInfo(), (int) getX(), (int) getY() - 40);
+			g2.drawString(String.valueOf(getDirecao()), (int) getX(), (int) getY() - 20);
+			g2.draw(this.getGeometria().getBounds2D());
+		}
 		g2.drawString(getNome(), (int) getX(), (int) getY());
-		g2.draw(this.getGeometria().getBounds2D());
 	}
 
 	@Override

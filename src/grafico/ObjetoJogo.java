@@ -20,6 +20,7 @@ public abstract class ObjetoJogo {
 	private Shape geometria;
 	private int folgaTesteColisao = 0;
 	private String info = "", infoDebug = "", infoPosicaoAtual = "";
+	public static boolean DEBUG = true;
 
 	public void atualiza() {
 		reposiciona();

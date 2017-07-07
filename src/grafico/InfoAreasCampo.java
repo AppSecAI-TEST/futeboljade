@@ -120,11 +120,9 @@ public class InfoAreasCampo {
 	public Rectangle getLimitesCampoDireita(){
 		return GeometriaUtil.getSubArea(getLimitesDentroQuatroLinhas(), 2, 1, 1, 0);
 	}
-	
-	public int getYBordaBaixo() { return getCampo().getHeight(); }
+
 	public int getYBordaCima() { return 0; }
 	public int getXBordaEsquerda() { return 0; }
-	public int getXBordaDireita() {	return getCampo().getWidth(); }
 
 	public int getXMeio() {	return getCampo().getWidth()/2; }
 	public int getYMeio() {	return getCampo().getHeight()/2; }

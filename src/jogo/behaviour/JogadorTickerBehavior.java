@@ -40,10 +40,13 @@ abstract class JogadorTickerBehavior extends TickerBehaviour {
 		getJogador().informaEstado( getJogador().getNome(), getBehaviourName() );
 		executaPassoJogo();
 		executaEstado();
+	}
+
+	protected void escutaGol() {
 		if(mensagemDaInterface(Mensagens.Gui.GOL)){
 			getJogador().getCampo().setBolaEmJogo(false);
-			if (!mensagemVindaDaInterface.split(":")[1].equals(getJogador().getTime())) {
-				if(getJogador().getNome().endsWith("2")) // TODO Melhorar
+			if (mensagemVindaDaInterface.split(":")[1].equals(getJogador().getTime())) {
+				if(getJogador().getNome().endsWith("2")) // TODO Melhorar escolha do jogador
 					finalizaCom(JogadorBehaviour.SELECIONADO_BUSCAR_BOLA);
 			} else {
 				finalizaCom(JogadorBehaviour.GOL);

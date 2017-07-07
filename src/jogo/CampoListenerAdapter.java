@@ -51,8 +51,10 @@ public class CampoListenerAdapter implements CampoAgentesListener {
 
 	@Override
 	public void bolaFoiProCentro() {
-		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public void jogadorDeveIrParaOCentroComABola(String nome) {
 	}
 
 }

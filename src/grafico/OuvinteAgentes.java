@@ -71,4 +71,9 @@ public class OuvinteAgentes implements CampoAgentesListener {
 	public void bolaFoiProCentro() {
 		// bola foi pro centro
 	}
+
+	@Override
+	public void jogadorDeveIrParaOCentroComABola(String nome) {
+		campo.jogadorDeveIrParaOCentroComABola(nome);
+	}
 }

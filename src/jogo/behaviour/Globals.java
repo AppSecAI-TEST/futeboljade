@@ -1,6 +1,6 @@
 package jogo.behaviour;
 
-public interface Constants {
+public interface Globals {
 
 	int GAME_LOOP_SLEEP = 10;
 
