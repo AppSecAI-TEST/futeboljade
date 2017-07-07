@@ -1,9 +1,9 @@
 package jogo;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import view.CampoGraficoListener;
+
+import java.util.List;
 
 @AllArgsConstructor
 public class OuvinteParteGrafica implements CampoGraficoListener {
@@ -45,7 +45,7 @@ public class OuvinteParteGrafica implements CampoGraficoListener {
 	}
 
 	@Override
-	public void bolaFoiProCentro() {
+	public void bolaFoiProCentro(boolean noCentro) {
 		campo.bolaFoiProCentro();
 	}
 

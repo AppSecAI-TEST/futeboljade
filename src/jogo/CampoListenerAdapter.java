@@ -11,8 +11,8 @@ public class CampoListenerAdapter implements CampoAgentesListener {
 	}
 
 	@Override
-	public void bolaEmJogo() {
-	}
+    public void bolaEmJogo(boolean bolaEmJogo) {
+    }
 
 	@Override
 	public void jogadorPegouBola(String nome) {

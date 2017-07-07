@@ -1,10 +1,9 @@
 package view;
 
 import grafico.*;
-import grafico.Goleiro;
-import grafico.Jogador;
-import jogo.*;
-import jogo.behaviour.Globals;
+import jogo.CampoAgentesListener;
+import jogo.MovimentoBola;
+import jogo.behaviour.Constants;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 @Setter
 public class Campo extends Canvas {
 
-    public static final int GAME_LOOP_SLEEP = Globals.GAME_LOOP_SLEEP;
+    public static final int GAME_LOOP_SLEEP = Constants.GAME_LOOP_SLEEP;
     private static final Color COR_CAMPO = new Color(86, 188, 96);
     private static final Color COR_LATERAIS = new Color(56, 158, 66);
     private static final Color COR_CASA = new Color(255, 69, 28);
@@ -101,6 +100,8 @@ public class Campo extends Canvas {
             strategy.show();
         }
         Toolkit.getDefaultToolkit().sync();
+
+        avisaBolaNoCentro();
     }
 
     private void desenhaCampo(Graphics2D g2) {
@@ -142,7 +143,6 @@ public class Campo extends Canvas {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //moveBolaCentro();
         status = StatusJogo.GOOOL;
         listeners.forEach(l -> l.golTime(visitante.getNome()));
     }
@@ -154,7 +154,6 @@ public class Campo extends Canvas {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //moveBolaCentro();
         status = StatusJogo.GOOOL;
         listeners.forEach(l -> l.golTime(casa.getNome()));
     }
@@ -177,12 +176,12 @@ public class Campo extends Canvas {
 
     private void addTime(String nomeTime) {
         if (casa == null) {
-            casa = new Time(nomeTime).setCor(COR_CASA).setGolAlvo(golDireita);
+            casa = new Time("CASA").setCor(COR_CASA).setGolAlvo(golDireita);
             casa.setGrandeAreaAlvo(grandeAreaDireita);
             casa.setCampoAtaque(new CampoMetade(infoAreasCampo.getCampoDireita()));
             casa.setTipoTime(TipoTime.CASA);
         } else if (visitante == null) {
-            visitante = new Time(nomeTime).setCor(COR_VISITANTE).setGolAlvo(golEsquerda);
+            visitante = new Time("VISITANTE").setCor(COR_VISITANTE).setGolAlvo(golEsquerda);
             visitante.setGrandeAreaAlvo(grandeAreaEsquerda);
             visitante.setCampoAtaque(new CampoMetade(infoAreasCampo.getCampoEsquerda()));
             visitante.setTipoTime(TipoTime.VISITANTE);
@@ -210,8 +209,8 @@ public class Campo extends Canvas {
         listeners.forEach(listener -> listener.jogadorColidiuComBola(jogador.getNome()));
     }
 
-    public ObjetoJogo getBola() {
-        return objetosJogo.get("BOLA");
+    public Bola getBola() {
+        return (Bola) objetosJogo.get("BOLA");
     }
 
     public void addListener(CampoGraficoListener listener) {
@@ -318,12 +317,14 @@ public class Campo extends Canvas {
     }
 
     private void avisaBolaNoCentro(){
-        if(bolaNoCentro())
+        if (bolaNoCentro() && !getBola().isEmJogo()) {
             getListeners().forEach(CampoGraficoListener::bolaFoiProCentro);
+        }
     }
 
     private boolean bolaNoCentro() {
-        return false; // TODO
+        return (getBola().getX() - infoAreasCampo.getXMeio() < getBola().getFolgaTesteColisao())
+                && (getBola().getY() - infoAreasCampo.getYMeio() < getBola().getFolgaTesteColisao());
     }
 
     public void jogadorDeveIrParaOCentroComABola(String nome) {
@@ -331,9 +332,11 @@ public class Campo extends Canvas {
         jogadorComBola = jogador;
         int xMeio = infoAreasCampo.getXMeio();
         int yMeio = infoAreasCampo.getYMeio();
-        double offset = getBola().getW();
-        jogador.setDirecao(GeometriaUtil.getDirecaoPara(xMeio, yMeio, offset, offset));
-        jogador.setVelocidade(4).setAceleracao(2);
-        // TODO Não tá indo pro centro
+        jogador.apontarPara(xMeio - jogador.getW() / 2, yMeio - jogador.getW() / 2);
+        jogador.setVelocidade(2).setAceleracao(1);
+    }
+
+    public void bolaEmJogo(boolean bolaEmJogo) {
+        getBola().setEmJogo(bolaEmJogo);
     }
 }

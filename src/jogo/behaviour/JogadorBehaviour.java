@@ -22,7 +22,7 @@ public class JogadorBehaviour extends FSMBehaviour {
     static final byte GOL = 8;
     static final int SELECIONADO_BUSCAR_BOLA = 9;
     private static final int PEGOU_BOLA_PRA_COLOCAR_NO_CENTRO = 10;
-    static final short TEMPO_ACAO = Globals.GAME_LOOP_SLEEP;
+    static final short TEMPO_ACAO = Constants.GAME_LOOP_SLEEP;
 
     protected ACLMessage message;
     private String mensagemVindaDaInterface = "";
@@ -255,6 +255,7 @@ public class JogadorBehaviour extends FSMBehaviour {
 
         @Override
         void executaEstado() {
+            reiniciaJogoSeBolaChegouNoCentro();
             getJogador().propagaAoTime(Mensagens.VOU_BOTAR_BOLA_NO_CENTRO);
             getJogador().vaiParaOCentroComABola();
         }

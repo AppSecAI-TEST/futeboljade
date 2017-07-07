@@ -19,6 +19,6 @@ public interface CampoGraficoListener {
 	void jogadoresAFrente(String nome, List<String> nomes);
 
     void golTime(String nome);
-    
-    void bolaFoiProCentro();
+
+	void bolaFoiProCentro();
 }

@@ -1,7 +1,6 @@
 package grafico;
 
 import jogo.MovimentoBola;
-import jogo.behaviour.Globals;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -103,7 +102,6 @@ public class Jogador extends ObjetoJogo {
 			setFolgaTesteColisaoJogador(FOLGA_TESTE_COLISAO_JOGADOR);
 		}
 		setFolgaTesteColisaoJogador(getFolgaTesteColisaoJogador() - 1);
-
 	}
 
 	private void aoColidirComJogador(Jogador j) {
@@ -147,8 +145,8 @@ public class Jogador extends ObjetoJogo {
 			apontarPara(parceiro.getX(), parceiro.getY());
 			bola.apontarPara(parceiro.getX(), parceiro.getY());
 		}
-		bola.setAceleracao(4);
-		bola.setVelocidade(5);
+		bola.setAceleracao(3);
+		bola.setVelocidade(4);
 		getCampo().setJogadorComBola(null);
 	}
 
@@ -173,7 +171,6 @@ public class Jogador extends ObjetoJogo {
 		apontarPara(getPosicaoDefesa().getX(), getPosicaoDefesa().getY());
 		setVelocidade(3);
 		setAceleracao(1);
-
 	}
 
 }

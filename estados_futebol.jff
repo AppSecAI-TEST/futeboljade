@@ -3,31 +3,36 @@
 	<automaton>
 		<!--The list of states.-->
 		<state id="0" name="q0">
-			<x>194.0</x>
-			<y>96.0</y>
+			<x>208.0</x>
+			<y>75.0</y>
 			<label>sem_bola</label>
 		</state>
 		<state id="1" name="q1">
-			<x>603.0</x>
-			<y>93.0</y>
+			<x>843.0</x>
+			<y>83.0</y>
 			<label>time_com_bola</label>
 		</state>
 		<state id="2" name="q2">
-			<x>348.0</x>
-			<y>197.0</y>
+			<x>516.0</x>
+			<y>155.0</y>
 			<label>com_bola</label>
 		</state>
+		<state id="3" name="q3">
+			<x>396.0</x>
+			<y>387.0</y>
+			<label>indo_pro_centro</label>
+		</state>
+		<state id="4" name="q4">
+			<x>171.0</x>
+			<y>390.0</y>
+			<label>pegando_bola_apos_gol</label>
+		</state>
+		<state id="5" name="q5">
+			<x>508.0</x>
+			<y>309.0</y>
+			<label>esperando</label>
+		</state>
 		<!--The list of transitions.-->
-		<transition>
-			<from>2</from>
-			<to>1</to>
-			<read>passou</read>
-		</transition>
-		<transition>
-			<from>1</from>
-			<to>2</to>
-			<read>pegou</read>
-		</transition>
 		<transition>
 			<from>0</from>
 			<to>1</to>
@@ -36,12 +41,57 @@
 		<transition>
 			<from>1</from>
 			<to>2</to>
+			<read>pegou</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>5</to>
+			<read>gol</read>
+		</transition>
+		<transition>
+			<from>2</from>
+			<to>5</to>
+			<read>gol</read>
+		</transition>
+		<transition>
+			<from>4</from>
+			<to>3</to>
+			<read>pegou__bola</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>2</to>
 			<read>recebeu_passe</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>4</to>
+			<read>selecionado_buscar_bola</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>5</to>
+			<read>gol</read>
+		</transition>
+		<transition>
+			<from>3</from>
+			<to>0</to>
+			<read>chegou_no_centro</read>
+		</transition>
+		<transition>
+			<from>2</from>
+			<to>1</to>
+			<read>passou</read>
 		</transition>
 		<transition>
 			<from>2</from>
 			<to>0</to>
 			<read>perdeu</read>
+		</transition>
+		<transition>
+			<from>5</from>
+			<to>0</to>
+			<read>bola_em_jogo</read>
 		</transition>
 	</automaton>
 </structure>

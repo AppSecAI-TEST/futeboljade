@@ -52,7 +52,7 @@ public class Campo {
 
     public void setBolaEmJogo(boolean bolaEmJogo) {
         this.bolaEmJogo = bolaEmJogo;
-        listeners.forEach(CampoAgentesListener::bolaEmJogo);
+        listeners.forEach(l -> l.bolaEmJogo(bolaEmJogo));
     }
 
     public void adicionaJogador(String nome, String time) {
@@ -183,6 +183,6 @@ public class Campo {
     }
 
 	void bolaFoiProCentro() {
-		listeners.forEach(CampoAgentesListener::bolaFoiProCentro);
-	}
+        notificaJogadores(Mensagens.Gui.CHEGOU_NO_CENTRO);
+    }
 }

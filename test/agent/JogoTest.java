@@ -1,8 +1,7 @@
 package agent;
 
-import org.junit.Test;
-
 import jogo.Campo;
+import org.junit.Test;
 
 public class JogoTest {
 

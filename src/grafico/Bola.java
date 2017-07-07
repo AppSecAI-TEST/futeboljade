@@ -1,5 +1,8 @@
 package grafico;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.awt.*;
 
 public class Bola extends ObjetoJogo {
@@ -7,6 +10,9 @@ public class Bola extends ObjetoJogo {
 	private static final double FATOR_ACELERACAO = 0.025;
 	private static final int TAMANHO_BOLA = 15;
 	private static final Color COR_BOLA = new Color(255, 255, 255);
+	@Getter
+	@Setter
+	private boolean emJogo = true;
 
 	public Bola() {
 		setW(TAMANHO_BOLA);
@@ -57,19 +63,22 @@ public class Bola extends ObjetoJogo {
 	@Override
 	protected void detectaColisao() {
 		super.detectaColisao();
-		InfoAreasCampo areas = getCampo().getInfoAreasCampo();
-		if (areas.getLimitesGolDireita().contains(getGeometria().getBounds())) {
-			getCampo().gooolLadoEsquerdo();
-			setVelocidade(1);
-		}
-		if (areas.getLimitesGolEsquerda().contains(getGeometria().getBounds())) {
-			getCampo().gooolLadoDireito();
-			setVelocidade(1);
+		if (emJogo) {
+			InfoAreasCampo areas = getCampo().getInfoAreasCampo();
+			if (areas.getLimitesGolDireita().contains(getGeometria().getBounds())) {
+				emJogo = false;
+				getCampo().gooolLadoEsquerdo();
+				setVelocidade(1);
+			} else if (areas.getLimitesGolEsquerda().contains(getGeometria().getBounds())) {
+				emJogo = false;
+				getCampo().gooolLadoDireito();
+				setVelocidade(1);
+			}
 		}
 	}
 
 	public void diminuiAceleracao() {
 		if (getAceleracao() > 0)
 			setAceleracao((float) (getAceleracao() - FATOR_ACELERACAO));
-	};
+	}
 }

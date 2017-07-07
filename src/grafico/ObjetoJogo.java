@@ -85,8 +85,8 @@ public abstract class ObjetoJogo {
 		geometria = new Ellipse2D.Double(getX(), getY(), getW(), getH());
 		return this.geometria;
 	}
-	
-	void apontarPara(double xdest, double ydest){
+
+	public void apontarPara(double xdest, double ydest) {
 		setDirecao(GeometriaUtil.getDirecaoPara(getX(), getY(), xdest, ydest));
 	}
 	

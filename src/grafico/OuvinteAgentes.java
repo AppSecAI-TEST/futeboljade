@@ -34,7 +34,8 @@ public class OuvinteAgentes implements CampoAgentesListener {
 	}
 
 	@Override
-	public void bolaEmJogo() {
+	public void bolaEmJogo(boolean bolaEmJogo) {
+		campo.bolaEmJogo(bolaEmJogo);
 	}
 
 	@Override

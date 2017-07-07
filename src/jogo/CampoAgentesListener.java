@@ -6,7 +6,7 @@ public interface CampoAgentesListener {
 
 	void jogadorAdicionado(String nomeJogador, String time);
 
-	void bolaEmJogo();
+	void bolaEmJogo(boolean bolaEmJogo);
 
 	void jogadorPegouBola(String nome);
 

@@ -5,12 +5,13 @@ import jogo.Jogador;
 
 public class EsperandoState extends JogadorTickerBehavior {
 
-		public EsperandoState(Agent a, long period) {
+	EsperandoState(Agent a, long period) {
 			super(a, period);
 		}
 
 		@Override
 		protected void executaEstado() {
+			reiniciaJogoSeBolaChegouNoCentro();
 			getJogador().defender();
 			getJogador().setPosicaoCampo(Jogador.PosicaoCampo.DEFESA);
 			if (bolaEmJogo())
