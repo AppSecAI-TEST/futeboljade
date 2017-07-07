@@ -28,8 +28,18 @@ public class Placar extends ObjetoJogo {
 		g.fill(topo);
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("arial", Font.ITALIC, 30));
-		g.drawString(golsEsquerda+"", areasCampo.getXMeio()-30, 40);
-		g.drawString(golsDireita+"", areasCampo.getXMeio()+30, 40);
+		
+		int y = 40;
+		int x = areasCampo.getXMeio();
+		
+		g.setColor(Color.WHITE);
+		g.fillRect(x-40, 7, 40, 40);
+		g.fillRect(x+7, 7, 40, 40);
+		
+		g.setColor(Color.BLACK);
+		g.drawString(golsEsquerda+"", x-30, y);
+		g.drawString(golsDireita+"", x+17, y);
+		
 		super.desenha();
 	}
 

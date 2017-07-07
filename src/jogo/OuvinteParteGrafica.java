@@ -45,8 +45,7 @@ public class OuvinteParteGrafica implements CampoGraficoListener {
 	}
 
 	@Override
-	public void bolaFoiProCentro(boolean noCentro) {
+	public void bolaFoiProCentro() {
 		campo.bolaFoiProCentro();
 	}
-
 }

@@ -143,6 +143,7 @@ public class Campo extends Canvas {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        moveBolaCentro();
         status = StatusJogo.GOOOL;
         listeners.forEach(l -> l.golTime(visitante.getNome()));
     }
@@ -154,6 +155,7 @@ public class Campo extends Canvas {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        moveBolaCentro();
         status = StatusJogo.GOOOL;
         listeners.forEach(l -> l.golTime(casa.getNome()));
     }
